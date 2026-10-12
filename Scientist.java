@@ -15,6 +15,11 @@ public class Scientist extends Personnel {
         "Head of Illuminati Science Division"
     };
 
+        public Scientist(String name){
+        super(name, 1, 50000);
+        this.degree = "No Degree";
+    }
+
     public Scientist(String name, int rankNum, double salary, String degree){
         super(name, rankNum, salary);
         this.degree = degree;

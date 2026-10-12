@@ -21,6 +21,11 @@ public class Soldier extends Personnel{
         super(name, rankNum, salary);
     }
 
+    public Soldier(String name){
+        super(name, 0, 30000);
+    }
+
+
     public void promote(){
         if (this.rankNum >= 0 && this.rankNum < 12 ){
             rankNum++;

@@ -18,6 +18,10 @@ public class Alien extends Personnel{
         "UFO division General"
     };
 
+    public Alien(String name){
+        super(name, 0, 0);
+    }
+
     public Alien(String name, int rankNum, double salary){
         super(name, rankNum, salary);
     }

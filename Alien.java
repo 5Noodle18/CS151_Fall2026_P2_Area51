@@ -1,7 +1,10 @@
-public class Alien extends Personnel{
-
-    String[] ranks = {
-        "Egg",
+public class Alien extends Personnel
+{
+    private String homePlanet;
+    //Array keeps track of all the ranks. RankNum stores the corresponding number 
+    private static String[] ranks = 
+    {
+        "Egg",                          //rankNum 0
         "Larval Stage",
         "Cocoon Stage",
         "Junior Glipnorp",
@@ -15,33 +18,42 @@ public class Alien extends Personnel{
         "UFO division Captain",
         "UFO division Commander",
         "UFO division Colonel",
-        "UFO division General"
+        "UFO division General"          //rankNum 14
     };
 
-    public Alien(String name, int rankNum, double salary){
+    public Alien(String name, int rankNum, double salary, String homePlanet)
+    {
         super(name, rankNum, salary);
+        this.homePlanet = homePlanet;
     }
 
+    public void promote()
+    {
+        if (this.rankNum < ranks.length - 1 )
+        {
+            rankNum++;
+            this.salary += 15000;
+        }
+    }
+
+    public void demote()
+    {
+        if (this.rankNum > 0)
+        {
+            rankNum--;
+            this.salary -= 15000;
+        }
+    }
 
     //getter methods:
-    public String getName(){
-        return this.name;
-    }
-
-    public String getRank(){
+    public String getRank()
+    {
         return ranks[this.rankNum];
     }
 
-    public double getSalary(){
-        return super.getSalary();
-    }
-
-    public float getHP(){
-        return super.getHP();
-    }
-
-    public long getBadgeNum(){
-        return super.getBadgeNum();
+    public string getHomePlanet()
+    {
+        return this.homePlanet;
     }
     
 }

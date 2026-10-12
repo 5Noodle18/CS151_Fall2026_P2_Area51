@@ -1,4 +1,5 @@
-abstract class Personnel {
+abstract class Personnel
+{
     public static long peopleCount = 0;
     public String name;
     public int rankNum;
@@ -6,7 +7,8 @@ abstract class Personnel {
     public double salary;
     public long badgeNum;
 
-    public Personnel(String name, int rankNum, double salary){
+    public Personnel(String name, int rankNum, double salary)
+    {
         this.name = name;
         this.rankNum = rankNum;
         this.salary = salary;
@@ -22,33 +24,45 @@ abstract class Personnel {
 
     public void demote(){ }
 
-    public void takeDamage(){ }
+    public void takeDamage(int damage)
+    {
+        this.HP -= damage;
+    }
 
-    public void heal(){ }
+    public void heal()
+    {
+        this.HP = 100;
+    }
 
-    public void fire(){
+    public void fire()
+    {
         System.out.println ("This individual will be \"disposed of\" accordingly");
         //figure out a way to delete a person. Still increment badge numbers as needed.
     }
 
     //getter methods:
-    public String getName(){
+    public String getName()
+    {
         return this.name;
     }
 
-    public String getRank(){
+    public String getRank()
+    {
         return "Some Rank";
     }
 
-    public double getSalary(){
+    public double getSalary()
+    {
         return this.salary;
     }
 
-    public float getHP(){
+    public float getHP()
+    {
         return this.HP;
     }
 
-    public long getBadgeNum(){
+    public long getBadgeNum()
+    {
         return this.badgeNum;
     }
 

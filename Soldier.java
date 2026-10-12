@@ -22,7 +22,7 @@ public class Soldier extends Personnel{
     }
 
     public void promote(){
-        if (this.rankNum >=0 && this.rankNum < 12 ){
+        if (this.rankNum >= 0 && this.rankNum < 12 ){
             rankNum++;
         }
 
@@ -30,7 +30,7 @@ public class Soldier extends Personnel{
     }
 
     public void demote(){
-        if (this.rankNum >= 12 && this.rankNum <= 12 ){
+        if (this.rankNum > 0 && this.rankNum <= 12 ){
             rankNum--;
         }
 
@@ -54,7 +54,7 @@ public class Soldier extends Personnel{
 
     //getter methods:
     public String getName(){
-        return this.name;
+        return super.getName();
     }
 
     public String getRank(){

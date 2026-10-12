@@ -11,6 +11,8 @@ abstract class Personnel {
         this.rank = rank;
         this.salary = salary;
         this.HP = 100;
+        //Badge number keeps track of people who have joined our base and gives us a way to pull up records of people based on a security badge code.
+        //It increments for every new Person or Alien who starts working for our base or eveyr new alien who is born.
         peopleCount++;
         this.badgeNum = peopleCount;
         System.out.println ("A new Member has joined our base. Glory to the Lizard People running America's government!");
@@ -31,5 +33,32 @@ abstract class Personnel {
     public void heal(){
 
     }
+
+    public void fire(){
+        System.out.println ("This individual will be \"disposed of\" accordingly");
+        //figure out a way to delete a person. Still increment badge numbers as needed.
+    }
+
+    //getter methods:
+    public String getName(){
+        return this.name;
+    }
+
+    public String getRank(){
+        return this.rank;
+    }
+
+    public double getSalary(){
+        return this.salary;
+    }
+
+    public float getHP(){
+        return this.HP;
+    }
+
+    public long getBadgeNum(){
+        return this.badgeNum;
+    }
+
 
 }

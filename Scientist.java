@@ -1,3 +1,3 @@
-public class Scientist {
+public class Scientist extends Personnel {
     
 }

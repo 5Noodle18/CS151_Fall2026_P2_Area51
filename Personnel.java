@@ -1,21 +1,25 @@
+// Abstract class. All methods here NEED to be implemented in Soldier, Scientist, and Alien classes.
+
 abstract class Personnel {
     public static long peopleCount = 0;
     public String name;
-    public String rank;
+    public int rankNum;
     public float HP = 100;
     public double salary;
     public long badgeNum;
 
-    public Personnel(String name, String rank, double salary){
+    public Personnel(String name, int rankNum, double salary){
         this.name = name;
-        this.rank = rank;
+        
+        //ranknum stores a number that corresponds to a matching rank in an array. refer to soldier class to see how it's done
+        this.rankNum = rankNum;
         this.salary = salary;
         this.HP = 100;
+
         //Badge number keeps track of people who have joined our base and gives us a way to pull up records of people based on a security badge code.
         //It increments for every new Person or Alien who starts working for our base or eveyr new alien who is born.
         peopleCount++;
         this.badgeNum = peopleCount;
-        System.out.println ("A new Member has joined our base. Glory to the Lizard People running America's government!");
     }
 
     public void promote(){
@@ -45,7 +49,7 @@ abstract class Personnel {
     }
 
     public String getRank(){
-        return this.rank;
+        return "the name of some rank";
     }
 
     public double getSalary(){
@@ -59,6 +63,8 @@ abstract class Personnel {
     public long getBadgeNum(){
         return this.badgeNum;
     }
+
+    //please feel free to add setter methods as needed
 
 
 }

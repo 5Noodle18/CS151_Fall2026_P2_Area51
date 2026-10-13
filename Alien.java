@@ -51,7 +51,7 @@ public class Alien extends Personnel
         return ranks[this.rankNum];
     }
 
-    public string getHomePlanet()
+    public String getHomePlanet()
     {
         return this.homePlanet;
     }

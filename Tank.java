@@ -115,8 +115,11 @@ public class Tank extends Vehicle {
     @Override
     public void destroy()
     {
+        currentSpeed = 0;
         driver = null;
         gunner = null;
         occupants = null;
     }
+
+    //TODO: specialized functions for Tank
 }

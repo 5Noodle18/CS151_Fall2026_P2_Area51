@@ -1,7 +1,7 @@
 //Tank inherits from Vehicle.
 //It is designed to aim at and target other Vehicle types.
 
-public class Tank extends Vehicle {
+public class Tank extends Vehicle implements HumanDrivable{
     //attributes - members - fields - variables//
     private int shellCount;
     private Personnel gunner;
@@ -82,6 +82,32 @@ public class Tank extends Vehicle {
     public void setIsLoaded(boolean isLoaded)
     {
         this.isLoaded = isLoaded;
+    }
+
+    // interface methods
+    public void setDriver(Personnel driver)
+    {
+        this.driver = driver;
+    }
+    public Personnel getDriver()
+    {
+        return this.driver;
+    }
+    public void drive()
+    {
+        System.out.println("rolling");
+    }
+    public double checkFuel()
+    {
+        return 20.5;
+    }
+    public void fuelUp()
+    {
+        System.out.println("The tank is now fully fueled");
+    }
+    public void startEngine()
+    {
+        System.out.println("Starting engine, tank is powered on");
     }
 
     //TODO: true implementations

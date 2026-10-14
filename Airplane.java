@@ -1,7 +1,7 @@
 //Airplane inherits from Vehicle
 //It is designed specifically around taking off & landing correctly, and carrying many occupants.
 
-public class Airplane extends Vehicle{
+public class Airplane extends Vehicle implements HumanDrivable{
     //attributes - members - fields - variables//
     private float takeOffSpeed; //min speed needed to takeoff
     private float landingSpeed; //max speed needed to land safely
@@ -61,6 +61,33 @@ public class Airplane extends Vehicle{
     {
         currentAltitude = altitude;
     }
+
+    // interface methods
+    public void setDriver(Personnel driver)
+    {
+        this.driver = driver;
+    }
+    public Personnel getDriver()
+    {
+        return this.driver;
+    }
+    public void drive()
+    {
+        System.out.println("flying");
+    }
+    public double checkFuel()
+    {
+        return 20.5;
+    }
+    public void fuelUp()
+    {
+        System.out.println("The plane is now fully fueled");
+    }
+    public void startEngine()
+    {
+        System.out.println("Starting turbines, plane is powered on");
+    }
+
 
     //TODO: true implementations
     //abstract extensions

@@ -1,11 +1,12 @@
 //UFO inherits from Vehicle.
 //It is designed to try and escape the atmosphere with an alien pilot.
 
-public class UFO extends Vehicle {
+public class UFO extends Vehicle implements AlienDrivable{
     //attributes - members - fields - variables//
     private float altitudeRate;
     private float currentAltitude;
     private boolean isStealthed;
+    private Personnel holdingBay;
 
     //constructors
     public UFO()
@@ -22,6 +23,7 @@ public class UFO extends Vehicle {
         this.altitudeRate = altitudeRate;
         currentAltitude = 0;
         isStealthed = false;
+        holdingBay = null;
     }
 
     //getters
@@ -49,6 +51,32 @@ public class UFO extends Vehicle {
     public void setIsStealthed(boolean isStealthed)
     {
         this.isStealthed = isStealthed;
+    }
+
+    //interface methods
+    public void setDriver(Personnel driver)
+    {
+        this.driver = driver;
+    }
+    public Personnel getDriver()
+    {
+        return this.driver;
+    }
+    public void drive()
+    {
+        System.out.println("floating");
+    }
+    public void abduct(Personnel abductee)
+    {
+        this.holdingBay = abductee;
+    }
+    public Personnel unAbduct()
+    {
+        return this.holdingBay;
+    }
+    public void startProtonDrive()
+    {
+        System.out.println("Proton drive spooled up");
     }
 
     //TODO: true implementations

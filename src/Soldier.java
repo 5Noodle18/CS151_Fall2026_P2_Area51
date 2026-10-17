@@ -1,3 +1,4 @@
+package src;
 public class Soldier extends Personnel
 {
     private boolean expendable;

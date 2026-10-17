@@ -1,41 +1,33 @@
-//Airplane inherits from Vehicle
-//It is designed specifically around taking off & landing correctly, and carrying many occupants.
+package src;
+//UFO inherits from Vehicle.
+//It is designed to try and escape the atmosphere with an alien pilot.
 
-public class Airplane extends Vehicle implements HumanDrivable{
+public class UFO extends Vehicle implements AlienDrivable{
     //attributes - members - fields - variables//
-    private float takeOffSpeed; //min speed needed to takeoff
-    private float landingSpeed; //max speed needed to land safely
     private float altitudeRate;
     private float currentAltitude;
+    private boolean isStealthed;
+    private Personnel holdingBay;
 
     //constructors
-    public Airplane()
+    public UFO()
     { //default
         super();
-        takeOffSpeed = 150;
-        landingSpeed = 100;
         altitudeRate = 100;
         currentAltitude = 0;
+        isStealthed = false;
     }
 
-    public Airplane(float topSpeed, float acceleration, float takeOffSpeed, float landingSpeed, float altitudeRate) 
+    public UFO(float topSpeed, float acceleration, float altitudeRate) 
     { //intended default
         super(topSpeed, acceleration);
-        this.takeOffSpeed = takeOffSpeed;
-        this.landingSpeed = landingSpeed;
         this.altitudeRate = altitudeRate;
         currentAltitude = 0;
+        isStealthed = false;
+        holdingBay = null;
     }
 
     //getters
-    public float getTakeOffSpeed() 
-    {
-        return takeOffSpeed;
-    }
-    public float getLandingSpeed()
-    {
-        return landingSpeed;
-    }
     public float getAltitudeRate() 
     {
         return altitudeRate;
@@ -44,15 +36,11 @@ public class Airplane extends Vehicle implements HumanDrivable{
     {
         return currentAltitude;
     }
+    public boolean isStealthed() 
+    {
+        return isStealthed;
+    }
     //setters
-    public void setTakeOffSpeed(float takeOffSpeed)
-    {
-        this.takeOffSpeed = takeOffSpeed;
-    }
-    public void setLandingSpeed(float landingSpeed)
-    {
-        this.landingSpeed = landingSpeed;
-    }
     public void setAltitudeRate(float altitudeRate) 
     {
         this.altitudeRate = altitudeRate;
@@ -61,8 +49,12 @@ public class Airplane extends Vehicle implements HumanDrivable{
     {
         currentAltitude = altitude;
     }
+    public void setIsStealthed(boolean isStealthed)
+    {
+        this.isStealthed = isStealthed;
+    }
 
-    // interface methods
+    //interface methods
     public void setDriver(Personnel driver)
     {
         this.driver = driver;
@@ -73,44 +65,41 @@ public class Airplane extends Vehicle implements HumanDrivable{
     }
     public void drive()
     {
-        System.out.println("flying");
+        System.out.println("floating");
     }
-    public double checkFuel()
+    public void abduct(Personnel abductee)
     {
-        return 20.5;
+        this.holdingBay = abductee;
     }
-    public void fuelUp()
+    public Personnel unAbduct()
     {
-        System.out.println("The plane is now fully fueled");
+        return this.holdingBay;
     }
-    public void startEngine()
+    public void startProtonDrive()
     {
-        System.out.println("Starting turbines, plane is powered on");
+        System.out.println("Proton drive spooled up");
     }
-
 
     //TODO: true implementations
     //abstract extensions
-    @Override 
-    public boolean start() 
+    @Override
+    public boolean start()
     {
-        if (driver != null) 
+        if (driver != null)
             return true;
         else
             return false;
     }
-
     @Override
     public float drive(float seconds) 
     {
+        if (isStealthed)
+            return 0; //can't drive if stealthed
         float distance = 0;
         currentSpeed = currentSpeed + (acceleration * seconds);
         if (currentSpeed > topSpeed)
             currentSpeed = topSpeed;
         distance = currentSpeed * seconds;
-        if (currentSpeed > takeOffSpeed) {
-            currentAltitude = currentAltitude + (altitudeRate * seconds);
-        }
         return distance;
     }
 
@@ -118,8 +107,6 @@ public class Airplane extends Vehicle implements HumanDrivable{
     public void stop() 
     {
         currentSpeed = 0;
-        if (currentAltitude > 10) //wasn't close enough to the ground!
-            destroy();
     }
 
     @Override
@@ -131,5 +118,5 @@ public class Airplane extends Vehicle implements HumanDrivable{
         currentAltitude = 0;
     }
 
-    //TODO: specialized functions for Airplane
+    //TODO: specialized functions for UFO
 }

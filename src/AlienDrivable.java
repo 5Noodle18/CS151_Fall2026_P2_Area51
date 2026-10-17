@@ -1,3 +1,4 @@
+package src;
 public interface AlienDrivable extends Drivable
 {
     /* sucks someone up into the UFO */

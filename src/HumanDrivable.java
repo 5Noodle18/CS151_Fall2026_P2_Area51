@@ -1,3 +1,4 @@
+package src;
 public interface HumanDrivable extends Drivable
 {
     /* check the fuel level fo the vehicle */

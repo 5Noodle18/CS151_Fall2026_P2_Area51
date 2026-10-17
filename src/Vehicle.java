@@ -1,3 +1,4 @@
+package src;
 //Vehicle is meant to be conceptual superclass of Tank, UFO, and Airplane.
 //Contains attributes meant for all Vehicle types, and generic methods.
 

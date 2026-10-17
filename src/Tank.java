@@ -1,3 +1,4 @@
+package src;
 //Tank inherits from Vehicle.
 //It is designed to aim at and target other Vehicle types.
 
@@ -108,6 +109,17 @@ public class Tank extends Vehicle implements HumanDrivable{
     public void startEngine()
     {
         System.out.println("Starting engine, tank is powered on");
+    }
+
+    public boolean fireAtTarget()
+    {
+        if (!isLocked || !isLoaded || target == null || shellCount <= 0)
+            return false;
+
+        shellCount--;
+        isLoaded = false;
+        target.stop();
+        return true;
     }
 
     //TODO: true implementations

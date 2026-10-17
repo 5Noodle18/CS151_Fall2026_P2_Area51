@@ -1,3 +1,4 @@
+package src;
 public class Scientist extends Personnel
 {
     private String degree;

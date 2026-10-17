@@ -1,3 +1,4 @@
+package src;
 abstract class Personnel
 {
     public static long peopleCount = 0;

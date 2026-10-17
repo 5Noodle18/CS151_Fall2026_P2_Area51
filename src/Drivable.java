@@ -1,3 +1,4 @@
+package src;
 public interface Drivable
 {
     /* sets the driver of the vehicle */

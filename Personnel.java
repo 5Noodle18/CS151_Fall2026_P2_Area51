@@ -2,7 +2,6 @@ abstract class Personnel {
     public static long peopleCount = 0;
     public String name;
     public int rankNum;
-    public float HP = 100;
     public double salary;
     public long badgeNum;
 
@@ -10,7 +9,6 @@ abstract class Personnel {
         this.name = name;
         this.rankNum = rankNum;
         this.salary = salary;
-        this.HP = 100;
         //Badge number keeps track of people who have joined our base and gives us a way to pull up records of people based on a security badge code.
         //It increments for every new Person or Alien who starts working for our base or eveyr new alien who is born.
         peopleCount++;
@@ -22,13 +20,15 @@ abstract class Personnel {
 
     public void demote(){ }
 
+<<<<<<< Updated upstream:Personnel.java
     public void takeDamage(){ }
 
     public void heal(){ }
+=======
+>>>>>>> Stashed changes:src/Personnel.java
 
     public void fire(){
         System.out.println ("This individual will be \"disposed of\" accordingly");
-        //figure out a way to delete a person. Still increment badge numbers as needed.
     }
 
     //getter methods:
@@ -44,9 +44,12 @@ abstract class Personnel {
         return this.salary;
     }
 
+<<<<<<< Updated upstream:Personnel.java
     public float getHP(){
         return this.HP;
     }
+=======
+>>>>>>> Stashed changes:src/Personnel.java
 
     public long getBadgeNum(){
         return this.badgeNum;

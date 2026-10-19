@@ -45,6 +45,14 @@ public class Alien extends Personnel
             this.salary -= 15000;
         }
     }
+    //setters
+    public void setRankNum(int i){
+        this.rankNum = i;
+    }
+
+    public void setHomePlanet(String p){
+        this.homePlanet = p;
+    }
 
     public void setRankNum(int num){
         if (this.rankNum > 0 && (this.rankNum < ranks.length - 1 ) ){

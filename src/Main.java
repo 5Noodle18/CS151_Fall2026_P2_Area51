@@ -11,18 +11,20 @@ private final static Scanner scanner = new Scanner(System.in);
         //cool starting screen text with a fake loading screen
         System.out.println("              Accessing Illuminati Database: Verifying top security clearance...");
         System.out.println();
-        Thread.sleep(470);
+        Thread.sleep(670);
         System.out.println("              10 percent done... ");
-        Thread.sleep(470);
+        Thread.sleep(670);
         System.out.println("              30 percent done... ");
-        Thread.sleep(470);
+        Thread.sleep(670);
         System.out.println("              60 percent done... ");
-        Thread.sleep(470);
+        Thread.sleep(670);
         System.out.println("              90 percent done... ");
-        Thread.sleep(470);
+        Thread.sleep(670);
         System.out.println("              99 percent done... ");
-        Thread.sleep(900);
+        Thread.sleep(800);
         System.out.println();
+        
+
 
         System.out.println("              CLASSIFIED U.S. GOVERNMENT SOFTWARE");
         System.out.println("              UNAUTHORIZED ACCESS CAN RESULT IN IMPRISONMENT OR DEATH");
@@ -107,6 +109,7 @@ private final static Scanner scanner = new Scanner(System.in);
             --> Alien gets promoted based on Scientist's rank
         */
 
+        //1
         //1. Prompt for alien
         System.out.println("Alien Scenario Selected");
         System.out.println();
@@ -174,11 +177,6 @@ private final static Scanner scanner = new Scanner(System.in);
 
         System.out.println();
 
-
-
-
-
-        
         
 
         System.out.println("\nALIEN SCENARIO: Escape Area 51");

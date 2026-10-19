@@ -4,6 +4,7 @@ abstract class Personnel
     public static long peopleCount = 0;
     public String name;
     public int rankNum;
+    public float HP = 100;
     public double salary;
     public long badgeNum;
 
@@ -12,6 +13,7 @@ abstract class Personnel
         this.name = name;
         this.rankNum = rankNum;
         this.salary = salary;
+        this.HP = 100;
         //Badge number keeps track of people who have joined our base and gives us a way to pull up records of people based on a security badge code.
         //It increments for every new Person or Alien who starts working for our base or eveyr new alien who is born.
         peopleCount++;
@@ -30,12 +32,11 @@ abstract class Personnel
     }
 
     //setter methods:
-    public void setName(String n){
-        this.name = n;
+    public void setName(String nombre){
+        this.name = nombre;
     }
-
-    public void setSalary(double d){
-        this.salary = d;
+    public void setSalary(double s){
+        this.salary = s;
     }
 
     //getter methods:

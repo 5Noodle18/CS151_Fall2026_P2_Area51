@@ -46,8 +46,8 @@ public class Alien extends Personnel
         }
     }
     //setters
-    public void setRankNum(int i){
-        this.rankNum = i;
+    public void setRankNum(int num){
+        this.rankNum = num;
     }
 
     public void setHomePlanet(String p){

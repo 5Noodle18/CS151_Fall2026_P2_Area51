@@ -11,17 +11,17 @@ private final static Scanner scanner = new Scanner(System.in);
         //cool starting screen text with a fake loading screen
         System.out.println("              Accessing Illuminati Database: Verifying top security clearance...");
         System.out.println();
-        Thread.sleep(670);
+        Thread.sleep(170);
         System.out.println("              10 percent done... ");
-        Thread.sleep(670);
+        Thread.sleep(170);
         System.out.println("              30 percent done... ");
-        Thread.sleep(670);
+        Thread.sleep(170);
         System.out.println("              60 percent done... ");
-        Thread.sleep(670);
+        Thread.sleep(170);
         System.out.println("              90 percent done... ");
-        Thread.sleep(670);
+        Thread.sleep(170);
         System.out.println("              99 percent done... ");
-        Thread.sleep(800);
+        Thread.sleep(500);
         System.out.println();
         
 

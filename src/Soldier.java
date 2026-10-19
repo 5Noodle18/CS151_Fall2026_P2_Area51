@@ -44,6 +44,21 @@ public class Soldier extends Personnel
         }
     }
 
+    //setter methods:
+
+    public void setRankNum(int num){
+        if (this.rankNum > 0 && (this.rankNum < ranks.length - 1 ) ){
+            this.rankNum = num;
+        }
+        else{
+            this.rankNum = num%(ranks.length);
+        }
+    }
+    
+    public void setExpendable(boolean val){
+        this.expendable = val;
+    }
+
     //getter methods:
     public String getRank()
     {

@@ -52,8 +52,7 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println("(2). Scientist");
         System.out.println("(3). Soldier");
         
-        int choice = -676767;
-
+        int choice = -6767;
         //verify the input is between 1 and 3 in a polite, professional way befitting Area 51.
         while (choice < 1 || choice > 3){
             System.out.print("Please enter an integer from 1 to 3: ");
@@ -83,12 +82,13 @@ private final static Scanner scanner = new Scanner(System.in);
                     runSoldierScenario(scanner, new Soldier("Captain Reyes", 5, 60000, false));
                     break;
                 default:
+
                     throw new IllegalStateException("Unexpected personnel selection: " + choice);
             }
             
         }
 
-    private static void runAlienScenario(Alien alien) {
+    private static void runAlienScenario(Alien alien) throws InterruptedException {
         /* TODO:
         Code below is template. Comment below should be final outline:
         1. Ask user if they want to use default Alien (1) or set custom parameters (2)
@@ -115,7 +115,7 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println();
         System.out.println("Are you a default alien (Enter: 1)... or a custom alien (Enter: 2)?");
 
-        int choice2 = 0;
+        int choice2 = 676767;
             while (choice2 < 1 || choice2> 2){
             System.out.print("Please enter an integer from 1 to 2: ");
             
@@ -133,26 +133,25 @@ private final static Scanner scanner = new Scanner(System.in);
 
         //2. Custom Alien creator
         if(choice2 == 2){
-            System.out.print("Please enter the Alien's Name:");
-            String a = "";
-            while(a.length() == 0){
-                if(scanner.hasNext()){
-                    a = scanner.next();
-                }
-                else{
-                    System.out.print("Enter a name please");
-                }
+            scanner.nextLine();
+            String theName = "";
+
+        System.out.print("Please enter the Alien's Name (Be Creative Please): ");
+        while (scanner.hasNextLine()) {
+            theName = scanner.nextLine().trim();
+            if (!theName.isEmpty()) {
+                alien.setName(theName);
+                break;
             }
-            alien.setName(a);
+            System.out.print("Name cannot be empty. Please enter a valid name: ");
+        }
 
-            System.out.print("Please enter the Alien's Rank Number (1-14):");
-            int b = -6767;
-                while (b < 1 || b > 14){
-                System.out.print("Please enter an integer from 1 to 14: ");
-
+            int theRank = -6767;
+                while (theRank < 1 || theRank > 14){
+                System.out.print("Please enter the Alien's Rank Number (1-14):");
                     if (scanner.hasNextInt()) {
-                        b = scanner.nextInt();
-                        if (b < 1 || b > 14) {
+                        theRank = scanner.nextInt();
+                        if (theRank < 1 || theRank > 14) {
                             System.out.println("TRY AGAIN!");
                         } 
                     } else {
@@ -160,24 +159,82 @@ private final static Scanner scanner = new Scanner(System.in);
                         scanner.next();
                     }
                 }
-            alien.setRankNum(b);
-            
-            System.out.print("Please enter the Alien's Home Planet");
-            String c = "";
-                while(a.length() == 0){
-                    if(scanner.hasNext()){
-                        c = scanner.next();
-                    }
-                    else{
-                        System.out.print("Enter a Planet Name please");
+            alien.setRankNum(theRank);
+            scanner.nextLine();
+
+            String planet = "";
+                while (planet.isEmpty()) {
+                    System.out.print("Please enter the Alien's Home Planet: ");
+                    planet = scanner.nextLine().trim();
+    
+                    if (planet.isEmpty()) {
+                        System.out.println("TRY AGAIN!");
                     }
                 }
-            alien.setHomePlanet(c);
+            alien.setHomePlanet(planet);
         }
-
         System.out.println();
-
+        System.out.println("==========================================================");
+        System.out.println("[ALIEN STATS:]");
+        System.out.println("    NAME: " + alien.getName() + ", RANK: " + alien.getRank());
+        System.out.println("    SALARY: " + alien.getSalary() + ", PLANET OF ORIGIN: " + alien.getHomePlanet());
+        System.out.println("==========================================================");
+        System.out.println();
         
+        //Alien needs to Choose a vehicle:
+        System.out.println("Choose a vehicle for " + alien.getName() + " to steal.");
+        System.out.println("Tank (Enter: 1), Airplane (Enter: 2), Unidentified Flying Object *UFO* (Enter: 3)");
+
+        int choice3 = 676767;
+        int counter = 0;
+            while (choice3 < 1 || choice3> 3){
+            System.out.println("Please enter an integer from 1 to 3: ");
+            
+            counter ++;
+            if (scanner.hasNextInt()) {
+                choice3 = scanner.nextInt();
+                
+                if (choice3 < 1 || choice3 > 3) {
+                    if(counter > 3){
+                        System.out.println("You must be a really stupid alien if you can't choose a vehicle correctly!");
+                    }
+                    else{
+                        System.out.println("TRY AGAIN!");
+                    }
+                } 
+                } else {
+                System.out.println("TRY AGAIN!");
+                scanner.next();
+                }
+            }
+
+            switch(choice3){
+                case 1:
+                    System.out.println("ALIEN DETECTED IN TANK! SELF DESTRUCT INITIATED!");
+                    Thread.sleep(300);
+                    for(int i = 10; i>=0; i--){
+                        System.out.print(i + "...");
+                        Thread.sleep(170);
+                    }
+                    System.out.println("BOOM!!!");
+                    return;
+                case 2:
+                    System.out.println("ALIEN DETECTED IN TANK! SELF DESTRUCT INITIATED!");
+                    Thread.sleep(300);
+                    for(int i = 10; i>=0; i--){
+                        System.out.print(i + "...");
+                        Thread.sleep(170);
+                    }
+                    System.out.println("BOOM!!!");
+                    return;                    
+                case 3:
+                    System.out.println("UFO initiating");
+                    System.out.println();
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected personnel selection: " + choice3);
+            }
+
 
         System.out.println("\nALIEN SCENARIO: Escape Area 51");
         System.out.println(alien.getName() + " must reach orbit in a UFO before security catches up.");

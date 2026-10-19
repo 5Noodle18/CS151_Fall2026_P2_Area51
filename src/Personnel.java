@@ -18,7 +18,6 @@ abstract class Personnel
         //It increments for every new Person or Alien who starts working for our base or eveyr new alien who is born.
         peopleCount++;
         this.badgeNum = peopleCount;
-        System.out.println ("A new Member has joined our base. Glory to the Lizard People running America's government!");
     }
 
     public void promote(){ }

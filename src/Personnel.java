@@ -25,16 +25,6 @@ abstract class Personnel
 
     public void demote(){ }
 
-    public void takeDamage(int damage)
-    {
-        this.HP -= damage;
-    }
-
-    public void heal()
-    {
-        this.HP = 100;
-    }
-
     public void fire()
     {
         System.out.println ("This individual will be \"disposed of\" accordingly");
@@ -55,11 +45,6 @@ abstract class Personnel
     public double getSalary()
     {
         return this.salary;
-    }
-
-    public float getHP()
-    {
-        return this.HP;
     }
 
     public long getBadgeNum()

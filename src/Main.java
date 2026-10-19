@@ -1,17 +1,76 @@
 package src;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Welcome to Area 51!");
-            System.out.println("Choose your personnel:");
-            System.out.println("1. Alien");
-            System.out.println("2. Scientist");
-            System.out.println("3. Soldier");
 
-            int choice = readChoice(scanner, "Enter 1, 2, or 3: ", 1, 3);
+//keep the scanner like this so all the methods can use it too:
+private final static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws InterruptedException{
+        //cool starting screen text with a fake loading screen
+        System.out.println("              Accessing Illuminati Database: Verifying top security clearance...");
+        System.out.println();
+        Thread.sleep(670);
+        System.out.println("              10 percent done... ");
+        Thread.sleep(670);
+        System.out.println("              30 percent done... ");
+        Thread.sleep(670);
+        System.out.println("              60 percent done... ");
+        Thread.sleep(670);
+        System.out.println("              90 percent done... ");
+        Thread.sleep(670);
+        System.out.println("              99 percent done... ");
+        Thread.sleep(1000);
+        System.out.println("              99.99 percent done... ");
+        Thread.sleep(3000);
+
+        System.out.println("              CLASSIFIED U.S. GOVERNMENT SOFTWARE");
+        System.out.println("              UNAUTHORIZED ACCESS CAN RESULT IN IMPRISONMENT OR DEATH");
+        System.out.println();
+        System.out.println("              FACILITY: ███████████████████████████");
+        System.out.println("              LOCATION: GROOM LAKE, NEVADA");
+        System.out.println("              DESIGNATION: AL███ RESEARCH FACILITY");
+        System.out.println("              SECTOR:   51");
+        System.out.println("              STATUS:   [ ACTIVE ]");
+        System.out.println();
+        System.out.println("              BIOLOGICAL CONTAINMENT.............. NOMINAL");
+        System.out.println("              SECURITY SYSTEMS.................... ONLINE");
+        System.out.println("              SURVEILLANCE NETWORK................ ONLINE");
+        System.out.println("              SUBLEVEL ACCESS..................... LOCKED");
+        System.out.println("              SPECIMEN CONTAINMENT................ ███████");
+        System.out.println("              PROJECT █████████................... CLASSIFIED");
+        System.out.println();
+        System.out.println("              PRESS ENTER TO CONTINUE:");
+        System.out.println();
+        System.out.println("================================================================================");
+        scanner.nextLine();
+
+        System.out.println("Choose your personnel:");
+        System.out.println("(1). Alien");
+        System.out.println("(2). Scientist");
+        System.out.println("(3). Soldier");
+        
+        int choice = -676767;
+
+        //verify the input is between 1 and 3 in a polite, professional way befitting Area 51.
+        while (choice < 1 || choice > 3){
+            System.out.print("Please enter an integer from 1 to 3: ");
+            
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
+                
+                if (choice < 1 || choice > 3) {
+                    System.out.println("IF THE CHOICE IS NOT FROM 1:3, YOU WILL BE NEUTRALIZED. TRY AGAIN!");
+                } 
+            } else {
+                System.out.println("ENTER AN INTEGER OR YOU WILL BE EXCECUTED IMMEDIATELY!");
+                System.out.println();
+                scanner.next();
+            }
+        }
+
+        //this decides which one of 3 scenarios to play out:
             switch (choice) {
                 case 1:
                     runAlienScenario(new Alien("Zorp", 3, 50000, "Zeta Reticuli"));
@@ -25,8 +84,8 @@ public class Main {
                 default:
                     throw new IllegalStateException("Unexpected personnel selection: " + choice);
             }
+            
         }
-    }
 
     private static void runAlienScenario(Alien alien) {
         /* TODO:
@@ -48,6 +107,37 @@ public class Main {
             --> startProtonDrive() --> warpDrive(t) --> they win!
             --> Alien gets promoted based on Scientist's rank
         */
+
+        //1
+        System.out.println("Alien Scenario Selected");
+        System.out.println();
+        System.out.println("Are you a default alien (Enter: 1)... or a custom alien (Enter: 2)?");
+
+        int choice2 = 0;
+            while (choice2 < 1 || choice2> 2){
+            System.out.print("Please enter an integer from 1 to 2: ");
+            
+            if (scanner.hasNextInt()) {
+                choice2 = scanner.nextInt();
+                
+                if (choice2 < 1 || choice2 > 2) {
+                    System.out.println("TRY AGAIN!");
+                } 
+            } else {
+                System.out.println("TRY AGAIN!");
+                scanner.next();
+            }
+        }
+
+        if(choice2 == 2){
+            
+        }
+
+
+
+
+        
+        
 
         System.out.println("\nALIEN SCENARIO: Escape Area 51");
         System.out.println(alien.getName() + " must reach orbit in a UFO before security catches up.");

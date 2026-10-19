@@ -31,6 +31,14 @@ abstract class Personnel
         //figure out a way to delete a person. Still increment badge numbers as needed.
     }
 
+    //setter methods:
+    public void setName(String nombre){
+        this.name = nombre;
+    }
+    public void setSalary(double s){
+        this.salary = s;
+    }
+
     //getter methods:
     public String getName()
     {

@@ -21,9 +21,10 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println("              90 percent done... ");
         Thread.sleep(670);
         System.out.println("              99 percent done... ");
-        Thread.sleep(1000);
-        System.out.println("              99.99 percent done... ");
-        Thread.sleep(3000);
+        Thread.sleep(800);
+        System.out.println();
+        
+
 
         System.out.println("              CLASSIFIED U.S. GOVERNMENT SOFTWARE");
         System.out.println("              UNAUTHORIZED ACCESS CAN RESULT IN IMPRISONMENT OR DEATH");
@@ -109,6 +110,7 @@ private final static Scanner scanner = new Scanner(System.in);
         */
 
         //1
+        //1. Prompt for alien
         System.out.println("Alien Scenario Selected");
         System.out.println();
         System.out.println("Are you a default alien (Enter: 1)... or a custom alien (Enter: 2)?");
@@ -129,14 +131,52 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
 
+        //2. Custom Alien creator
         if(choice2 == 2){
+            System.out.print("Please enter the Alien's Name:");
+            String a = "";
+            while(a.length() == 0){
+                if(scanner.hasNext()){
+                    a = scanner.next();
+                }
+                else{
+                    System.out.print("Enter a name please");
+                }
+            }
+            alien.setName(a);
+
+            System.out.print("Please enter the Alien's Rank Number (1-14):");
+            int b = -6767;
+                while (b < 1 || b > 14){
+                System.out.print("Please enter an integer from 1 to 14: ");
+
+                    if (scanner.hasNextInt()) {
+                        b = scanner.nextInt();
+                        if (b < 1 || b > 14) {
+                            System.out.println("TRY AGAIN!");
+                        } 
+                    } else {
+                        System.out.println("TRY AGAIN!");
+                        scanner.next();
+                    }
+                }
+            alien.setRankNum(b);
             
+            System.out.print("Please enter the Alien's Home Planet");
+            String c = "";
+                while(a.length() == 0){
+                    if(scanner.hasNext()){
+                        c = scanner.next();
+                    }
+                    else{
+                        System.out.print("Enter a Planet Name please");
+                    }
+                }
+            alien.setHomePlanet(c);
         }
 
+        System.out.println();
 
-
-
-        
         
 
         System.out.println("\nALIEN SCENARIO: Escape Area 51");

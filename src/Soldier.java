@@ -60,6 +60,10 @@ public class Soldier extends Personnel
     }
 
     //getter methods:
+    public String[] getRanksArray(){
+        return ranks;
+    }
+
     public String getRank()
     {
         return ranks[this.rankNum];

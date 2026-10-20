@@ -140,7 +140,7 @@ private final static Scanner scanner = new Scanner(System.in);
                 }
             }
 
-            //TODO: this needs to be fixed with try catch blocks:
+            //TODO: this needs to be fixed with try catch blocks it needs to throw errors instead:
             switch(choice3){
                 case 1:
                     System.out.println("ALIEN DETECTED IN TANK! SELF DESTRUCT INITIATED!");

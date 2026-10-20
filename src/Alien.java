@@ -26,7 +26,7 @@ public class Alien extends Personnel
 
     public void promote()
     {
-        if (this.rankNum < ranks.length - 1 )
+        if (this.rankNum > 0 && (this.rankNum < ranks.length - 1 ) )
         {
             rankNum++;
             this.salary += 15000;
@@ -44,6 +44,19 @@ public class Alien extends Personnel
     //setters
     public void setRankNum(int num){
         this.rankNum = num;
+    }
+
+    public void setHomePlanet(String p){
+        this.homePlanet = p;
+    }
+
+    public void setRankNum(int num){
+        if (this.rankNum > 0 && (this.rankNum < ranks.length - 1 ) ){
+            this.rankNum = num;
+        }
+        else{
+            this.rankNum = num%(ranks.length);
+        }
     }
 
     public void setHomePlanet(String p){

@@ -41,13 +41,14 @@ public class Scientist extends Personnel
         }
     }
 
-    //setter methods:
+    //setters
     public void setRankNum(int num){
-        this.rankNum = num;
-    }
-
-    public void setDegree(String d){
-        this.degree = d;
+        if (this.rankNum > 0 && (this.rankNum < ranks.length - 1 ) ){
+            this.rankNum = num;
+        }
+        else{
+            this.rankNum = num%(ranks.length);
+        }
     }
 
     //getter methods:

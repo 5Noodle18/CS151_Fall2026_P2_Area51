@@ -4,11 +4,7 @@ public class Alien extends Personnel
     private String homePlanet;
     //Array keeps track of all the ranks. RankNum stores the corresponding number 
     private static String[] ranks = 
-    {
-        "Egg",                          //rankNum 0
-        "Larval Stage",
-        "Cocoon Stage",
-        "Junior Glipnorp",
+    {   "Junior Glipnorp",
         "Glipnorp",
         "Glob Glob Assistant",
         "Glob Glob",

@@ -9,42 +9,36 @@ private final static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws InterruptedException{
         //cool starting screen text with a fake loading screen
-        System.out.println("              Accessing Illuminati Database: Verifying top security clearance...");
-        System.out.println();
-        Thread.sleep(170);
-        System.out.println("              10 percent done... ");
-        Thread.sleep(170);
-        System.out.println("              30 percent done... ");
-        Thread.sleep(170);
-        System.out.println("              60 percent done... ");
-        Thread.sleep(170);
-        System.out.println("              90 percent done... ");
-        Thread.sleep(170);
-        System.out.println("              99 percent done... ");
-        Thread.sleep(500);
-        System.out.println();
+        Thread.sleep(190);
+        System.out.println("              Accessing Illuminati Database: Verifying top security clearance...\n");
         
+        Thread.sleep(100);
+        for (int i = 10; i<100; i+=10){
+            System.out.print("              " + i + " percent complete");
+            Thread.sleep(50);
+            System.out.print(".");
+            Thread.sleep(50);
+            System.out.print(".");
+            Thread.sleep(50);
+            System.out.println(".");
+            Thread.sleep(50);            
+        }
 
-
+        System.out.println("================================================================================\n");
         System.out.println("              CLASSIFIED U.S. GOVERNMENT SOFTWARE");
-        System.out.println("              UNAUTHORIZED ACCESS CAN RESULT IN IMPRISONMENT OR DEATH");
-        System.out.println();
+        System.out.println("              UNAUTHORIZED ACCESS CAN RESULT IN IMPRISONMENT OR DEATH\n");
         System.out.println("              FACILITY: ███████████████████████████");
         System.out.println("              LOCATION: GROOM LAKE, NEVADA");
-        System.out.println("              DESIGNATION: AL███ RESEARCH FACILITY");
+        System.out.println("              DESIGNATION: AL██N RESEARCH FACILITY");
         System.out.println("              SECTOR:   51");
-        System.out.println("              STATUS:   [ ACTIVE ]");
-        System.out.println();
+        System.out.println("              STATUS:   [ ACTIVE ]\n");
         System.out.println("              BIOLOGICAL CONTAINMENT.............. NOMINAL");
         System.out.println("              SECURITY SYSTEMS.................... ONLINE");
         System.out.println("              SURVEILLANCE NETWORK................ ONLINE");
-        System.out.println("              SUBLEVEL ACCESS..................... LOCKED");
         System.out.println("              SPECIMEN CONTAINMENT................ ███████");
-        System.out.println("              PROJECT █████████................... CLASSIFIED");
-        System.out.println();
-        System.out.println("              PRESS ENTER TO CONTINUE:");
-        System.out.println();
-        System.out.println("================================================================================");
+        System.out.println("              PROJECT █████████................... CLASSIFIED\n");
+        System.out.println("              PRESS ENTER TO CONTINUE:\n");
+        System.out.println("================================================================================\n");
         scanner.nextLine();
 
         System.out.println("Choose your personnel:");
@@ -88,12 +82,12 @@ private final static Scanner scanner = new Scanner(System.in);
             
         }
 
+
     private static void runAlienScenario(Alien alien) throws InterruptedException {
         /* TODO:
         Code below is template. Comment below should be final outline:
-        1. Ask user if they want to use default Alien (1) or set custom parameters (2)
-            --> use Alien setters to change values
-        2. Print scenario -- {{Alien.getName}} is escaping!! Quick, what UFO will they choose to make their escape! They must escape with an abducted scientist.
+        1. DONE
+        2. DONE
         3. Construct some Vehicles and print their stats to the user. They choose which one.
             --> if !UFO, throw custom exception IllegalPilotException
         4. Set UFO's driver as {{Alien}}
@@ -109,77 +103,15 @@ private final static Scanner scanner = new Scanner(System.in);
             --> Alien gets promoted based on Scientist's rank
         */
 
-        //1
-        //1. Prompt for alien
-        System.out.println("Alien Scenario Selected");
-        System.out.println();
-        System.out.println("Are you a default alien (Enter: 1)... or a custom alien (Enter: 2)?");
-
-        int choice2 = 676767;
-            while (choice2 < 1 || choice2> 2){
-            System.out.print("Please enter an integer from 1 to 2: ");
-            
-            if (scanner.hasNextInt()) {
-                choice2 = scanner.nextInt();
-                
-                if (choice2 < 1 || choice2 > 2) {
-                    System.out.println("TRY AGAIN!");
-                } 
-            } else {
-                System.out.println("TRY AGAIN!");
-                scanner.next();
-            }
-        }
-
-        //2. Custom Alien creator
-        if(choice2 == 2){
-            scanner.nextLine();
-            String theName = "";
-
-        System.out.print("Please enter the Alien's Name (Be Creative Please): ");
-        while (scanner.hasNextLine()) {
-            theName = scanner.nextLine().trim();
-            if (!theName.isEmpty()) {
-                alien.setName(theName);
-                break;
-            }
-            System.out.print("Name cannot be empty. Please enter a valid name: ");
-        }
-
-            int theRank = -6767;
-                while (theRank < 1 || theRank > 14){
-                System.out.print("Please enter the Alien's Rank Number (1-14):");
-                    if (scanner.hasNextInt()) {
-                        theRank = scanner.nextInt();
-                        if (theRank < 1 || theRank > 14) {
-                            System.out.println("TRY AGAIN!");
-                        } 
-                    } else {
-                        System.out.println("TRY AGAIN!");
-                        scanner.next();
-                    }
-                }
-            alien.setRankNum(theRank);
-            scanner.nextLine();
-
-            String planet = "";
-                while (planet.isEmpty()) {
-                    System.out.print("Please enter the Alien's Home Planet: ");
-                    planet = scanner.nextLine().trim();
-    
-                    if (planet.isEmpty()) {
-                        System.out.println("TRY AGAIN!");
-                    }
-                }
-            alien.setHomePlanet(planet);
-        }
-        System.out.println();
-        System.out.println("==========================================================");
+        //refer to last method in personnel if you want to change character creator method:
+        alien = (Alien) Personnel.characterCreator(alien, scanner);
+        
+        //TODO: add something like this after each character creator section for each scenario.
+        System.out.println("\n==========================================================");
         System.out.println("[ALIEN STATS:]");
         System.out.println("    NAME: " + alien.getName() + ", RANK: " + alien.getRank());
-        System.out.println("    SALARY: " + alien.getSalary() + ", PLANET OF ORIGIN: " + alien.getHomePlanet());
-        System.out.println("==========================================================");
-        System.out.println();
+        System.out.println("    SALARY: $" + alien.getSalary() + "0, PLANET OF ORIGIN: " + alien.getHomePlanet());
+        System.out.println("==========================================================\n\n");
         
         //Alien needs to Choose a vehicle:
         System.out.println("Choose a vehicle for " + alien.getName() + " to steal.");
@@ -208,34 +140,42 @@ private final static Scanner scanner = new Scanner(System.in);
                 }
             }
 
+            //TODO: this needs to be fixed with try catch blocks:
             switch(choice3){
                 case 1:
                     System.out.println("ALIEN DETECTED IN TANK! SELF DESTRUCT INITIATED!");
                     Thread.sleep(300);
+
                     for(int i = 10; i>=0; i--){
                         System.out.print(i + "...");
                         Thread.sleep(170);
                     }
+
                     System.out.println("BOOM!!!");
+                    Thread.sleep(170);
+                    System.out.println("\nThe Alien has perished. GAME OVER!");
                     return;
                 case 2:
-                    System.out.println("ALIEN DETECTED IN TANK! SELF DESTRUCT INITIATED!");
+                    System.out.println("ALIEN DETECTED IN PLANE! SELF DESTRUCT INITIATED!");
                     Thread.sleep(300);
+
                     for(int i = 10; i>=0; i--){
                         System.out.print(i + "...");
-                        Thread.sleep(170);
+                        Thread.sleep(170);                        
                     }
+
                     System.out.println("BOOM!!!");
+                    Thread.sleep(170);
+                    System.out.println("\nThe Alien has perished. GAME OVER!");                    
                     return;                    
                 case 3:
-                    System.out.println("UFO initiating");
                     System.out.println();
                     break;
                 default:
                     throw new IllegalStateException("Unexpected personnel selection: " + choice3);
             }
 
-
+        
         System.out.println("\nALIEN SCENARIO: Escape Area 51");
         System.out.println(alien.getName() + " must reach orbit in a UFO before security catches up.");
 
@@ -258,13 +198,13 @@ private final static Scanner scanner = new Scanner(System.in);
         } else {
             System.out.println("Mission failed: the UFO did not reach orbit.");
         }
+        //end of alien scenario
     }
 
     private static void runScientistScenario(Scientist scientist) {
         /* TODO:
         Code below is template. Comment below should be final outline:
-        1. Ask user if they want to use default Scientist (1) or set custom parameters (2)
-            --> use Scientist setters to change values
+        1. THIS PART IS ALREADY DONE
         2. Print scenario -- {{Scientist.getName}} has to take a research plane from Area 50 to Area 51 (100,000m)! They must succesfully take off and then land.
         3. Construct an Airplane and random assortment of human Personnel. 
         4. Set Airplane's driver as {{Scientist}} and occupants as these random Personnel.
@@ -278,6 +218,7 @@ private final static Scanner scanner = new Scanner(System.in);
         7. Once user lands the Airplane AND remaining_distance < 0, they win!
             --> Promote the scientist based on # of occupants!
         */
+        scientist = (Scientist) Personnel.characterCreator(scientist, scanner);
 
         System.out.println("\nSCIENTIST SCENARIO: Emergency Research Flight");
         System.out.println(scientist.getName() + " must fly the research airplane and land safely.");
@@ -309,8 +250,7 @@ private final static Scanner scanner = new Scanner(System.in);
     private static void runSoldierScenario(Scanner scanner, Soldier soldier) {
         /* TODO:
         Code below is template. Comment below should be final outline:
-        1. Ask user if they want to use default Soldier (1) or set custom parameters (2)
-            --> use Soldier setters to change values
+        1. THIS PART IS DONE
         2. Print scenario -- There's a containment breach! {{Soldier.getName}} has to blow up the Alien's UFO before they escape!
         3. Construct some Vehicles and print their stats to the user. They choose which one.
             --> if !Tank, throw custom exception IllegalPilotException
@@ -333,8 +273,9 @@ private final static Scanner scanner = new Scanner(System.in);
         7. Upon fire(), the UFO and alien is dead (also any Personnel if they abducted someone). They win!
             --> Soldier gets promoted if no human casualties!
         */
+       soldier = (Soldier) Personnel.characterCreator(soldier, scanner);
 
-        System.out.println("\nSOLDIER SCENARIO: Stop the UFO");
+        System.out.println("\nSOLDIER OBJECTIVE: Stop the UFO");
         System.out.println(soldier.getName() + " must intercept the alien's UFO with a tank.");
         System.out.println("1. Intercept now");
         System.out.println("2. Wait for a clearer shot");

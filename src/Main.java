@@ -7,7 +7,7 @@ public class Main {
 //keep the scanner like this so all the methods can use it too:
 private final static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) throws InterruptedException{
+    public static void main(String[] args) throws InterruptedException, WrongOrderException {
         //cool starting screen text with a fake loading screen
 
         Thread.sleep(190);
@@ -66,6 +66,7 @@ private final static Scanner scanner = new Scanner(System.in);
         }
 
         //this decides which one of 3 scenarios to play out:
+        try {
             switch (choice) {
                 case 1:
                     runAlienScenario(new Alien("Zorp", 3, 50000, "Zeta Reticuli"));
@@ -80,8 +81,11 @@ private final static Scanner scanner = new Scanner(System.in);
 
                     throw new IllegalStateException("Unexpected personnel selection: " + choice);
             }
-
         }
+        catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 
 
     private static void runAlienScenario(Alien alien) throws InterruptedException {
@@ -105,8 +109,20 @@ private final static Scanner scanner = new Scanner(System.in);
         */
 
         //refer to last method in personnel if you want to change character creator method:
-        alien = (Alien) Personnel.characterCreator(alien, scanner);
-        Personnel.generateStub(alien);
+        try {
+            alien = (Alien) Personnel.characterCreator(alien, scanner);
+            Personnel.generateStub(alien);
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            return;
+        }
+        
+        //TODO: add something like this after each character creator section for each scenario.
+        System.out.println("\n==========================================================");
+        System.out.println("[ALIEN STATS:]");
+        System.out.println("    NAME: " + alien.getName() + ", RANK: " + alien.getRank());
+        System.out.println("    SALARY: $" + alien.getSalary() + "0, PLANET OF ORIGIN: " + alien.getHomePlanet());
+        System.out.println("==========================================================\n\n");
         
         //Alien needs to Choose a vehicle:
         System.out.println("Choose a vehicle for " + alien.getName() + " to steal.");
@@ -196,7 +212,7 @@ private final static Scanner scanner = new Scanner(System.in);
         //end of alien scenario
     }
 
-    private static void runScientistScenario(Scientist scientist) {
+    private static void runScientistScenario(Scientist scientist) throws WrongOrderException {
         /* TODO:
         Code below is template. Comment below should be final outline:
         1. THIS PART IS ALREADY DONE
@@ -213,34 +229,268 @@ private final static Scanner scanner = new Scanner(System.in);
         7. Once user lands the Airplane AND remaining_distance < 0, they win!
             --> Promote the scientist based on # of occupants!
         */
-        scientist = (Scientist) Personnel.characterCreator(scientist, scanner);
-        Personnel.generateStub(scientist);
+        try {
+            scientist = (Scientist) Personnel.characterCreator(scientist, scanner);
+            Personnel.generateStub(scientist);
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            return;
+        }
 
         System.out.println("SCIENTIST SCENARIO: Emergency Research Flight");
         System.out.println(scientist.getName() + " must fly the research airplane and land safely.");
 
-        Airplane airplane = new Airplane(240, 50, 150, 80, 40);
-        airplane.setDriver(scientist);
-        airplane.fuelUp();
-        airplane.startEngine();
-        System.out.println("Fuel check: " + airplane.checkFuel());
 
-        if (!airplane.start()) {
-            System.out.println("The airplane cannot take off without a pilot.");
-            return;
+        Airplane airplane = new Airplane(300, 25, 150, 80, 30);
+        System.out.println("\n[Airplane Stats:]");
+        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
+        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
+        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
+        System.out.println("    Driver: n/a");
+        System.out.println("    Occupants: n/a");
+
+        boolean isFueled = false;
+        while (!isFueled) {
+            System.out.println("\nChoose an action:");
+            System.out.println("1. Fuel Up");
+            System.out.println("2. Board Passengers");
+            System.out.println("3. Get in the Airplane");
+            System.out.println("4. Start Engine");
+            System.out.println("5. Drive");
+            System.out.println("6. Stop Engine");
+
+            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            try {
+                switch (choice) {
+                    case 1:
+                        airplane.fuelUp();
+                        isFueled = true;
+                        break;
+                    case 2, 3, 4, 5, 6:
+                        throw new WrongOrderException("You must fuel up before anything else.");
+                    default:
+                        throw new IllegalStateException("Unexpected choice: " + choice);
+                }
+            } catch (WrongOrderException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        
+        System.out.println("\n[Airplane Stats:]");
+        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
+        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
+        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
+        System.out.println("    Driver: n/a");
+        System.out.println("    Occupants: n/a");
+
+        boolean boarded = false;
+        while (!boarded) {
+            System.out.println("\nChoose an action:");
+            System.out.println("1. ---");
+            System.out.println("2. Board Passengers");
+            System.out.println("3. Get in the Airplane");
+            System.out.println("4. Start Engine");
+            System.out.println("5. Drive");
+            System.out.println("6. Stop Engine");
+
+            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            try {
+                switch (choice) {
+                    case 2:
+                        boardPassengers(airplane, scanner);
+                        boarded = true;
+                        break;
+                    case 1, 3, 4, 5, 6:
+                        throw new WrongOrderException("You must board your passengers now.");
+                    default:
+                        throw new IllegalStateException("Unexpected choice: " + choice);
+                }
+            } catch (ObjectLimitException e) {
+                System.out.println("Error: " + e.getMessage());
+            } catch (WrongOrderException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
-        float distance = airplane.drive(4);
-        System.out.println("The airplane traveled " + distance + " units and reached " + airplane.getAltitude() + " units altitude.");
-        System.out.println("The research sample is delivered. The scientist begins the landing approach.");
-        airplane.setCurrentAltitude(10);
-        airplane.stop();
+        System.out.println("\n[Airplane Stats:]");
+        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
+        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
+        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
+        System.out.println("    Driver: n/a");
+        System.out.println("    Occupants: " + airplane.getOccupants().length + " passengers");
+        
+        boolean pilotBoarded = false;
+        while (!pilotBoarded) {
+            System.out.println("\nChoose an action:");
+            System.out.println("1. ---");
+            System.out.println("2. ---");
+            System.out.println("3. Get in the Airplane");
+            System.out.println("4. Start Engine");
+            System.out.println("5. Drive");
+            System.out.println("6. Stop Engine");
 
-        if (airplane.getAltitude() <= 10) {
-            System.out.println("Mission complete: the airplane landed safely.");
-        } else {
-            System.out.println("Mission failed: the airplane could not land safely.");
+            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            try {
+                switch (choice) {
+                    case 3:
+                        airplane.setDriver(scientist);
+                        System.out.println(scientist.getName() + " has boarded the airplane.");
+                        pilotBoarded = true;
+                        break;
+                    case 1, 2, 4, 5, 6:
+                        throw new WrongOrderException("You must board yourself now.");
+                    default:
+                        throw new IllegalStateException("Unexpected choice: " + choice);
+                }
+            } catch (WrongOrderException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+            }
         }
+
+        System.out.println("\n[Airplane Stats:]");
+        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
+        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
+        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
+        System.out.println("    Driver: " + airplane.getDriver().getName());
+        System.out.println("    Occupants: " + airplane.getOccupants().length + " passengers");
+
+        boolean engineStarted = false;
+        while (!engineStarted) {
+            System.out.println("\nChoose an action:");
+            System.out.println("1. ---");
+            System.out.println("2. ---");
+            System.out.println("3. ---");
+            System.out.println("4. Start Engine");
+            System.out.println("5. Drive");
+            System.out.println("6. Stop Engine");
+
+            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            try {
+                switch (choice) {
+                    case 4:
+                        airplane.startEngine();
+                        engineStarted = airplane.start();
+                        break;
+                    case 1, 2, 3, 5, 6:
+                        throw new WrongOrderException("You must start the airplane.");
+                    default:
+                        throw new IllegalStateException("Unexpected choice: " + choice);
+                }
+            } catch (WrongOrderException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        System.out.println("\n[Airplane Stats:]");
+        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
+        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
+        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
+        System.out.println("    Driver: " + airplane.getDriver().getName());
+        System.out.println("    Occupants: " + airplane.getOccupants().length + " passengers");
+
+        boolean driven = false;
+        while (!driven) {
+            System.out.println("\nChoose an action:");
+            System.out.println("1. ---");
+            System.out.println("2. ---");
+            System.out.println("3. ---");
+            System.out.println("4. ---");
+            System.out.println("5. Drive");
+            System.out.println("6. Stop Engine");
+
+            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            try {
+                switch (choice) {
+                    case 5:
+                        flyControls(airplane, scanner);
+                        driven = true;
+                        break;
+                    case 1, 2, 3, 4, 6:
+                        throw new WrongOrderException("It's time to fly to Area 51!.");
+                    default:
+                        throw new IllegalStateException("Unexpected choice: " + choice);
+                }
+            } catch (WrongOrderException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        
+        System.out.println("\n[Airplane Stats:]");
+        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
+        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
+        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
+        System.out.println("    Driver: " + airplane.getDriver().getName());
+        System.out.println("    Occupants: " + airplane.getOccupants().length + " passengers");
+
+        boolean stopped = false;
+        while (!stopped) {
+            System.out.println("\nChoose an action:");
+            System.out.println("1. ---");
+            System.out.println("2. ---");
+            System.out.println("3. ---");
+            System.out.println("4. ---");
+            System.out.println("5. ---");
+            System.out.println("6. Stop Engine");
+
+            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            try {
+                switch (choice) {
+                    case 6:
+                        airplane.stop();
+                        stopped = true;
+                        break;
+                    case 1, 2, 3, 4, 5:
+                        throw new WrongOrderException("You've landed! Time to stop the engine.");
+                    default:
+                        throw new IllegalStateException("Unexpected choice: " + choice);
+                }
+            } catch (WrongOrderException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+
+        System.out.println("Congratulations! " + scientist.getName() + " has successfully completed the emergency research flight to Area 51.");
+        System.out.println("Giving promotion based on the number of passengers: " + airplane.getOccupants().length + " passengers.");
+        System.out.println("For every 25 passengers, you've earned a promotion!");
+        int promotions = airplane.getOccupants().length / 25;
+
+        System.out.println("\n Your original salary was: $" + scientist.getSalary() + "0");
+        for (int i = 0; i < promotions; i++) {
+            System.out.println("Promoting from rank " + scientist.getRank() + " to rank " + (scientist.getRank() + 1) + ".");
+            scientist.promote();
+        }
+        System.out.println("Your new salary is: $" + scientist.getSalary() + "0");        
     }
 
     private static void runSoldierScenario(Scanner scanner, Soldier soldier) {
@@ -269,8 +519,13 @@ private final static Scanner scanner = new Scanner(System.in);
         7. Upon fire(), the UFO and alien is dead (also any Personnel if they abducted someone). They win!
             --> Soldier gets promoted if no human casualties!
         */
-       soldier = (Soldier) Personnel.characterCreator(soldier, scanner);
-       Personnel.generateStub(soldier);
+       try {
+            soldier = (Soldier) Personnel.characterCreator(soldier, scanner);
+            Personnel.generateStub(soldier);
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            return;
+        }
 
         System.out.println("SOLDIER OBJECTIVE: Stop the UFO");
         System.out.println(soldier.getName() + " must intercept the alien's UFO with a tank.");
@@ -278,7 +533,14 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println("2. Wait for a clearer shot");
         int choice = readChoice(scanner, "Choose 1 or 2: ", 1, 2);
 
-        Alien alien = new Alien("Zorp", 3, 50000, "Zeta Reticuli");
+        Alien alien;
+        try {
+            alien = new Alien("Zorp", 3, 50000, "Zeta Reticuli");
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            return;
+        }
+        
         UFO ufo = new UFO(600, 150, 1000);
         ufo.setDriver(alien);
         ufo.startProtonDrive();
@@ -311,6 +573,8 @@ private final static Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine().trim();
+            if (input.equals("QUIT"))
+                System.exit(0);
             try {
                 int choice = Integer.parseInt(input);
                 if (choice >= minimum && choice <= maximum) {
@@ -320,6 +584,92 @@ private final static Scanner scanner = new Scanner(System.in);
                 // Re-prompt below for non-numeric input.
             }
             System.out.println("Please enter a number from " + minimum + " to " + maximum + ".");
+        }
+    }
+
+    private static void boardPassengers(Airplane airplane, Scanner scanner) throws ObjectLimitException {
+        //Allow user to input # of passengers to board and create that many. Class itself handles too many objects exception.
+        System.out.println("Time to board passengers. How many passengers would you like to board? Area 50 will assign you random personnel to take with you.");
+
+        int numPassengers = readChoice(scanner, "Enter the number of passengers to board: ", 1, 1000); //perfect opportunity to test the MAXIMUM_OBJECTS=100 exception rule
+
+        /*
+        Random creation. Randomly choose 0 or 1. If 0, create a Soldier. If 1, create a Scientist. 
+        Add them to the Airplane's occupants list when all are created.
+        ALSO, perfect opportunity for polymorphism. The Airplane's occupants list is of type Personnel, but we can add both Soldiers and Scientists to it.
+        Let's call abstract functions for polymorphic behavior. For example, we can call getRank() on each occupant and it will return the correct rank for that type of Personnel.
+        NOTE: if ObjectLimitException is thrown, catch it and print a message to the user. The program should return to main with maximum occupancy.
+         */
+
+        Personnel[] passengers = new Personnel[numPassengers];
+        Random random = new Random();
+
+        try {
+            for (int i = 0; i < numPassengers; i++) {
+                Personnel nextPassenger;
+                if (random.nextBoolean()) {
+                    nextPassenger = new Soldier("Soldier " + (i + 1), random.nextInt(13), 50000 + random.nextInt(50000), random.nextBoolean());
+                } else {
+                    nextPassenger = new Scientist("Scientist " + (i + 1), random.nextInt(11), 60000 + random.nextInt(40000), "Degree " + (i + 1));
+                }
+                //polymophism in action!
+                System.out.println("Currently boarding: " + nextPassenger.getName() + "\t Rank: " + nextPassenger.getRank()); // This will call the appropriate getRank() method for Soldier or Scientist
+
+                passengers[i] = nextPassenger;
+            }
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            System.out.println("Maximum number of Personnel instances reached. Boarding stopped.");
+        } finally {
+            //ensure we set occupants to the successfully created passengers, even if we hit the limit
+            airplane.setOccupants(passengers);
+        }
+    }
+
+    private static void flyControls(Airplane airplane, Scanner scanner) {
+        System.out.println("You are now in control of the airplane. You can adjust speed and altitude.");
+        System.out.println("Enter 'QUIT' at any time to exit the game.");
+        float distanceTraveled = 0;
+
+        while (true) {
+            System.out.println("\nCurrent Speed: " + airplane.getCurrentSpeed() + " units");
+            System.out.println("Current Altitude: " + airplane.getAltitude() + " units");
+            System.out.println("Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+            System.out.println("Distance to Area 51: " + (100000 - distanceTraveled) + " units");
+            System.out.println("Choose an action:");
+            System.out.println("1. " + ((airplane.getAltitude() > 0) ? "Fly" : "Drive"));
+            System.out.println("2. Slow Down");
+            System.out.println("3. Take Off");
+            System.out.println("4. Land");
+
+            int choice = readChoice(scanner, "Enter your choice (1-3): ", 1, 3);
+
+            switch (choice) {
+                case 1:
+                    float flightTime = readChoice(scanner, "Enter flight time in seconds: ", 1, 10000);
+                    float distance = airplane.drive(flightTime);
+                    System.out.println("The airplane traveled " + distance + " units.");
+                    distanceTraveled += distance;
+                    if (distanceTraveled >= 100000) {
+                        System.out.println("You are approaching Area 51! Prepare to land.");
+                    }
+                    break;
+                case 2:
+                    float decelerationTime = readChoice(scanner, "Enter time to slow down in seconds: ", 1, 10000);
+                    float distanceSlowed = airplane.slowDown(decelerationTime);
+                    System.out.println("The airplane slowed down. Current speed: " + airplane.getCurrentSpeed() + " units.");
+                    System.out.println("You still traveled " + distanceSlowed + " units during deceleration.");
+                    distanceTraveled += distanceSlowed;
+                    break;
+                case 3:
+                    airplane.takeOff();
+                    break;
+                case 4:
+                    airplane.land();
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected choice: " + choice);
+            }
         }
     }
 }

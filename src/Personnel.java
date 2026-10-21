@@ -11,8 +11,11 @@ abstract class Personnel
     public double salary;
     public long badgeNum;
 
-    public Personnel(String name, int rankNum, double salary)
+    public Personnel(String name, int rankNum, double salary) throws ObjectLimitException
     {
+        if (peopleCount >= ObjectLimitException.getMaxInstances()) {
+            throw new ObjectLimitException("Maximum number of Personnel instances reached.");
+        }
         this.name = name;
         this.rankNum = rankNum;
         this.salary = salary;
@@ -74,7 +77,7 @@ abstract class Personnel
     }
 
     //putting character creator into personnel helps keep it clean when running the scenarios in main.
-    public static Personnel characterCreator(Personnel person, Scanner scanner){
+    public static Personnel characterCreator(Personnel person, Scanner scanner) throws ObjectLimitException {
         String role = person.getClass().getSimpleName();
         System.out.println(role + " Scenario Selected");
         System.out.println();

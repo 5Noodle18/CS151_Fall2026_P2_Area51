@@ -18,7 +18,7 @@ public class Scientist extends Personnel
         "Head of Illuminati Science Division"   //rankNum 10
     };
 
-    public Scientist(String name, int rankNum, double salary, String degree)
+    public Scientist(String name, int rankNum, double salary, String degree) throws ObjectLimitException
     {
         super(name, rankNum, salary);
         this.degree = degree;
@@ -30,6 +30,10 @@ public class Scientist extends Personnel
         {
             rankNum++;
             this.salary += 15000;
+        }
+        else
+        {
+            System.out.println("This Scientist has reached the maximum rank!");
         }
     }
 

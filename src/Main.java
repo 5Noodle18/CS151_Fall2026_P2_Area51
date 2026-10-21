@@ -9,6 +9,7 @@ private final static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws InterruptedException, WrongOrderException {
         //cool starting screen text with a fake loading screen
+
         Thread.sleep(190);
         System.out.println("              Accessing Illuminati Database: Verifying top security clearance...\n");
         
@@ -110,6 +111,7 @@ private final static Scanner scanner = new Scanner(System.in);
         //refer to last method in personnel if you want to change character creator method:
         try {
             alien = (Alien) Personnel.characterCreator(alien, scanner);
+            Personnel.generateStub(alien);
         } catch (ObjectLimitException e) {
             System.out.println("Error: " + e.getMessage());
             return;
@@ -185,7 +187,7 @@ private final static Scanner scanner = new Scanner(System.in);
             }
 
         
-        System.out.println("\nALIEN SCENARIO: Escape Area 51");
+        System.out.println("ALIEN SCENARIO: Escape Area 51");
         System.out.println(alien.getName() + " must reach orbit in a UFO before security catches up.");
 
         UFO ufo = new UFO(600, 150, 1000);
@@ -229,12 +231,13 @@ private final static Scanner scanner = new Scanner(System.in);
         */
         try {
             scientist = (Scientist) Personnel.characterCreator(scientist, scanner);
+            Personnel.generateStub(scientist);
         } catch (ObjectLimitException e) {
             System.out.println("Error: " + e.getMessage());
             return;
         }
 
-        System.out.println("\nSCIENTIST SCENARIO: Emergency Research Flight");
+        System.out.println("SCIENTIST SCENARIO: Emergency Research Flight");
         System.out.println(scientist.getName() + " must fly the research airplane and land safely.");
 
 
@@ -518,12 +521,13 @@ private final static Scanner scanner = new Scanner(System.in);
         */
        try {
             soldier = (Soldier) Personnel.characterCreator(soldier, scanner);
+            Personnel.generateStub(soldier);
         } catch (ObjectLimitException e) {
             System.out.println("Error: " + e.getMessage());
             return;
         }
 
-        System.out.println("\nSOLDIER OBJECTIVE: Stop the UFO");
+        System.out.println("SOLDIER OBJECTIVE: Stop the UFO");
         System.out.println(soldier.getName() + " must intercept the alien's UFO with a tank.");
         System.out.println("1. Intercept now");
         System.out.println("2. Wait for a clearer shot");

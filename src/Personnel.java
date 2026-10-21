@@ -130,7 +130,7 @@ abstract class Personnel
                 if (scanner.hasNextInt()) {
                     theRank = scanner.nextInt();
 
-                    if (theRank < 1 || theRank > person.getRanksArray().length) {
+                    if (theRank < 0 || theRank > maxNum) {
                         System.out.println("TRY AGAIN!");
                     } 
                 } else {

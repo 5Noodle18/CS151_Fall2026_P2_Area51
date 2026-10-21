@@ -8,6 +8,7 @@ public class Airplane extends Vehicle implements HumanDrivable{
     private float landingSpeed; //max speed needed to land safely
     private float altitudeRate;
     private float currentAltitude;
+    private double fuelLevel;
 
     //constructors
     public Airplane()
@@ -17,6 +18,7 @@ public class Airplane extends Vehicle implements HumanDrivable{
         landingSpeed = 100;
         altitudeRate = 100;
         currentAltitude = 0;
+        fuelLevel = 20;
     }
 
     public Airplane(float topSpeed, float acceleration, float takeOffSpeed, float landingSpeed, float altitudeRate) 
@@ -26,6 +28,7 @@ public class Airplane extends Vehicle implements HumanDrivable{
         this.landingSpeed = landingSpeed;
         this.altitudeRate = altitudeRate;
         currentAltitude = 0;
+        fuelLevel = 20;
     }
 
     //getters
@@ -44,6 +47,10 @@ public class Airplane extends Vehicle implements HumanDrivable{
     public float getAltitude()
     {
         return currentAltitude;
+    }
+    public double checkFuel()
+    {
+        return fuelLevel;
     }
     //setters
     public void setTakeOffSpeed(float takeOffSpeed)
@@ -76,13 +83,10 @@ public class Airplane extends Vehicle implements HumanDrivable{
     {
         System.out.println("flying");
     }
-    public double checkFuel()
-    {
-        return 20.5;
-    }
     public void fuelUp()
     {
-        System.out.println("The plane is now fully fueled");
+        System.out.println("The plane is now fully fueled.");
+        fuelLevel = 100;
     }
     public void startEngine()
     {

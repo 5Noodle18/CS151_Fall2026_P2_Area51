@@ -18,7 +18,7 @@ public class Alien extends Personnel
         "UFO division General"          //rankNum 14
     };
 
-    public Alien(String name, int rankNum, double salary, String homePlanet)
+    public Alien(String name, int rankNum, double salary, String homePlanet) throws ObjectLimitException
     {
         super(name, rankNum, salary);
         this.homePlanet = homePlanet;

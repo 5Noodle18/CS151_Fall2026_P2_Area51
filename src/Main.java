@@ -7,7 +7,7 @@ public class Main {
 //keep the scanner like this so all the methods can use it too:
 private final static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) throws InterruptedException{
+    public static void main(String[] args) throws InterruptedException, WrongOrderException {
         //cool starting screen text with a fake loading screen
         Thread.sleep(190);
         System.out.println("              Accessing Illuminati Database: Verifying top security clearance...\n");
@@ -65,6 +65,7 @@ private final static Scanner scanner = new Scanner(System.in);
         }
 
         //this decides which one of 3 scenarios to play out:
+        try {
             switch (choice) {
                 case 1:
                     runAlienScenario(new Alien("Zorp", 3, 50000, "Zeta Reticuli"));
@@ -79,8 +80,11 @@ private final static Scanner scanner = new Scanner(System.in);
 
                     throw new IllegalStateException("Unexpected personnel selection: " + choice);
             }
-            
         }
+        catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 
 
     private static void runAlienScenario(Alien alien) throws InterruptedException {
@@ -104,7 +108,12 @@ private final static Scanner scanner = new Scanner(System.in);
         */
 
         //refer to last method in personnel if you want to change character creator method:
-        alien = (Alien) Personnel.characterCreator(alien, scanner);
+        try {
+            alien = (Alien) Personnel.characterCreator(alien, scanner);
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            return;
+        }
         
         //TODO: add something like this after each character creator section for each scenario.
         System.out.println("\n==========================================================");
@@ -201,7 +210,7 @@ private final static Scanner scanner = new Scanner(System.in);
         //end of alien scenario
     }
 
-    private static void runScientistScenario(Scientist scientist) {
+    private static void runScientistScenario(Scientist scientist) throws WrongOrderException {
         /* TODO:
         Code below is template. Comment below should be final outline:
         1. THIS PART IS ALREADY DONE
@@ -218,12 +227,91 @@ private final static Scanner scanner = new Scanner(System.in);
         7. Once user lands the Airplane AND remaining_distance < 0, they win!
             --> Promote the scientist based on # of occupants!
         */
-        scientist = (Scientist) Personnel.characterCreator(scientist, scanner);
+        try {
+            scientist = (Scientist) Personnel.characterCreator(scientist, scanner);
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            return;
+        }
 
         System.out.println("\nSCIENTIST SCENARIO: Emergency Research Flight");
         System.out.println(scientist.getName() + " must fly the research airplane and land safely.");
 
+
         Airplane airplane = new Airplane(240, 50, 150, 80, 40);
+        System.out.println("\n[Airplane Stats:]");
+        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
+        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
+        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
+        System.out.println("    Driver: n/a");
+        System.out.println("    Occupants: n/a");
+
+        boolean isFueled = false;
+        while (!isFueled) {
+            System.out.println("\nChoose an action:");
+            System.out.println("1. Fuel Up");
+            System.out.println("2. Board Passengers");
+            System.out.println("3. Get in the Airplane");
+            System.out.println("4. Start Engine");
+            System.out.println("5. Drive");
+            System.out.println("6. Stop Engine");
+
+            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            try {
+                switch (choice) {
+                    case 1:
+                        airplane.fuelUp();
+                        isFueled = true;
+                        break;
+                    case 2, 3, 4, 5:
+                        throw new WrongOrderException("You must fuel up before anything else.");
+                    default:
+                        throw new IllegalStateException("Unexpected choice: " + choice);
+                }
+            } catch (WrongOrderException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        
+        boolean boarded = false;
+        while (!boarded) {
+            System.out.println("\nChoose an action:");
+            System.out.println("1. ---");
+            System.out.println("2. Board Passengers");
+            System.out.println("3. Get in the Airplane");
+            System.out.println("4. Start Engine");
+            System.out.println("5. Drive");
+            System.out.println("6. Stop Engine");
+
+            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            try {
+                switch (choice) {
+                    case 2:
+                        boardPassengers(airplane, scanner);
+                        boarded = true;
+                        break;
+                    case 1, 3, 4, 5:
+                        throw new WrongOrderException("You must board your passengers now.");
+                    default:
+                        throw new IllegalStateException("Unexpected choice: " + choice);
+                }
+            } catch (ObjectLimitException e) {
+                System.out.println("Error: " + e.getMessage());
+            } catch (WrongOrderException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        
+        
+        
         airplane.setDriver(scientist);
         airplane.fuelUp();
         airplane.startEngine();
@@ -273,7 +361,12 @@ private final static Scanner scanner = new Scanner(System.in);
         7. Upon fire(), the UFO and alien is dead (also any Personnel if they abducted someone). They win!
             --> Soldier gets promoted if no human casualties!
         */
-       soldier = (Soldier) Personnel.characterCreator(soldier, scanner);
+       try {
+            soldier = (Soldier) Personnel.characterCreator(soldier, scanner);
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            return;
+        }
 
         System.out.println("\nSOLDIER OBJECTIVE: Stop the UFO");
         System.out.println(soldier.getName() + " must intercept the alien's UFO with a tank.");
@@ -281,7 +374,14 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println("2. Wait for a clearer shot");
         int choice = readChoice(scanner, "Choose 1 or 2: ", 1, 2);
 
-        Alien alien = new Alien("Zorp", 3, 50000, "Zeta Reticuli");
+        Alien alien;
+        try {
+            alien = new Alien("Zorp", 3, 50000, "Zeta Reticuli");
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            return;
+        }
+        
         UFO ufo = new UFO(600, 150, 1000);
         ufo.setDriver(alien);
         ufo.startProtonDrive();
@@ -325,6 +425,42 @@ private final static Scanner scanner = new Scanner(System.in);
                 // Re-prompt below for non-numeric input.
             }
             System.out.println("Please enter a number from " + minimum + " to " + maximum + ".");
+        }
+    }
+
+    private static void boardPassengers(Airplane airplane, Scanner scanner) throws ObjectLimitException {
+        //Allow user to input # of passengers to board and create that many. Class itself handles too many objects exception.
+        System.out.println("Time to board passengers. How many passengers would you like to board? Area 50 will assign you random personnel to take with you.");
+
+        int numPassengers = readChoice(scanner, "Enter the number of passengers to board: ", 1, 1000); //perfect opportunity to test the MAXIMUM_OBJECTS=100 exception rule
+
+        /*
+        Random creation. Randomly choose 0 or 1. If 0, create a Soldier. If 1, create a Scientist. 
+        Add them to the Airplane's occupants list when all are created.
+        ALSO, perfect opportunity for polymorphism. The Airplane's occupants list is of type Personnel, but we can add both Soldiers and Scientists to it.
+        Let's call abstract functions for polymorphic behavior. For example, we can call getRank() on each occupant and it will return the correct rank for that type of Personnel.
+        NOTE: if ObjectLimitException is thrown, catch it and print a message to the user. The program should return to main with maximum occupancy.
+         */
+
+        Personnel[] passengers = new Personnel[numPassengers];
+        Random random = new Random();
+
+        try {
+            for (int i = 0; i < numPassengers; i++) {
+                Personnel nextPassenger;
+                if (random.nextBoolean()) {
+                    nextPassenger = new Soldier("Soldier " + (i + 1), random.nextInt(13), 50000 + random.nextInt(50000), random.nextBoolean());
+                } else {
+                    nextPassenger = new Scientist("Scientist " + (i + 1), random.nextInt(11), 60000 + random.nextInt(40000), "Degree " + (i + 1));
+                }
+                //polymophism in action!
+                System.out.println("Currently boarding: " + nextPassenger.getName() + "\t Rank: " + nextPassenger.getRank()); // This will call the appropriate getRank() method for Soldier or Scientist
+
+                passengers[i] = nextPassenger;
+            }
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            System.out.println("Maximum number of Personnel instances reached. Boarding stopped.");
         }
     }
 }

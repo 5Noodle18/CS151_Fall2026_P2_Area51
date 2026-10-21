@@ -314,6 +314,8 @@ private final static Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine().trim();
+            if (input == "QUIT")
+                System.exit(0);
             try {
                 int choice = Integer.parseInt(input);
                 if (choice >= minimum && choice <= maximum) {

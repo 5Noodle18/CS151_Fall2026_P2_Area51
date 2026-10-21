@@ -102,44 +102,42 @@ abstract class Personnel
         Boolean expendable = false;
 
         if(choice2 == 1){
-            if (person instanceof Alien){
-                return (Alien) person;
-            }
-            else if(person instanceof Scientist){
-                return (Scientist) person;
-            }
-            else{
-                return (Soldier) person;
-            }            
+            return person;         
         } 
         else {
         scanner.nextLine();
 
         System.out.print("Please enter the "+ role + "'s Name (Be Creative Please): ");
-        while (scanner.hasNextLine()) {
-            theName = scanner.nextLine().trim();
+        while (theName.isEmpty()) {
 
-            if (!theName.isEmpty()) { 
+            //I changed this code block to use a try catch block
+            try{
+                theName = scanner.nextLine().trim();
+                if(theName.length() == 0){
+                    throw new Exception();
+                }
                 break;
             }
-            System.out.print("Name cannot be empty. Please enter a valid name: ");
+            catch(Exception e){
+                System.out.println ("TRY AGAIN! Enter Name Here:");
+            }
         }
 
             int maxNum = person.getRanksArray().length-1;
             
-                while (theRank < 0 || theRank > maxNum){
+            while (theRank < 0 || theRank > maxNum){
                 System.out.print("Please enter the " + role + "'s Rank Number (0-"+ maxNum +"):");
-                    if (scanner.hasNextInt()) {
-                        theRank = scanner.nextInt();
+                if (scanner.hasNextInt()) {
+                    theRank = scanner.nextInt();
 
-                        if (theRank < 1 || theRank > person.getRanksArray().length) {
-                            System.out.println("TRY AGAIN!");
-                        } 
-                    } else {
+                    if (theRank < 1 || theRank > person.getRanksArray().length) {
                         System.out.println("TRY AGAIN!");
-                        scanner.next();
-                    }
+                    } 
+                } else {
+                    System.out.println("TRY AGAIN!");
+                    scanner.next();
                 }
+            }
             scanner.nextLine();
             
             //pick extra field for person and alien because those extra fields are strings
@@ -194,6 +192,30 @@ abstract class Personnel
             }
         
     }
+    }
+
+    //Prints out a stub that shows the stats of the character you just created
+    public static void generateStub(Personnel person){
+        String role = person.getClass().getSimpleName().toUpperCase();
+
+        StringBuilder str = new StringBuilder("==============================================================\n");
+        str.append("[" + role + " STATS:]\n");
+        str.append("    NAME: " + person.getName() + ", RANK: " + person.getRank() + "\n");
+        str.append("    SALARY: $" + person.getSalary() + "0, ");
+
+            if (person instanceof Alien){
+                Alien a = (Alien) person;
+                str.append("HOME PLANET: "+ a.getHomePlanet() +"\n");
+            } else if(person instanceof Scientist){
+                Scientist b = (Scientist) person;
+                str.append("DEGREE TYPE: " + b.getDegree() + "\n");
+            } else{
+                Soldier c = (Soldier) person;
+                str.append("EXPENDABLENESS: " + c.getExpendable() +  "\n");
+            }
+        str.append("==============================================================");
+
+        System.out.println (str.toString());
     }
 
 

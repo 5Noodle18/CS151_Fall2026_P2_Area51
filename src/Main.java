@@ -9,6 +9,7 @@ private final static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws InterruptedException{
         //cool starting screen text with a fake loading screen
+
         Thread.sleep(190);
         System.out.println("              Accessing Illuminati Database: Verifying top security clearance...\n");
         
@@ -79,7 +80,7 @@ private final static Scanner scanner = new Scanner(System.in);
 
                     throw new IllegalStateException("Unexpected personnel selection: " + choice);
             }
-            
+
         }
 
 
@@ -105,13 +106,7 @@ private final static Scanner scanner = new Scanner(System.in);
 
         //refer to last method in personnel if you want to change character creator method:
         alien = (Alien) Personnel.characterCreator(alien, scanner);
-        
-        //TODO: add something like this after each character creator section for each scenario.
-        System.out.println("\n==========================================================");
-        System.out.println("[ALIEN STATS:]");
-        System.out.println("    NAME: " + alien.getName() + ", RANK: " + alien.getRank());
-        System.out.println("    SALARY: $" + alien.getSalary() + "0, PLANET OF ORIGIN: " + alien.getHomePlanet());
-        System.out.println("==========================================================\n\n");
+        Personnel.generateStub(alien);
         
         //Alien needs to Choose a vehicle:
         System.out.println("Choose a vehicle for " + alien.getName() + " to steal.");
@@ -176,7 +171,7 @@ private final static Scanner scanner = new Scanner(System.in);
             }
 
         
-        System.out.println("\nALIEN SCENARIO: Escape Area 51");
+        System.out.println("ALIEN SCENARIO: Escape Area 51");
         System.out.println(alien.getName() + " must reach orbit in a UFO before security catches up.");
 
         UFO ufo = new UFO(600, 150, 1000);
@@ -219,8 +214,9 @@ private final static Scanner scanner = new Scanner(System.in);
             --> Promote the scientist based on # of occupants!
         */
         scientist = (Scientist) Personnel.characterCreator(scientist, scanner);
+        Personnel.generateStub(scientist);
 
-        System.out.println("\nSCIENTIST SCENARIO: Emergency Research Flight");
+        System.out.println("SCIENTIST SCENARIO: Emergency Research Flight");
         System.out.println(scientist.getName() + " must fly the research airplane and land safely.");
 
         Airplane airplane = new Airplane(240, 50, 150, 80, 40);
@@ -274,8 +270,9 @@ private final static Scanner scanner = new Scanner(System.in);
             --> Soldier gets promoted if no human casualties!
         */
        soldier = (Soldier) Personnel.characterCreator(soldier, scanner);
+       Personnel.generateStub(soldier);
 
-        System.out.println("\nSOLDIER OBJECTIVE: Stop the UFO");
+        System.out.println("SOLDIER OBJECTIVE: Stop the UFO");
         System.out.println(soldier.getName() + " must intercept the alien's UFO with a tank.");
         System.out.println("1. Intercept now");
         System.out.println("2. Wait for a clearer shot");

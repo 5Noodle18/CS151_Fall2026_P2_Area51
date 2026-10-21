@@ -125,8 +125,10 @@ abstract class Personnel
             System.out.print("Name cannot be empty. Please enter a valid name: ");
         }
 
-                while (theRank < 1 || theRank > person.getRanksArray().length){
-                System.out.print("Please enter the " + role + "'s Rank Number (1-"+ person.getRanksArray().length +"):");
+            int maxNum = person.getRanksArray().length-1;
+            
+                while (theRank < 0 || theRank > maxNum){
+                System.out.print("Please enter the " + role + "'s Rank Number (0-"+ maxNum +"):");
                     if (scanner.hasNextInt()) {
                         theRank = scanner.nextInt();
 

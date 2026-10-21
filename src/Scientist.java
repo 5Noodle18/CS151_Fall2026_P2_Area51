@@ -31,6 +31,10 @@ public class Scientist extends Personnel
             rankNum++;
             this.salary += 15000;
         }
+        else
+        {
+            System.out.println("This Scientist has reached the maximum rank!");
+        }
     }
 
     public void demote(){

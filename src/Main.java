@@ -238,7 +238,7 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println(scientist.getName() + " must fly the research airplane and land safely.");
 
 
-        Airplane airplane = new Airplane(240, 50, 150, 80, 40);
+        Airplane airplane = new Airplane(300, 25, 150, 80, 30);
         System.out.println("\n[Airplane Stats:]");
         System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
         System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
@@ -266,7 +266,7 @@ private final static Scanner scanner = new Scanner(System.in);
                         airplane.fuelUp();
                         isFueled = true;
                         break;
-                    case 2, 3, 4, 5:
+                    case 2, 3, 4, 5, 6:
                         throw new WrongOrderException("You must fuel up before anything else.");
                     default:
                         throw new IllegalStateException("Unexpected choice: " + choice);
@@ -278,6 +278,15 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
         
+        System.out.println("\n[Airplane Stats:]");
+        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
+        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
+        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
+        System.out.println("    Driver: n/a");
+        System.out.println("    Occupants: n/a");
+
         boolean boarded = false;
         while (!boarded) {
             System.out.println("\nChoose an action:");
@@ -296,7 +305,7 @@ private final static Scanner scanner = new Scanner(System.in);
                         boardPassengers(airplane, scanner);
                         boarded = true;
                         break;
-                    case 1, 3, 4, 5:
+                    case 1, 3, 4, 5, 6:
                         throw new WrongOrderException("You must board your passengers now.");
                     default:
                         throw new IllegalStateException("Unexpected choice: " + choice);
@@ -309,30 +318,176 @@ private final static Scanner scanner = new Scanner(System.in);
                 System.out.println(e.getMessage());
             }
         }
-        
-        
-        
-        airplane.setDriver(scientist);
-        airplane.fuelUp();
-        airplane.startEngine();
-        System.out.println("Fuel check: " + airplane.checkFuel());
 
-        if (!airplane.start()) {
-            System.out.println("The airplane cannot take off without a pilot.");
-            return;
+        System.out.println("\n[Airplane Stats:]");
+        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
+        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
+        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
+        System.out.println("    Driver: n/a");
+        System.out.println("    Occupants: " + airplane.getOccupants().length + " passengers");
+        
+        boolean pilotBoarded = false;
+        while (!pilotBoarded) {
+            System.out.println("\nChoose an action:");
+            System.out.println("1. ---");
+            System.out.println("2. ---");
+            System.out.println("3. Get in the Airplane");
+            System.out.println("4. Start Engine");
+            System.out.println("5. Drive");
+            System.out.println("6. Stop Engine");
+
+            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            try {
+                switch (choice) {
+                    case 3:
+                        airplane.setDriver(scientist);
+                        System.out.println(scientist.getName() + " has boarded the airplane.");
+                        pilotBoarded = true;
+                        break;
+                    case 1, 2, 4, 5, 6:
+                        throw new WrongOrderException("You must board yourself now.");
+                    default:
+                        throw new IllegalStateException("Unexpected choice: " + choice);
+                }
+            } catch (WrongOrderException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
-        float distance = airplane.drive(4);
-        System.out.println("The airplane traveled " + distance + " units and reached " + airplane.getAltitude() + " units altitude.");
-        System.out.println("The research sample is delivered. The scientist begins the landing approach.");
-        airplane.setCurrentAltitude(10);
-        airplane.stop();
+        System.out.println("\n[Airplane Stats:]");
+        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
+        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
+        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
+        System.out.println("    Driver: " + airplane.getDriver().getName());
+        System.out.println("    Occupants: " + airplane.getOccupants().length + " passengers");
 
-        if (airplane.getAltitude() <= 10) {
-            System.out.println("Mission complete: the airplane landed safely.");
-        } else {
-            System.out.println("Mission failed: the airplane could not land safely.");
+        boolean engineStarted = false;
+        while (!engineStarted) {
+            System.out.println("\nChoose an action:");
+            System.out.println("1. ---");
+            System.out.println("2. ---");
+            System.out.println("3. ---");
+            System.out.println("4. Start Engine");
+            System.out.println("5. Drive");
+            System.out.println("6. Stop Engine");
+
+            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            try {
+                switch (choice) {
+                    case 4:
+                        airplane.startEngine();
+                        engineStarted = airplane.start();
+                        break;
+                    case 1, 2, 3, 5, 6:
+                        throw new WrongOrderException("You must start the airplane.");
+                    default:
+                        throw new IllegalStateException("Unexpected choice: " + choice);
+                }
+            } catch (WrongOrderException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+            }
         }
+
+        System.out.println("\n[Airplane Stats:]");
+        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
+        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
+        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
+        System.out.println("    Driver: " + airplane.getDriver().getName());
+        System.out.println("    Occupants: " + airplane.getOccupants().length + " passengers");
+
+        boolean driven = false;
+        while (!driven) {
+            System.out.println("\nChoose an action:");
+            System.out.println("1. ---");
+            System.out.println("2. ---");
+            System.out.println("3. ---");
+            System.out.println("4. ---");
+            System.out.println("5. Drive");
+            System.out.println("6. Stop Engine");
+
+            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            try {
+                switch (choice) {
+                    case 5:
+                        flyControls(airplane, scanner);
+                        driven = true;
+                        break;
+                    case 1, 2, 3, 4, 6:
+                        throw new WrongOrderException("It's time to fly to Area 51!.");
+                    default:
+                        throw new IllegalStateException("Unexpected choice: " + choice);
+                }
+            } catch (WrongOrderException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        
+        System.out.println("\n[Airplane Stats:]");
+        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
+        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
+        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
+        System.out.println("    Driver: " + airplane.getDriver().getName());
+        System.out.println("    Occupants: " + airplane.getOccupants().length + " passengers");
+
+        boolean stopped = false;
+        while (!stopped) {
+            System.out.println("\nChoose an action:");
+            System.out.println("1. ---");
+            System.out.println("2. ---");
+            System.out.println("3. ---");
+            System.out.println("4. ---");
+            System.out.println("5. ---");
+            System.out.println("6. Stop Engine");
+
+            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            try {
+                switch (choice) {
+                    case 6:
+                        airplane.stop();
+                        stopped = true;
+                        break;
+                    case 1, 2, 3, 4, 5:
+                        throw new WrongOrderException("You've landed! Time to stop the engine.");
+                    default:
+                        throw new IllegalStateException("Unexpected choice: " + choice);
+                }
+            } catch (WrongOrderException e) {
+                System.out.println(e.getMessage());
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+
+        System.out.println("Congratulations! " + scientist.getName() + " has successfully completed the emergency research flight to Area 51.");
+        System.out.println("Giving promotion based on the number of passengers: " + airplane.getOccupants().length + " passengers.");
+        System.out.println("For every 25 passengers, you've earned a promotion!");
+        int promotions = airplane.getOccupants().length / 25;
+
+        System.out.println("\n Your original salary was: $" + scientist.getSalary() + "0");
+        for (int i = 0; i < promotions; i++) {
+            System.out.println("Promoting from rank " + scientist.getRank() + " to rank " + (scientist.getRank() + 1) + ".");
+            scientist.promote();
+        }
+        System.out.println("Your new salary is: $" + scientist.getSalary() + "0");        
     }
 
     private static void runSoldierScenario(Scanner scanner, Soldier soldier) {
@@ -414,7 +569,7 @@ private final static Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine().trim();
-            if (input == "QUIT")
+            if (input.equals("QUIT"))
                 System.exit(0);
             try {
                 int choice = Integer.parseInt(input);
@@ -461,6 +616,56 @@ private final static Scanner scanner = new Scanner(System.in);
         } catch (ObjectLimitException e) {
             System.out.println("Error: " + e.getMessage());
             System.out.println("Maximum number of Personnel instances reached. Boarding stopped.");
+        } finally {
+            //ensure we set occupants to the successfully created passengers, even if we hit the limit
+            airplane.setOccupants(passengers);
+        }
+    }
+
+    private static void flyControls(Airplane airplane, Scanner scanner) {
+        System.out.println("You are now in control of the airplane. You can adjust speed and altitude.");
+        System.out.println("Enter 'QUIT' at any time to exit the game.");
+        float distanceTraveled = 0;
+
+        while (true) {
+            System.out.println("\nCurrent Speed: " + airplane.getCurrentSpeed() + " units");
+            System.out.println("Current Altitude: " + airplane.getAltitude() + " units");
+            System.out.println("Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
+            System.out.println("Distance to Area 51: " + (100000 - distanceTraveled) + " units");
+            System.out.println("Choose an action:");
+            System.out.println("1. " + ((airplane.getAltitude() > 0) ? "Fly" : "Drive"));
+            System.out.println("2. Slow Down");
+            System.out.println("3. Take Off");
+            System.out.println("4. Land");
+
+            int choice = readChoice(scanner, "Enter your choice (1-3): ", 1, 3);
+
+            switch (choice) {
+                case 1:
+                    float flightTime = readChoice(scanner, "Enter flight time in seconds: ", 1, 10000);
+                    float distance = airplane.drive(flightTime);
+                    System.out.println("The airplane traveled " + distance + " units.");
+                    distanceTraveled += distance;
+                    if (distanceTraveled >= 100000) {
+                        System.out.println("You are approaching Area 51! Prepare to land.");
+                    }
+                    break;
+                case 2:
+                    float decelerationTime = readChoice(scanner, "Enter time to slow down in seconds: ", 1, 10000);
+                    float distanceSlowed = airplane.slowDown(decelerationTime);
+                    System.out.println("The airplane slowed down. Current speed: " + airplane.getCurrentSpeed() + " units.");
+                    System.out.println("You still traveled " + distanceSlowed + " units during deceleration.");
+                    distanceTraveled += distanceSlowed;
+                    break;
+                case 3:
+                    airplane.takeOff();
+                    break;
+                case 4:
+                    airplane.land();
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected choice: " + choice);
+            }
         }
     }
 }

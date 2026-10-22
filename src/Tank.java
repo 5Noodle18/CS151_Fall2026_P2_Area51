@@ -113,13 +113,42 @@ public class Tank extends Vehicle implements HumanDrivable{
 
     public boolean fireAtTarget()
     {
-        if (!isLocked || !isLoaded || target == null || shellCount <= 0)
+        boolean fired = true;
+        String message = "\n";
+        if (!isLocked || shellCount <= 0)
+        {           
+            message += "Not locked\n";
+            fired = false;   
+        }
+        if (!isLoaded)
+        {
+            message += "Not loaded\n";
+            fired = false;
+        }
+        if (target == null)
+        {
+            message += "No Target\n";
+            fired = false;
+        }
+        if (shellCount < 1)
+        {
+            message += "No ammo\n";
+            fired = false;
+        }
+        if (!fired)
+        {
+            System.out.print(message);
             return false;
-
+        }
         shellCount--;
         isLoaded = false;
         target.stop();
         return true;
+    }
+
+    public void loadShell()
+    {
+        isLoaded = true;
     }
 
     //TODO: true implementations

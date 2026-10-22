@@ -65,15 +65,20 @@ public class UFO extends Vehicle implements AlienDrivable{
     }
     public void drive()
     {
-        System.out.println("floating");
+        System.out.print("UFO floating\n");
     }
     public void abduct(Personnel abductee)
     {
         this.holdingBay = abductee;
     }
-    public Personnel unAbduct()
+    public Personnel getHoldingBay()
     {
         return this.holdingBay;
+    }
+    public Personnel unAbduct()
+    {
+        this.holdingBay = null;
+        return this.holdingBay; // no need to make safe copy, it is meant to literally give you that person
     }
     public void startProtonDrive()
     {

@@ -493,80 +493,239 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println("Your new salary is: $" + scientist.getSalary() + "0");        
     }
 
-    private static void runSoldierScenario(Scanner scanner, Soldier soldier) {
-        /* TODO:
-        Code below is template. Comment below should be final outline:
-        1. THIS PART IS DONE
-        2. Print scenario -- There's a containment breach! {{Soldier.getName}} has to blow up the Alien's UFO before they escape!
-        3. Construct some Vehicles and print their stats to the user. They choose which one.
-            --> if !Tank, throw custom exception IllegalPilotException
-            --> if !Tank, !gunner, throw custom exception 
-        4. Set Tank's driver as {{Soldier}}
-        5. Present list of options: stop(), start(), drive(), fire(), etc....
-            --> each method throws custom exception WrongOrderException unless done in THIS order:
-            start() --> aim(Vehicle) --> lockOn() --> fire()
-        6. Every time the method is chosen, re-print the UFO's altitude and speed. 
-            --> If UFO.currentSpeed > Tank.topSpeed, lockOn fails!
-            --> If UFO.isStealthed, aim fails!
-            Either of these make it impossible for user to win. Game Over! 
-            Soldier tries to do order in (5)
-            Every other soldier turn, Alien does this in sequence:
-                1. starts their UFO
-                2. accelerates
-                3. abducts random Personnel
-                4. starts proton drive
-                5. goes stealth and escapes! (Game Over!! - Bad End)
-        7. Upon fire(), the UFO and alien is dead (also any Personnel if they abducted someone). They win!
-            --> Soldier gets promoted if no human casualties!
-        */
-       try {
+    private static void runSoldierScenario(Scanner scanner, Soldier soldier)
+    {
+        // actors in this scenario
+        Alien alien;
+        Scientist scientist;
+        UFO ufo = new UFO(600, 150, 1000);
+        Tank tank = new Tank(80, 20, 3, 5);
+
+        try
+        {
+            // create a soldier 
             soldier = (Soldier) Personnel.characterCreator(soldier, scanner);
             Personnel.generateStub(soldier);
-        } catch (ObjectLimitException e) {
+            // create an alien for the soldier to fight
+            alien = new Alien("Zeeblezorp Glurgnop", 3, 50000, "Zeta Reticuli");
+            // create a scientist for the soldier to protect
+            scientist = new Scientist("Horacio Smartinov", 7, 50000, "Xenogastronomy");
+        }
+        catch (ObjectLimitException e)
+        {
             System.out.println("Error: " + e.getMessage());
             return;
         }
 
-        System.out.println("SOLDIER OBJECTIVE: Stop the UFO");
-        System.out.println(soldier.getName() + " must intercept the alien's UFO with a tank.");
-        System.out.println("1. Intercept now");
-        System.out.println("2. Wait for a clearer shot");
-        int choice = readChoice(scanner, "Choose 1 or 2: ", 1, 2);
+        // list of options to choose from
+        String[] options = new String[4];
+        options[0] = "Do nothing";
+        options[1] = "Chase";
+        options[2] = "Shoot";
+        options[3] = "Run to tank";
 
-        Alien alien;
-        try {
-            alien = new Alien("Zorp", 3, 50000, "Zeta Reticuli");
-        } catch (ObjectLimitException e) {
-            System.out.println("Error: " + e.getMessage());
-            return;
-        }
         
-        UFO ufo = new UFO(600, 150, 1000);
-        ufo.setDriver(alien);
-        ufo.startProtonDrive();
-        ufo.start();
-        ufo.drive(1);
+        int alienState = 1;
+        int soldierState = 1;
+        int endingState= 0;
 
-        if (choice == 2) {
-            System.out.println("The UFO gets away while the soldier waits. Mission failed.");
-            return;
+        // place to put messages so that they can be printed at the proper times
+        String statusMessage = "\n==== ==== ==== ==== ==== ==== ==== ROUND " + alienState + " ==== ==== ==== ==== ==== ==== ====\n";
+        statusMessage += "SOLDIER OBJECTIVE: Stop the alien.\n";
+        statusMessage += "You, " + soldier.getRank() + " " + soldier.getName() + ", must intercept the alien before they escape.\n";
+        String actionMessage = "";
+
+        while(endingState <= 0) 
+        {
+            // what the alien is doing, it progresses once per turn
+            switch (alienState)
+            {
+                case 1: // alien running to the UFO
+                    statusMessage += "The alien " + alien.getName() + " is currently running away from you... towards a UFO!\n";
+                    break;
+                case 2: // alien is at the UFO door
+                    statusMessage += alien.getName() + " is now at the UFO's door and is about to get in.\n";
+                    ufo.setDriver(alien);
+                    break;
+                case 3: // alien is starting UFO, it is still on the ground
+                    ufo.drive();
+                    statusMessage += alien.getName() + " is starting the UFO...\n";
+                    break;
+                case 4: // the UFO is now in the air
+                    statusMessage += alien.getName() + " is flying around in the UFO looking for someone to abduct before getting away!\n";
+                    if (tank.getDriver() == null)
+                    {
+                        statusMessage += "It is worth noting: you are in abducting range and are not in a safe tank right now\n";
+                    }
+                    ufo.start();
+                    break;
+                case 5: // alien is now flying around, out of range of the tank, and is looking for someone to abduct
+                    if (tank.getDriver() == null) // the the player is not in a tank, they get abducted
+                    {
+                        statusMessage += alien.getName() + " is activating the abduction beam... ";
+                        statusMessage += "Vwoosh! You have been abducted.\n";
+                        ufo.abduct(soldier);
+                        endingState = 5;
+                    }
+                    else // otherwise, some scientist gets abducted
+                    {
+                        statusMessage += alien.getName() + " is now abducting someone...\n";
+                        statusMessage += "it looks like " + scientist.getName() + " from the science team.\n";
+                        ufo.abduct(scientist);
+                    }
+                    break;
+                case 6: // UFO is preparing to leave
+                    statusMessage += alien.getName() + " is now getting ready to Jump away with " + ((Scientist)ufo.getHoldingBay()).getName() + " still inside.\n";
+                    ufo.startProtonDrive();
+                    break;
+                case 7: // UFO is jumped away
+                    statusMessage += ufo.getDriver().getName() + " got away. They are now probably on their way to " +  ((Alien)ufo.getDriver()).getHomePlanet() + ".\n";
+                    endingState = 3;
+                    break;
+            }
+            System.out.print(statusMessage);
+            statusMessage = "";
+
+            // ask the user for their input on what to do
+            int choice = 0;
+            if(endingState > 0)
+            {
+                soldierState = -1;
+            }
+            if(soldierState == 1) // the soldier is on foot
+            {
+                System.out.println("What will you do?\n");
+                System.out.print("1. Do nothing\n");
+                System.out.print("2. Chase\n");
+                System.out.print("3. Shoot\n");
+                System.out.print("4. Run to tank\n");
+                choice = readChoice(scanner, "Choose between 1 and 4: ", 1, 4);
+                switch (choice)
+                {
+                    case 1: // do nothing
+                        actionMessage += "You do nothing...\n";
+                        break;
+                    case 2: // chase
+                        actionMessage += "You sprint after the alien...";
+                        if (alienState < 2)
+                        {
+                            actionMessage += " And tackle them!\n";
+                            endingState = 1;
+                        }
+                        else
+                        {
+                            actionMessage += " And quickly realise that they are already in a UFO\n";
+                        }
+                        break;
+                    case 3: // shoot
+                        actionMessage += "You pull out your firearm and shoot at the alien... ";
+                        if (alienState < 3)
+                        {
+                            actionMessage += "And hit them in the leg.\n";
+                            endingState = 1;
+                        }
+                        else // alien already in a UFO
+                        {
+                            actionMessage += "But the bullet bounces off the UFO. If only you were in a tank.\n";
+                        }
+                        break;
+                    case 4: // Run to tank
+                        actionMessage += "You sprint towards the nearest tank and hop in it\n";
+                        tank.setDriver(soldier);
+                        tank.startEngine();
+                        tank.setShellCount(2);
+                        soldierState = 2;
+                        break;
+                }
+            }
+            else if (soldierState == 2)// the soldier is in a tank
+            {
+                System.out.println("What will you do?\n");
+                System.out.print("1. Do nothing\n");
+                System.out.print("2. Shoot\n");
+                System.out.print("3. Load shell\n");
+                System.out.print("4. Aim tank\n");
+                choice = readChoice(scanner, "Choose between 1 and 4: ", 1, 4);
+                switch(choice)
+                {
+                    case 1: // do nothing
+                        actionMessage += "You do nothing...\n";
+                        break;
+                    case 2: // shoot
+                        actionMessage += "You go to fire the tank at the UFO...";
+                        if (tank.isLocked() && tank.isLoaded())
+                        {
+                            actionMessage += " BOOM!\n";
+                            if(tank.fireAtTarget())
+                            {
+                                actionMessage += "A direct hit on the UFO!\n";
+                                if(alienState < 5)
+                                {
+                                    endingState = 1;
+                                }
+                                else
+                                {
+                                    endingState = 6;
+                                }
+                            }
+                            else
+                            {
+                                tank.setIsLoaded(false);
+                                actionMessage += "You miss the UFO completely\n";
+                            }
+                        }
+                        else
+                        {
+                            actionMessage += " Click. Nothing loaded.\n";
+                        }
+                        break;
+                    case 3: // load shell
+                        actionMessage += "You load a shell into the tank\n";
+                        tank.setIsLocked(true);
+                        tank.loadShell();
+                        break;
+                    case 4: // aim tank
+                        actionMessage += "You aim the tank at the UFO\n";
+                        tank.setTarget(ufo);
+
+                }
+            }
+
+        alienState++;
+        actionMessage = "\n==== ==== ==== ==== ==== ==== ==== ROUND " + alienState + " ==== ==== ==== ==== ==== ==== ====\n" + actionMessage;
+        System.out.print(actionMessage);
+        actionMessage = "";
         }
 
-        Tank tank = new Tank(80, 20, 3, 5);
-        tank.setDriver(soldier);
-        tank.setTarget(ufo);
-        tank.fuelUp();
-        tank.startEngine();
-        tank.start();
-        tank.drive(2);
-        tank.setIsLocked(true);
-        tank.setIsLoaded(true);
 
-        if (tank.fireAtTarget()) {
-            System.out.println("The tank hit the UFO and stopped it. Mission complete: the alien cannot escape!");
-        } else {
-            System.out.println("The tank could not fire. Mission failed.");
+
+        // ending conditions
+        String endingMessage = "";
+        switch (endingState)
+        {
+            case 1:
+                endingMessage += "\nAnd you didn't damage the UFO! You deserve two promotions!";
+            case 2:
+                endingMessage = "Congratulations! You stopped " + alien.getRank() + " " + alien.getName() + "! You deserve a promotion!" + endingMessage;
+                break;
+
+            case 3:
+                endingMessage += "\nAnd they abducted " + ((Scientist)ufo.getHoldingBay()).getRank() + " " + ufo.getHoldingBay().getName() + "!";
+            case 4:
+                endingMessage = "Oh no! " + alien.getRank() + " " + alien.getName() + " got away!" + endingMessage;
+                break;
+
+            case 5:
+                endingMessage = "Oh no! You got abducted! Good thing " + soldier.getName() + " was expendible...";
+                break;
+            
+            case 6:
+                endingMessage += "\nToo bad that " + ((Scientist)ufo.getHoldingBay()).getRank() + " " + ufo.getHoldingBay().getName() + " was aboard...";
+            case 7:
+                endingMessage = "Congratulations! You stopped " + alien.getRank() + " " + alien.getName() + "! You deserve a promotion!" + endingMessage;
+                break;
         }
+        System.out.println(endingMessage);
     }
 
     private static int readChoice(Scanner scanner, String prompt, int minimum, int maximum) {

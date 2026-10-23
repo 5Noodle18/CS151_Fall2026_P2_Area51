@@ -801,24 +801,31 @@ private final static Scanner scanner = new Scanner(System.in);
             System.out.println("3. Take Off");
             System.out.println("4. Land");
 
-            int choice = readChoice(scanner, "Enter your choice (1-3): ", 1, 3);
+            int choice = readChoice(scanner, "Enter your choice (1-3): ", 1, 4);
 
             switch (choice) {
                 case 1:
+                    if (distanceTraveled >= 100000) {
+                        System.out.println("You have reached Area 51! Prepare to land.");
+                        break;
+                    }
                     float flightTime = readChoice(scanner, "Enter flight time in seconds: ", 1, 10000);
                     float distance = airplane.drive(flightTime);
                     System.out.println("The airplane traveled " + distance + " units.");
                     distanceTraveled += distance;
                     if (distanceTraveled >= 100000) {
                         System.out.println("You are approaching Area 51! Prepare to land.");
+                        distanceTraveled = 100000; // Cap the distance to Area 51
                     }
                     break;
                 case 2:
                     float decelerationTime = readChoice(scanner, "Enter time to slow down in seconds: ", 1, 10000);
                     float distanceSlowed = airplane.slowDown(decelerationTime);
                     System.out.println("The airplane slowed down. Current speed: " + airplane.getCurrentSpeed() + " units.");
-                    System.out.println("You still traveled " + distanceSlowed + " units during deceleration.");
-                    distanceTraveled += distanceSlowed;
+                    if (distanceTraveled < 100000) {
+                        System.out.println("You still traveled " + distanceSlowed + " units during deceleration.");
+                        distanceTraveled += distanceSlowed;
+                    }
                     break;
                 case 3:
                     airplane.takeOff();

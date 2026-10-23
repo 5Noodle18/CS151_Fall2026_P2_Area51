@@ -12,7 +12,7 @@ public class Tank extends Vehicle implements HumanDrivable{
     private boolean isLoaded;
 
     //constructors
-    public Tank()
+    public Tank() throws ObjectLimitException
     { //default
         super();
         shellCount = 3;
@@ -23,7 +23,7 @@ public class Tank extends Vehicle implements HumanDrivable{
         isLoaded = false;
     }
 
-    public Tank(float topSpeed, float acceleration, int shellCount, float aimSpeed) 
+    public Tank(float topSpeed, float acceleration, int shellCount, float aimSpeed) throws ObjectLimitException
     { //intended default
         super(topSpeed, acceleration);
         this.shellCount = shellCount;
@@ -86,17 +86,9 @@ public class Tank extends Vehicle implements HumanDrivable{
     }
 
     // interface methods
-    public void setDriver(Personnel driver)
-    {
-        this.driver = driver;
-    }
-    public Personnel getDriver()
-    {
-        return this.driver;
-    }
     public void drive()
     {
-        System.out.println("rolling");
+        System.out.println("Tank is rolling");
     }
     public double checkFuel()
     {
@@ -156,7 +148,7 @@ public class Tank extends Vehicle implements HumanDrivable{
     @Override 
     public boolean start() 
     {
-        if (driver != null) 
+        if (getDriver() != null) 
             return true;
         else
             return false;
@@ -166,26 +158,26 @@ public class Tank extends Vehicle implements HumanDrivable{
     public float drive(float seconds) 
     {
         float distance = 0;
-        currentSpeed = currentSpeed + (acceleration * seconds);
-        if (currentSpeed > topSpeed)
-            currentSpeed = topSpeed;
-        distance = currentSpeed * seconds;
+        setCurrentSpeed(getCurrentSpeed() + (getAcceleration() * seconds));
+        if (getCurrentSpeed() > getTopSpeed())
+            setCurrentSpeed(getTopSpeed());
+        distance = getCurrentSpeed() * seconds;
         return distance;
     }
 
     @Override
     public void stop() 
     {
-        currentSpeed = 0;
+        setCurrentSpeed(0);
     }
 
     @Override
     public void destroy()
     {
-        currentSpeed = 0;
-        driver = null;
+        setCurrentSpeed(0);
+        setDriver(null);
         gunner = null;
-        occupants = null;
+        setOccupants(null);
     }
 
     //TODO: specialized functions for Tank

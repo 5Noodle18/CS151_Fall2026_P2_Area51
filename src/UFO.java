@@ -10,7 +10,7 @@ public class UFO extends Vehicle implements AlienDrivable{
     private Personnel holdingBay;
 
     //constructors
-    public UFO()
+    public UFO() throws ObjectLimitException
     { //default
         super();
         altitudeRate = 100;
@@ -18,7 +18,7 @@ public class UFO extends Vehicle implements AlienDrivable{
         isStealthed = false;
     }
 
-    public UFO(float topSpeed, float acceleration, float altitudeRate) 
+    public UFO(float topSpeed, float acceleration, float altitudeRate) throws ObjectLimitException
     { //intended default
         super(topSpeed, acceleration);
         this.altitudeRate = altitudeRate;
@@ -55,14 +55,6 @@ public class UFO extends Vehicle implements AlienDrivable{
     }
 
     //interface methods
-    public void setDriver(Personnel driver)
-    {
-        this.driver = driver;
-    }
-    public Personnel getDriver()
-    {
-        return this.driver;
-    }
     public void drive()
     {
         System.out.print("UFO floating\n");
@@ -90,7 +82,7 @@ public class UFO extends Vehicle implements AlienDrivable{
     @Override
     public boolean start()
     {
-        if (driver != null)
+        if (getDriver() != null)
             return true;
         else
             return false;
@@ -101,25 +93,26 @@ public class UFO extends Vehicle implements AlienDrivable{
         if (isStealthed)
             return 0; //can't drive if stealthed
         float distance = 0;
-        currentSpeed = currentSpeed + (acceleration * seconds);
-        if (currentSpeed > topSpeed)
-            currentSpeed = topSpeed;
-        distance = currentSpeed * seconds;
+
+        setCurrentSpeed(getCurrentSpeed() + (getAcceleration() * seconds));
+        if (getCurrentSpeed() > getTopSpeed())
+            setCurrentSpeed(getTopSpeed());
+        distance = getCurrentSpeed() * seconds;
         return distance;
     }
 
     @Override
     public void stop() 
     {
-        currentSpeed = 0;
+        setCurrentSpeed(0);
     }
 
     @Override
     public void destroy()
     {
-        currentSpeed = 0;
-        driver = null;
-        occupants = null;
+        setCurrentSpeed(0);
+        setDriver(null);
+        setOccupants(null);
         currentAltitude = 0;
     }
 

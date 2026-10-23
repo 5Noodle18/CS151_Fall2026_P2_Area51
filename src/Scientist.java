@@ -27,10 +27,10 @@ public class Scientist extends Personnel
 
     public void promote()
     {
-        if (this.rankNum < ranks.length - 1)
+        if (getRankNum() < ranks.length - 1)
         {
-            rankNum++;
-            this.salary += 15000;
+            incrementRankNum();
+            addSalary(15000);
         }
         else
         {
@@ -39,27 +39,24 @@ public class Scientist extends Personnel
     }
 
     public void demote(){
-        if (this.rankNum > 0)
+        if (getRankNum() > 0)
         {
-            rankNum--;
-            this.salary -= 15000;
-        }
-    }
-
-    //setters
-    public void setRankNum(int num){
-        if (this.rankNum > 0 && (this.rankNum < ranks.length - 1 ) ){
-            this.rankNum = num;
-        }
-        else{
-            this.rankNum = num%(ranks.length);
+            decrementRankNum();
+            addSalary(-15000);
         }
     }
 
     //getter methods:
     public String getRank()
     {
-        return ranks[this.rankNum];
+        return ranks[getRankNum()];
+    }
+    public String getRank(int higher)  //overloaded
+    {
+        if ((getRankNum() + higher) > ranks.length)
+            return ranks[ranks.length -1];
+        else
+            return ranks[getRankNum() + higher];
     }
 
     public String getDegree()

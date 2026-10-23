@@ -183,7 +183,14 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println("ALIEN SCENARIO: Escape Area 51");
         System.out.println(alien.getName() + " must reach orbit in a UFO before security catches up.");
 
-        UFO ufo = new UFO(600, 150, 1000);
+        UFO ufo = null;
+        try {
+            ufo = new UFO(600, 150, 1000);            
+        } catch (ObjectLimitException e) {
+            System.out.println("Error:" + e.getMessage());
+            System.exit(1);
+        }
+
         ufo.setDriver(alien);
         ufo.startProtonDrive();
 
@@ -205,7 +212,7 @@ private final static Scanner scanner = new Scanner(System.in);
         //end of alien scenario
     }
 
-    private static void runScientistScenario(Scientist scientist) throws WrongOrderException {
+    private static void runScientistScenario(Scientist scientist) throws WrongOrderException, ObjectLimitException {
         /* TODO:
         Code below is template. Comment below should be final outline:
         1. THIS PART IS ALREADY DONE
@@ -227,14 +234,19 @@ private final static Scanner scanner = new Scanner(System.in);
             Personnel.generateStub(scientist);
         } catch (ObjectLimitException e) {
             System.out.println("Error: " + e.getMessage());
-            return;
+            System.exit(1);
         }
 
         System.out.println("SCIENTIST SCENARIO: Emergency Research Flight");
         System.out.println(scientist.getName() + " must fly the research airplane and land safely.");
 
-
-        Airplane airplane = new Airplane(300, 25, 150, 80, 30);
+        Airplane airplane = null;
+        try {
+            airplane = new Airplane(300, 25, 150, 80, 30);
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            System.exit(1);
+        }
         System.out.println("\n[Airplane Stats:]");
         System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
         System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
@@ -478,21 +490,29 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println("For every 25 passengers, you've earned a promotion!");
         int promotions = airplane.getOccupants().length / 25;
 
-        System.out.println("\n Your original salary was: $" + scientist.getSalary() + "0");
+        System.out.println("\nYour original salary was: $" + scientist.getSalary() + "0");
         for (int i = 0; i < promotions; i++) {
-            System.out.println("Promoting from rank " + scientist.getRank() + " to rank " + (scientist.getRank() + 1) + ".");
+            System.out.println("Promoting from rank " + scientist.getRank() + " to rank " + (scientist.getRank(1)) + ".");
             scientist.promote();
         }
-        System.out.println("Your new salary is: $" + scientist.getSalary() + "0");        
+        System.out.println("Your new salary is: $" + scientist.getSalary() + "0"); 
+        System.out.println("---------- !!! YOU WIN !!! --------------");
     }
 
-    private static void runSoldierScenario(Scanner scanner, Soldier soldier)
+    private static void runSoldierScenario(Scanner scanner, Soldier soldier) throws ObjectLimitException
     {
         // actors in this scenario
-        Alien alien;
-        Scientist scientist;
-        UFO ufo = new UFO(600, 150, 1000);
-        Tank tank = new Tank(80, 20, 3, 5);
+        Alien alien = null;
+        Scientist scientist = null;
+        UFO ufo = null;
+        Tank tank = null;
+        try {
+            ufo = new UFO(600, 150, 1000);
+            tank = new Tank(80, 20, 3, 5);
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            System.exit(1);
+        }
 
         try
         {
@@ -507,7 +527,7 @@ private final static Scanner scanner = new Scanner(System.in);
         catch (ObjectLimitException e)
         {
             System.out.println("Error: " + e.getMessage());
-            return;
+            System.exit(1);
         }
 
         // list of options to choose from
@@ -772,6 +792,8 @@ private final static Scanner scanner = new Scanner(System.in);
         } catch (ObjectLimitException e) {
             System.out.println("Error: " + e.getMessage());
             System.out.println("Maximum number of Personnel instances reached. Boarding stopped.");
+            Personnel[] trimPassengers = Arrays.copyOf(passengers, 100); //trim final allocated length to 100
+            passengers = trimPassengers;
         } finally {
             //ensure we set occupants to the successfully created passengers, even if we hit the limit
             airplane.setOccupants(passengers);
@@ -781,8 +803,9 @@ private final static Scanner scanner = new Scanner(System.in);
     private static void flyControls(Airplane airplane, Scanner scanner) {
         System.out.println("You are now in control of the airplane. You can adjust speed and altitude.");
         System.out.println("Enter 'QUIT' at any time to exit the game.");
+        final int runwayLength = 1000;
+        final int area51 = 100000;
         float distanceTraveled = 0;
-
         while (true) {
             if (airplane.getDriver() == null) //plane was destroyed during loop)
             {
@@ -792,33 +815,53 @@ private final static Scanner scanner = new Scanner(System.in);
             System.out.println("\nCurrent Speed: " + airplane.getCurrentSpeed() + " units");
             System.out.println("Current Altitude: " + airplane.getAltitude() + " units");
             System.out.println("Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
-            System.out.println("Distance to Area 51: " + (100000 - distanceTraveled) + " units");
+            System.out.println("Runway length left: " + (Math.max(0, runwayLength - distanceTraveled)) + " units");      //runway ends at 1,000
+            System.out.println("Distance to Area 51: " + (Math.max(0, area51 - distanceTraveled)) + " units");   //Area 51 ends at 100,000
             System.out.println("Choose an action:");
-            System.out.println("1. " + ((airplane.getAltitude() > 0) ? "Fly" : "Drive"));
+            System.out.println("1. " + ((airplane.takenOff()) ? "Fly" : "Drive"));
             System.out.println("2. Slow Down");
             System.out.println("3. Take Off");
             System.out.println("4. Land");
 
             int choice = readChoice(scanner, "Enter your choice (1-4): ", 1, 4);
-
             switch (choice) {
                 case 1:
-                    if (distanceTraveled >= 100000) {
-                        System.out.println("You have reached Area 51! Prepare to land.");
+                    //pre-drive check
+                    if (distanceTraveled >= area51) {
+                        System.out.println("You have reached Area 51! You need to land!");
                         break;
                     }
-                    float flightTime = readChoice(scanner, "Enter flight time in seconds: ", 1, 10000);
-                    float distance = airplane.drive(flightTime);
-                    System.out.println("The airplane traveled " + distance + " units.");
-                    distanceTraveled += distance;
-                    if (distanceTraveled >= 100000) {
-                        System.out.println("You are approaching Area 51! Prepare to land.");
-                        distanceTraveled = 100000; // Cap the distance to Area 51
+                    else if (!airplane.takenOff() && distanceTraveled > runwayLength) {
+                        System.out.println("You're out of runway! You need to take off!");
+                        break;
                     }
+
+                    float flightTime = readChoice(scanner, "Enter flight time in seconds: ", 1, 1000);
+                    float distance = airplane.drive(flightTime);
+                    distanceTraveled += distance;
+
+                    //post-drive warnings
+                    if (!airplane.takenOff() && distanceTraveled >= runwayLength) {
+                        System.out.println("You are running out of runway! Time to take off.");
+                        float diff = distanceTraveled - runwayLength;
+                        distanceTraveled = runwayLength;    //cap the distance to runway length
+                        distance = distance - diff;
+                    }
+                    if (distanceTraveled >= area51) {
+                        System.out.println("You are approaching Area 51! Prepare to land.");
+                        float diff = distanceTraveled - area51;
+                        distanceTraveled = area51; // Cap the distance to Area 51
+                        distance = distance - diff;
+                    }
+                    System.out.println("The airplane traveled " + distance + " units.");
                     break;
                 case 2:
                     float decelerationTime = readChoice(scanner, "Enter time to slow down in seconds: ", 1, 10000);
                     float distanceSlowed = airplane.slowDown(decelerationTime);
+                    if (airplane.getDriver() == null) {//check if crash happened
+                        System.out.println("You crashed! GAME OVER.");
+                        System.exit(1);
+                    }
                     System.out.println("The airplane slowed down. Current speed: " + airplane.getCurrentSpeed() + " units.");
                     if (distanceTraveled < 100000) {
                         System.out.println("You still traveled " + distanceSlowed + " units during deceleration.");
@@ -826,14 +869,16 @@ private final static Scanner scanner = new Scanner(System.in);
                     }
                     break;
                 case 3:
-                    airplane.takeOff();
+                    if (!airplane.takenOff()) {
+                        airplane.takeOff();
+                    }
+                    else {
+                        System.out.println("You've already taken off.");
+                    }
                     break;
                 case 4:
                     if (airplane.land()) {
-                        System.out.println("You have successfully landed at Area 51!");
                         return;
-                    } else {
-                        System.out.println("You cannot land yet. Ensure your speed is below the landing speed and you are at a safe altitude.");
                     }
                     break;
                 default:

@@ -1,6 +1,5 @@
 package src;
 
-import java.util.Scanner;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -97,27 +96,13 @@ abstract class Personnel
     }
 
     //putting character creator into personnel helps keep it clean when running the scenarios in main.
-    public static Personnel characterCreator(Personnel person, Scanner scanner) throws ObjectLimitException {
+    public static Personnel characterCreator(Personnel person, ScannerWrapper scannerWrapper) throws ObjectLimitException {
         String role = person.getClass().getSimpleName();
         System.out.println(role + " Scenario Selected");
         System.out.println();
         System.out.println("Are you a default " + role + " (Enter: 1)... or a custom " + role + " (Enter: 2)?");
 
-        int choice2 = 676767;
-            while (choice2 < 1 || choice2> 2){
-            System.out.print("Please enter an integer from 1 to 2: ");
-            
-            if (scanner.hasNextInt()) {
-                choice2 = scanner.nextInt();
-                
-                if (choice2 < 1 || choice2 > 2) {
-                    System.out.println("TRY AGAIN!");
-                } 
-            } else {
-                System.out.println("TRY AGAIN!");
-                scanner.next();
-            }
-        }
+        int choice2 = scannerWrapper.readChoice("",1,2);
 
         String theName = "";
         int theRank = -676767;
@@ -128,14 +113,13 @@ abstract class Personnel
             return person;         
         } 
         else {
-        scanner.nextLine();
 
         System.out.print("Please enter the "+ role + "'s Name (Be Creative Please): ");
         while (theName.isEmpty()) {
 
             //I changed this code block to use a try catch block
             try{
-                theName = scanner.nextLine().trim();
+                theName = scannerWrapper.readString().trim();
                 if(theName.length() == 0){
                     throw new Exception();
                 }
@@ -147,23 +131,11 @@ abstract class Personnel
         }
 
             int maxNum = person.getRanksArray().length-1;
-            
-            while (theRank < 0 || theRank > maxNum){
-                System.out.print("Please enter the " + role + "'s Rank Number (0-"+ maxNum +"):");
-                if (scanner.hasNextInt()) {
-                    theRank = scanner.nextInt();
 
-                    if (theRank < 0 || theRank > maxNum) {
-                        System.out.println("TRY AGAIN!");
-                    } 
-                } else {
-                    System.out.println("TRY AGAIN!");
-                    scanner.next();
-                }
-            }
-            scanner.nextLine();
+            theRank = scannerWrapper.readChoice("Please enter the " + role + "'s Rank Number (0-"+ maxNum +"): ", 0, maxNum);
             
             //pick extra field for person and alien because those extra fields are strings
+            
             if(!(person instanceof Soldier)){
                 while (extraField.isEmpty())
                 {
@@ -173,7 +145,7 @@ abstract class Personnel
                     } else{
                         System.out.println ("Degree:");
                     }
-                extraField = scanner.nextLine().trim();
+                extraField = scannerWrapper.readString().trim();
     
                     if (extraField.isEmpty()) {
                         System.out.println("TRY AGAIN!");
@@ -182,25 +154,10 @@ abstract class Personnel
             } 
             // soldier is a separate scenario because it is a boolean instead
             else {
-                int choosing = -676767;
-                while (choosing < 1 || choosing> 2)
-                {
-                    System.out.print("Is your Soldier Expendable? Yes (Enter 1) or No (Enter 2)?");
-            
-                    if (scanner.hasNextInt()) {
-                    choosing = scanner.nextInt();
-                
-                        if (choosing < 1 || choosing > 2) {
-                            System.out.println("TRY AGAIN!");
-                        } 
-                    } else {
-                        System.out.println("TRY AGAIN!");
-                        scanner.next();
-                    }
-                }
-
+                int choosing = scannerWrapper.readChoice("Is your soldier expendable? Yes (1) or no (2): ", 1, 2);
+                expendable = false;
                 if(choosing == 1){
-                    expendable = false;
+                    expendable = true;
                 }
     
             }

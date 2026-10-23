@@ -7,7 +7,7 @@ public class Main {
 //keep the scanner like this so all the methods can use it too:
 private final static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) throws InterruptedException, WrongOrderException {
+    public static void main(String[] args) throws InterruptedException, WrongOrderException, ObjectLimitException {
         //cool starting screen text with a fake loading screen
 
         Thread.sleep(190);
@@ -89,7 +89,7 @@ private final static Scanner scanner = new Scanner(System.in);
     }
 
 
-    private static void runAlienScenario(Alien alien) throws InterruptedException {
+    private static void runAlienScenario(Alien alien) throws InterruptedException, ObjectLimitException {
         /* TODO:
         Code below is template. Comment below should be final outline:
         1. DONE

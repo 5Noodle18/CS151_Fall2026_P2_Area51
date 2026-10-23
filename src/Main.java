@@ -5,7 +5,9 @@ import java.util.*;
 public class Main {
 
 //keep the scanner like this so all the methods can use it too:
-private final static Scanner scanner = new Scanner(System.in);
+
+// special scanner wrapper that ensures the user can always EXIT
+private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance();
 
     public static void main(String[] args) throws InterruptedException, WrongOrderException {
         //cool starting screen text with a fake loading screen
@@ -40,30 +42,15 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println("              PROJECT █████████................... CLASSIFIED\n");
         System.out.println("              PRESS ENTER TO CONTINUE:\n");
         System.out.println("================================================================================\n");
-        scanner.nextLine();
+        scannerWrapper.readString();
 
         System.out.println("Choose your personnel:");
         System.out.println("(1). Alien");
         System.out.println("(2). Scientist");
         System.out.println("(3). Soldier");
         
-        int choice = -6767;
         //verify the input is between 1 and 3 in a polite, professional way befitting Area 51.
-        while (choice < 1 || choice > 3){
-            System.out.print("Please enter an integer from 1 to 3: ");
-            
-            if (scanner.hasNextInt()) {
-                choice = scanner.nextInt();
-                
-                if (choice < 1 || choice > 3) {
-                    System.out.println("IF THE CHOICE IS NOT FROM 1:3, YOU WILL BE NEUTRALIZED. TRY AGAIN!");
-                } 
-            } else {
-                System.out.println("ENTER AN INTEGER OR YOU WILL BE EXCECUTED IMMEDIATELY!");
-                System.out.println();
-                scanner.next();
-            }
-        }
+        int choice = scannerWrapper.readChoice("Please enter an integer from 1 to 3: ", 1, 3);
 
         //this decides which one of 3 scenarios to play out:
         try {
@@ -75,7 +62,7 @@ private final static Scanner scanner = new Scanner(System.in);
                     runScientistScenario(new Scientist("Dr. Nova", 4, 80000, "Aeronautical Engineering"));
                     break;
                 case 3:
-                    runSoldierScenario(scanner, new Soldier("Captain Reyes", 5, 60000, false));
+                    runSoldierScenario(new Soldier("Captain Reyes", 5, 60000, false));
                     break;
                 default:
 
@@ -110,12 +97,19 @@ private final static Scanner scanner = new Scanner(System.in);
 
         //refer to last method in personnel if you want to change character creator method:
         try {
-            alien = (Alien) Personnel.characterCreator(alien, scanner);
+            alien = (Alien) Personnel.characterCreator(alien, scannerWrapper);
             Personnel.generateStub(alien);
         } catch (ObjectLimitException e) {
             System.out.println("Error: " + e.getMessage());
             return;
         }
+        
+        //TODO: add something like this after each character creator section for each scenario.
+        System.out.println("\n==========================================================");
+        System.out.println("[ALIEN STATS:]");
+        System.out.println("    NAME: " + alien.getName() + ", RANK: " + alien.getRank());
+        System.out.println("    SALARY: $" + alien.getSalary() + "0, PLANET OF ORIGIN: " + alien.getHomePlanet());
+        System.out.println("==========================================================\n\n");
         
         //Alien needs to Choose a vehicle:
         System.out.println("Choose a vehicle for " + alien.getName() + " to steal.");
@@ -127,22 +121,7 @@ private final static Scanner scanner = new Scanner(System.in);
             System.out.println("Please enter an integer from 1 to 3: ");
             
             counter ++;
-            if (scanner.hasNextInt()) {
-                choice3 = scanner.nextInt();
-                
-                if (choice3 < 1 || choice3 > 3) {
-                    if(counter > 3){
-                        System.out.println("You must be a really stupid alien if you can't choose a vehicle correctly!");
-                    }
-                    else{
-                        System.out.println("TRY AGAIN!");
-                    }
-                } 
-                } else {
-                System.out.println("TRY AGAIN!");
-                scanner.next();
-                }
-            }
+            choice3 = scannerWrapper.readChoice("Please enter an integer from 1 to 3: ", 1, 3);
 
             //TODO: this needs to be fixed with try catch blocks it needs to throw errors instead:
             switch(choice3){
@@ -183,14 +162,16 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println("ALIEN SCENARIO: Escape Area 51");
         System.out.println(alien.getName() + " must reach orbit in a UFO before security catches up.");
 
-        UFO ufo = null;
-        try {
-            ufo = new UFO(600, 150, 1000);            
-        } catch (ObjectLimitException e) {
-            System.out.println("Error:" + e.getMessage());
-            System.exit(1);
+        UFO ufo;
+        try 
+        {
+            ufo = new UFO(600, 150, 1000);
         }
-
+        catch (ObjectLimitException e)
+        {
+            System.out.println("Error: " + e.getMessage());
+            return;
+        }
         ufo.setDriver(alien);
         ufo.startProtonDrive();
 
@@ -212,7 +193,7 @@ private final static Scanner scanner = new Scanner(System.in);
         //end of alien scenario
     }
 
-    private static void runScientistScenario(Scientist scientist) throws WrongOrderException, ObjectLimitException {
+    private static void runScientistScenario(Scientist scientist) throws WrongOrderException {
         /* TODO:
         Code below is template. Comment below should be final outline:
         1. THIS PART IS ALREADY DONE
@@ -230,22 +211,26 @@ private final static Scanner scanner = new Scanner(System.in);
             --> Promote the scientist based on # of occupants!
         */
         try {
-            scientist = (Scientist) Personnel.characterCreator(scientist, scanner);
+            scientist = (Scientist) Personnel.characterCreator(scientist, scannerWrapper);
             Personnel.generateStub(scientist);
         } catch (ObjectLimitException e) {
             System.out.println("Error: " + e.getMessage());
-            System.exit(1);
+            return;
         }
 
         System.out.println("SCIENTIST SCENARIO: Emergency Research Flight");
         System.out.println(scientist.getName() + " must fly the research airplane and land safely.");
 
-        Airplane airplane = null;
-        try {
+
+        Airplane airplane;
+        try
+        {
             airplane = new Airplane(300, 25, 150, 80, 30);
-        } catch (ObjectLimitException e) {
+        }
+        catch (ObjectLimitException e)
+        {
             System.out.println("Error: " + e.getMessage());
-            System.exit(1);
+            return;
         }
         System.out.println("\n[Airplane Stats:]");
         System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
@@ -266,7 +251,7 @@ private final static Scanner scanner = new Scanner(System.in);
             System.out.println("5. Drive");
             System.out.println("6. Stop Engine");
 
-            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+            int choice = scannerWrapper.readChoice("Enter your choice (1-6): ", 1, 6);
 
             try {
                 switch (choice) {
@@ -305,12 +290,12 @@ private final static Scanner scanner = new Scanner(System.in);
             System.out.println("5. Drive");
             System.out.println("6. Stop Engine");
 
-            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+            int choice = scannerWrapper.readChoice("Enter your choice (1-6): ", 1, 6);
 
             try {
                 switch (choice) {
                     case 2:
-                        boardPassengers(airplane, scanner);
+                        boardPassengers(airplane);
                         boarded = true;
                         break;
                     case 1, 3, 4, 5, 6:
@@ -346,7 +331,7 @@ private final static Scanner scanner = new Scanner(System.in);
             System.out.println("5. Drive");
             System.out.println("6. Stop Engine");
 
-            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+            int choice = scannerWrapper.readChoice("Enter your choice (1-6): ", 1, 6);
 
             try {
                 switch (choice) {
@@ -386,7 +371,7 @@ private final static Scanner scanner = new Scanner(System.in);
             System.out.println("5. Drive");
             System.out.println("6. Stop Engine");
 
-            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+            int choice = scannerWrapper.readChoice("Enter your choice (1-6): ", 1, 6);
 
             try {
                 switch (choice) {
@@ -425,12 +410,12 @@ private final static Scanner scanner = new Scanner(System.in);
             System.out.println("5. Drive");
             System.out.println("6. Stop Engine");
 
-            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+            int choice = scannerWrapper.readChoice("Enter your choice (1-6): ", 1, 6);
 
             try {
                 switch (choice) {
                     case 5:
-                        flyControls(airplane, scanner);
+                        flyControls(airplane);
                         driven = true;
                         break;
                     case 1, 2, 3, 4, 6:
@@ -464,7 +449,7 @@ private final static Scanner scanner = new Scanner(System.in);
             System.out.println("5. ---");
             System.out.println("6. Stop Engine");
 
-            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+            int choice = scannerWrapper.readChoice("Enter your choice (1-6): ", 1, 6);
 
             try {
                 switch (choice) {
@@ -490,54 +475,37 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println("For every 25 passengers, you've earned a promotion!");
         int promotions = airplane.getOccupants().length / 25;
 
-        System.out.println("\nYour original salary was: $" + scientist.getSalary() + "0");
+        System.out.println("\n Your original salary was: $" + scientist.getSalary() + "0");
         for (int i = 0; i < promotions; i++) {
-            System.out.println("Promoting from rank " + scientist.getRank() + " to rank " + (scientist.getRank(1)) + ".");
+            System.out.println("Promoting from rank " + scientist.getRank() + " to rank " + (scientist.getRank() + 1) + ".");
             scientist.promote();
         }
-        System.out.println("Your new salary is: $" + scientist.getSalary() + "0"); 
-        System.out.println("---------- !!! YOU WIN !!! --------------");
+        System.out.println("Your new salary is: $" + scientist.getSalary() + "0");        
     }
 
-    private static void runSoldierScenario(Scanner scanner, Soldier soldier) throws ObjectLimitException
+    private static void runSoldierScenario(Soldier soldier)
     {
         // actors in this scenario
-        Alien alien = null;
-        Scientist scientist = null;
-        UFO ufo = null;
-        Tank tank = null;
-        try {
-            ufo = new UFO(600, 150, 1000);
-            tank = new Tank(80, 20, 3, 5);
-        } catch (ObjectLimitException e) {
-            System.out.println("Error: " + e.getMessage());
-            System.exit(1);
-        }
-
+        UFO ufo;
+        Tank tank;
+        Alien alien;
+        Scientist scientist;
         try
         {
-            // create a soldier 
-            soldier = (Soldier) Personnel.characterCreator(soldier, scanner);
-            Personnel.generateStub(soldier);
-            // create an alien for the soldier to fight
+            ufo = new UFO(600, 150, 1000);
+            tank = new Tank(80, 20, 3, 5);
             alien = new Alien("Zeeblezorp Glurgnop", 3, 50000, "Zeta Reticuli");
-            // create a scientist for the soldier to protect
             scientist = new Scientist("Horacio Smartinov", 7, 50000, "Xenogastronomy");
+            soldier = (Soldier) Personnel.characterCreator(soldier, scannerWrapper);
+            Personnel.generateStub(soldier);
         }
         catch (ObjectLimitException e)
         {
             System.out.println("Error: " + e.getMessage());
-            System.exit(1);
+            return;
         }
-
-        // list of options to choose from
-        String[] options = new String[4];
-        options[0] = "Do nothing";
-        options[1] = "Chase";
-        options[2] = "Shoot";
-        options[3] = "Run to tank";
-
         
+        // states of the game
         int alienState = 1;
         int soldierState = 1;
         int endingState= 0;
@@ -612,7 +580,7 @@ private final static Scanner scanner = new Scanner(System.in);
                 System.out.print("2. Chase\n");
                 System.out.print("3. Shoot\n");
                 System.out.print("4. Run to tank\n");
-                choice = readChoice(scanner, "Choose between 1 and 4: ", 1, 4);
+                choice = scannerWrapper.readChoice("Choose between 1 and 4: ", 1, 4);
                 switch (choice)
                 {
                     case 1: // do nothing
@@ -658,7 +626,7 @@ private final static Scanner scanner = new Scanner(System.in);
                 System.out.print("2. Shoot\n");
                 System.out.print("3. Load shell\n");
                 System.out.print("4. Aim tank\n");
-                choice = readChoice(scanner, "Choose between 1 and 4: ", 1, 4);
+                choice = scannerWrapper.readChoice("Choose between 1 and 4: ", 1, 4);
                 switch(choice)
                 {
                     case 1: // do nothing
@@ -741,29 +709,11 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println(endingMessage);
     }
 
-    private static int readChoice(Scanner scanner, String prompt, int minimum, int maximum) {
-        while (true) {
-            System.out.print(prompt);
-            String input = scanner.nextLine().trim();
-            if (input.equals("QUIT"))
-                System.exit(0);
-            try {
-                int choice = Integer.parseInt(input);
-                if (choice >= minimum && choice <= maximum) {
-                    return choice;
-                }
-            } catch (NumberFormatException ignored) {
-                // Re-prompt below for non-numeric input.
-            }
-            System.out.println("Please enter a number from " + minimum + " to " + maximum + ".");
-        }
-    }
-
-    private static void boardPassengers(Airplane airplane, Scanner scanner) throws ObjectLimitException {
+    private static void boardPassengers(Airplane airplane) throws ObjectLimitException {
         //Allow user to input # of passengers to board and create that many. Class itself handles too many objects exception.
         System.out.println("Time to board passengers. How many passengers would you like to board? Area 50 will assign you random personnel to take with you.");
 
-        int numPassengers = readChoice(scanner, "Enter the number of passengers to board: ", 1, 1000); //perfect opportunity to test the MAXIMUM_OBJECTS=100 exception rule
+        int numPassengers = scannerWrapper.readChoice("Enter the number of passengers to board: ", 1, 1000); //perfect opportunity to test the MAXIMUM_OBJECTS=100 exception rule
 
         /*
         Random creation. Randomly choose 0 or 1. If 0, create a Soldier. If 1, create a Scientist. 
@@ -792,20 +742,17 @@ private final static Scanner scanner = new Scanner(System.in);
         } catch (ObjectLimitException e) {
             System.out.println("Error: " + e.getMessage());
             System.out.println("Maximum number of Personnel instances reached. Boarding stopped.");
-            Personnel[] trimPassengers = Arrays.copyOf(passengers, 100); //trim final allocated length to 100
-            passengers = trimPassengers;
         } finally {
             //ensure we set occupants to the successfully created passengers, even if we hit the limit
             airplane.setOccupants(passengers);
         }
     }
 
-    private static void flyControls(Airplane airplane, Scanner scanner) {
+    private static void flyControls(Airplane airplane) {
         System.out.println("You are now in control of the airplane. You can adjust speed and altitude.");
         System.out.println("Enter 'QUIT' at any time to exit the game.");
-        final int runwayLength = 1000;
-        final int area51 = 100000;
         float distanceTraveled = 0;
+
         while (true) {
             if (airplane.getDriver() == null) //plane was destroyed during loop)
             {
@@ -815,53 +762,33 @@ private final static Scanner scanner = new Scanner(System.in);
             System.out.println("\nCurrent Speed: " + airplane.getCurrentSpeed() + " units");
             System.out.println("Current Altitude: " + airplane.getAltitude() + " units");
             System.out.println("Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
-            System.out.println("Runway length left: " + (Math.max(0, runwayLength - distanceTraveled)) + " units");      //runway ends at 1,000
-            System.out.println("Distance to Area 51: " + (Math.max(0, area51 - distanceTraveled)) + " units");   //Area 51 ends at 100,000
+            System.out.println("Distance to Area 51: " + (100000 - distanceTraveled) + " units");
             System.out.println("Choose an action:");
-            System.out.println("1. " + ((airplane.takenOff()) ? "Fly" : "Drive"));
+            System.out.println("1. " + ((airplane.getAltitude() > 0) ? "Fly" : "Drive"));
             System.out.println("2. Slow Down");
             System.out.println("3. Take Off");
             System.out.println("4. Land");
 
-            int choice = readChoice(scanner, "Enter your choice (1-4): ", 1, 4);
+            int choice = scannerWrapper.readChoice("Enter your choice (1-4): ", 1, 4);
+
             switch (choice) {
                 case 1:
-                    //pre-drive check
-                    if (distanceTraveled >= area51) {
-                        System.out.println("You have reached Area 51! You need to land!");
+                    if (distanceTraveled >= 100000) {
+                        System.out.println("You have reached Area 51! Prepare to land.");
                         break;
                     }
-                    else if (!airplane.takenOff() && distanceTraveled > runwayLength) {
-                        System.out.println("You're out of runway! You need to take off!");
-                        break;
-                    }
-
-                    float flightTime = readChoice(scanner, "Enter flight time in seconds: ", 1, 1000);
+                    float flightTime = scannerWrapper.readChoice("Enter flight time in seconds: ", 1, 10000);
                     float distance = airplane.drive(flightTime);
-                    distanceTraveled += distance;
-
-                    //post-drive warnings
-                    if (!airplane.takenOff() && distanceTraveled >= runwayLength) {
-                        System.out.println("You are running out of runway! Time to take off.");
-                        float diff = distanceTraveled - runwayLength;
-                        distanceTraveled = runwayLength;    //cap the distance to runway length
-                        distance = distance - diff;
-                    }
-                    if (distanceTraveled >= area51) {
-                        System.out.println("You are approaching Area 51! Prepare to land.");
-                        float diff = distanceTraveled - area51;
-                        distanceTraveled = area51; // Cap the distance to Area 51
-                        distance = distance - diff;
-                    }
                     System.out.println("The airplane traveled " + distance + " units.");
+                    distanceTraveled += distance;
+                    if (distanceTraveled >= 100000) {
+                        System.out.println("You are approaching Area 51! Prepare to land.");
+                        distanceTraveled = 100000; // Cap the distance to Area 51
+                    }
                     break;
                 case 2:
-                    float decelerationTime = readChoice(scanner, "Enter time to slow down in seconds: ", 1, 10000);
+                    float decelerationTime = scannerWrapper.readChoice("Enter time to slow down in seconds: ", 1, 10000);
                     float distanceSlowed = airplane.slowDown(decelerationTime);
-                    if (airplane.getDriver() == null) {//check if crash happened
-                        System.out.println("You crashed! GAME OVER.");
-                        System.exit(1);
-                    }
                     System.out.println("The airplane slowed down. Current speed: " + airplane.getCurrentSpeed() + " units.");
                     if (distanceTraveled < 100000) {
                         System.out.println("You still traveled " + distanceSlowed + " units during deceleration.");
@@ -869,16 +796,14 @@ private final static Scanner scanner = new Scanner(System.in);
                     }
                     break;
                 case 3:
-                    if (!airplane.takenOff()) {
-                        airplane.takeOff();
-                    }
-                    else {
-                        System.out.println("You've already taken off.");
-                    }
+                    airplane.takeOff();
                     break;
                 case 4:
                     if (airplane.land()) {
+                        System.out.println("You have successfully landed at Area 51!");
                         return;
+                    } else {
+                        System.out.println("You cannot land yet. Ensure your speed is below the landing speed and you are at a safe altitude.");
                     }
                     break;
                 default:

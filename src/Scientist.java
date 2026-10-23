@@ -51,6 +51,13 @@ public class Scientist extends Personnel
     {
         return ranks[getRankNum()];
     }
+    public String getRank(int higher)  //overloaded
+    {
+        if ((getRankNum() + higher) > ranks.length)
+            return ranks[ranks.length -1];
+        else
+            return ranks[getRankNum() + higher];
+    }
 
     public String getDegree()
     {

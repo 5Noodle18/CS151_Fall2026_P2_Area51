@@ -15,7 +15,7 @@ abstract class Personnel
     public Personnel(String name, int rankNum, double salary) throws ObjectLimitException
     {
         // object limit check
-        if (registry.size() >= ObjectLimitException.MAX_INSTANCES) {
+        if (registry.size() > ObjectLimitException.MAX_INSTANCES) {
             throw new ObjectLimitException("Maximum number of Personnel instances reached: " + ObjectLimitException.MAX_INSTANCES);
         }
         this.name = name;

@@ -17,7 +17,7 @@ public abstract class Vehicle implements Drivable {
     //default constructor
     public Vehicle() throws ObjectLimitException
     {
-        if (registry.size() >= ObjectLimitException.MAX_INSTANCES) {
+        if (registry.size() > ObjectLimitException.MAX_INSTANCES) {
             throw new ObjectLimitException("Maximum number of Vehicle instances reached: " + ObjectLimitException.MAX_INSTANCES);
         }
         topSpeed = 100;

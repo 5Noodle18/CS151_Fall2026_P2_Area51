@@ -4,13 +4,12 @@ import java.util.Scanner;
 
 abstract class Personnel
 {
-    public static long peopleCount = 0;
+    public static int peopleCount = 0;
     public String name;
     public int rankNum;
     public String[] ranks;
     public float HP = 100;
     public double salary;
-    public long badgeNum;
 
     public Personnel(String name, int rankNum, double salary) throws ObjectLimitException
     {
@@ -24,7 +23,6 @@ abstract class Personnel
         //Badge number keeps track of people who have joined our base and gives us a way to pull up records of people based on a security badge code.
         //It increments for every new Person or Alien who starts working for our base or eveyr new alien who is born.
         peopleCount++;
-        this.badgeNum = peopleCount;
     }
 
     public void promote(){ }
@@ -69,11 +67,6 @@ abstract class Personnel
     public double getSalary()
     {
         return this.salary;
-    }
-
-    public long getBadgeNum()
-    {
-        return this.badgeNum;
     }
 
     //putting character creator into personnel helps keep it clean when running the scenarios in main.

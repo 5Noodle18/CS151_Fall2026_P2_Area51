@@ -817,4 +817,52 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
     }
+
+        public static void generateStub(Vehicle vehicle){
+        if (vehicle == null) {
+            System.out.println("Null vehicles not allowed.");
+            return;
+        }
+
+        String role = vehicle.getClass().getSimpleName();
+        System.out.println("\n[" + role + " Stats:]");
+
+        if(vehicle instanceof Airplane){
+            Airplane v = (Airplane) vehicle;
+            System.out.println("    Takeoff Speed: " + v.getTakeOffSpeed() + " units, Landing Speed: " + v.getLandingSpeed() + " units");
+            System.out.println("    Altitude Rate: " + v.getAltitudeRate() + " units/sec, Current Altitude: " + v.getAltitude() + " units");
+            System.out.println("    Fuel Level: " + v.checkFuel() + "%");
+        } else if(vehicle instanceof Tank){
+            Tank v = (Tank) vehicle;
+            System.out.println("    Shell Count: " + v.getShellCount() + "shells, Aim Speed: " + v.getAimSpeed());
+            System.out.println("Locked on Target: " + v.isLocked() + ", Cannon Loaded: " + v.isLoaded());
+
+        }else{
+            UFO v = (UFO) vehicle;
+            System.out.println("    Altitude Rate: " + v.getAltitudeRate() + " units/sec, Current Altitude: " + v.getAltitude() + " units");
+            System.out.print  ("    Is Stealthed: " + v.isStealthed() + ", Victim: ");
+            if(v.getHoldingBay() == null){
+                System.out.println("none right now");
+            } else{
+                System.out.println(v.getHoldingBay());
+            }
+        }
+        
+        System.out.println("    Top Speed: " + vehicle.getTopSpeed() + " units, Acceleration: " + vehicle.getAcceleration() + " units/sec^2");
+        System.out.println("    Current Speed: " + vehicle.getCurrentSpeed() + " units");
+
+        if(!(vehicle.getDriver() == null)){
+            System.out.println("    Driver: " + vehicle.getDriver().getName());
+        } else{
+            System.out.println("    Driver: n/a");
+        }
+
+        if(vehicle instanceof Airplane){
+            if(!(vehicle.getOccupants() == null)){
+                System.out.println("    Occupants: " + vehicle.getOccupants().length + " passengers");
+            } else{
+            System.out.println("    Occupants: n/a");
+            }
+        }     
+    }
 }

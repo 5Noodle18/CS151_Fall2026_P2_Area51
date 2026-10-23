@@ -22,6 +22,7 @@ public class Alien extends Personnel
     {
         super(name, rankNum, salary);
         this.homePlanet = homePlanet;
+        this.setRanks(ranks);
     }
 
     public void promote()
@@ -54,9 +55,6 @@ public class Alien extends Personnel
     }
 
     //getter methods:
-    public String[] getRanksArray(){
-        return ranks;
-    }
 
     public String getRank()
     {

@@ -83,7 +83,7 @@ public class Airplane extends Vehicle implements HumanDrivable{
     }
     public void drive()
     {
-        System.out.println("flying");
+        System.out.println("The plane flew.");
     }
     public void fuelUp()
     {
@@ -125,9 +125,10 @@ public class Airplane extends Vehicle implements HumanDrivable{
     public void stop() 
     {
         currentSpeed = 0;
-        if (currentAltitude > 10) //wasn't close enough to the ground!
+        if (currentAltitude > 10) {//wasn't close enough to the ground!
             System.out.println("The airplane is still in the air! You stalled and crashed!");
             destroy();
+        }
     }
 
     @Override

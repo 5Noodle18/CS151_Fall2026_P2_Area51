@@ -3,7 +3,7 @@ public class Scientist extends Personnel
 {
     private String degree;
     //Array keeps track of all the ranks. RankNum stores the corresponding number 
-    private static String[] ranks =
+    private final static String[] ranks =
     {
         "College Intern",                       //rankNum 0
         "Laboratory Assistant",
@@ -22,6 +22,7 @@ public class Scientist extends Personnel
     {
         super(name, rankNum, salary);
         this.degree = degree;
+        this.setRanks(ranks);
     }
 
     public void promote()
@@ -56,10 +57,6 @@ public class Scientist extends Personnel
     }
 
     //getter methods:
-    public String[] getRanksArray(){
-        return ranks;
-    }
-
     public String getRank()
     {
         return ranks[this.rankNum];

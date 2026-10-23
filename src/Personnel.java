@@ -64,6 +64,10 @@ abstract class Personnel
         return "Some Rank";
     }
 
+    public int getRankNum(){
+        return this.rankNum;
+    }
+
     public double getSalary()
     {
         return this.salary;

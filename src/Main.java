@@ -118,6 +118,8 @@ private final static Scanner scanner = new Scanner(System.in);
             return;
         }
         
+        System.out.println("\n" + alien.getName() + ", while the guards were rotating shifts, escapes from his holding room.");
+
         //Alien needs to Choose a vehicle:
         System.out.println("Choose a vehicle for " + alien.getName() + " to steal.");
 
@@ -146,7 +148,7 @@ private final static Scanner scanner = new Scanner(System.in);
                     return;
                 case 2:
                     try{
-                        Airplane plane = new Airplane();
+                        Airplane plane = new Airplane(300, 25, 150, 80, 30);
                         plane.setDriver(alien);
                         plane.drive();
                     }
@@ -167,20 +169,97 @@ private final static Scanner scanner = new Scanner(System.in);
                     System.out.println();
                     break;
                 default:
-                    throw new IllegalStateException("Unexpected personnel selection: " + choice3);
+                    throw new IllegalStateException("How did this happen? Unexpected personnel selection: " + choice3);
             }
 
+        System.out.println("The UFO has a security system that only a Scientist can disable. What will " + alien.getName() + " do?");
+            Scientist bill = new Scientist("Dr. Bill", 7, 60000, "UFO electrical engineering");
+
+        boolean skinsuited = false;
+        while(!skinsuited){
+            System.out.println("\nChoose an action:");
+            System.out.println("    1. Kill person and wear their skin as a disguise");
+            System.out.println("    2. Subdue a scientist");
+            System.out.println("    3. Comandeer a UFO");
+            System.out.println("    4. Drive to new location");
+            System.out.println("    5. Abduct Humans to serve your Alien overlords on " + alien.getHomePlanet());
+            System.out.println("    6. Ascend towards the stars");
+
+            int d1 = -6767;
+            d1 = readChoice(scanner, "Select a number (1-6)", 1, 6);
+            switch (d1) {
+                    case 1:
+                        System.out.println("Dr. Bill walks down the hallway as " + alien.getName() + " ambushes him.");
+                        skinsuited = true;
+                        break;
+                    case 2:
+                        System.out.println("\nDr. Kumar sees "+ alien.getName() +" in the hallway and alerts security!");
+                        System.out.println( alien.getName() + " is shot and killed while attempting to run away from them.");
+                        System.out.println("GAME OVER");
+                        System.exit (0);
+                        break;
+                    case 3,4,5,6:
+                        System.out.println("Impossible right now. Try Again:");
+                        break;
+                    default:
+                        break;
+            }
+        }
+
+        Scientist disguise = (Scientist) Alien.wearSkinSuit(alien, bill);
+        try{
+            Personnel.generateStub(alien);
+        } catch(Exception e){
+            System.out.println("Oops");
+        }
         
-        System.out.println("ALIEN SCENARIO: Escape Area 51");
-        System.out.println(alien.getName() + " must reach orbit in a UFO before security catches up.");
+        System.out.println(disguise.getName() + " approaches Dr. Kumar, who suspects nothing malicious at all.");
+
+        boolean kidnap = false;
+        while(!kidnap){
+            System.out.println("\nChoose an action:");
+            System.out.println("    1. ---");
+            System.out.println("    2. Subdue a scientist");
+            System.out.println("    3. Comandeer a UFO");
+            System.out.println("    4. Drive to new location");
+            System.out.println("    5. Abduct Humans to serve your Alien overlords on " + alien.getHomePlanet());
+            System.out.println("    6. Ascend towards the stars");
+
+            int d1 = -6767;
+            d1 = readChoice(scanner, "Select a number (1-6)", 1, 6);
+            switch (d1) {
+                    case 2:
+                        System.out.println(disguise.getName() + " chokes out Dr. Hundal and takes out his key to unlock the UFO");
+                        kidnap = true;
+                        break;
+                    case 3:
+                        System.out.println("\nDr. Hundal sees "+ disguise.getName() +" trying to hijack the UFO and kills him with his Glock!");
+                        System.out.println( alien.getName() + " did not know that DR. Bill did not have access to UFO security systems and died cause of that...");
+                        System.out.println("GAME OVER");
+                        System.exit (0);
+                        break;
+                    case 1,4,5,6:
+                        System.out.println("Impossible right now. Try Again:");
+                        break;
+                    default:
+                        break;
+            }
+        }
+
+
+
+
 
         UFO ufo = new UFO(600, 150, 1000);
         ufo.setDriver(alien);
         ufo.startProtonDrive();
 
         if (!ufo.start()) {
-            System.out.println("The UFO cannot launch without a pilot.");   // TODO: throw custom exception here instead of printing message                                                                        
-            return;
+            try{
+                ufo.drive();
+            } catch(IllegalPilotException e){
+                System.out.println(e.getMessage());
+            }                                                                    
         }
 
         float flightTime = 2;

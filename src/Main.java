@@ -117,13 +117,6 @@ private final static Scanner scanner = new Scanner(System.in);
             return;
         }
         
-        //TODO: add something like this after each character creator section for each scenario.
-        System.out.println("\n==========================================================");
-        System.out.println("[ALIEN STATS:]");
-        System.out.println("    NAME: " + alien.getName() + ", RANK: " + alien.getRank());
-        System.out.println("    SALARY: $" + alien.getSalary() + "0, PLANET OF ORIGIN: " + alien.getHomePlanet());
-        System.out.println("==========================================================\n\n");
-        
         //Alien needs to Choose a vehicle:
         System.out.println("Choose a vehicle for " + alien.getName() + " to steal.");
         System.out.println("Tank (Enter: 1), Airplane (Enter: 2), Unidentified Flying Object *UFO* (Enter: 3)");

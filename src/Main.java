@@ -116,11 +116,8 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
         System.out.println("Tank (Enter: 1), Airplane (Enter: 2), Unidentified Flying Object *UFO* (Enter: 3)");
 
         int choice3 = 676767;
-        int counter = 0;
-            while (choice3 < 1 || choice3> 3){
-            System.out.println("Please enter an integer from 1 to 3: ");
+        while (choice3 < 1 || choice3> 3){
             
-            counter ++;
             choice3 = scannerWrapper.readChoice("Please enter an integer from 1 to 3: ", 1, 3);
 
             //TODO: this needs to be fixed with try catch blocks it needs to throw errors instead:
@@ -159,37 +156,39 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
             }
 
         
-        System.out.println("ALIEN SCENARIO: Escape Area 51");
-        System.out.println(alien.getName() + " must reach orbit in a UFO before security catches up.");
+            System.out.println("ALIEN SCENARIO: Escape Area 51");
+            System.out.println(alien.getName() + " must reach orbit in a UFO before security catches up.");
 
-        UFO ufo;
-        try 
-        {
-            ufo = new UFO(600, 150, 1000);
-        }
-        catch (ObjectLimitException e)
-        {
-            System.out.println("Error: " + e.getMessage());
-            return;
-        }
-        ufo.setDriver(alien);
-        ufo.startProtonDrive();
+            UFO ufo;
+            try 
+            {
+                ufo = new UFO(600, 150, 1000);
+            }
+            catch (ObjectLimitException e)
+            {
+                System.out.println("Error: " + e.getMessage());
+                return;
+            }
+            ufo.setDriver(alien);
+            ufo.startProtonDrive();
 
-        if (!ufo.start()) {
-            System.out.println("The UFO cannot launch without a pilot.");   // TODO: throw custom exception here instead of printing message                                                                        
-            return;
-        }
+            if (!ufo.start()) {
+                System.out.println("The UFO cannot launch without a pilot.");   // TODO: throw custom exception here instead of printing message                                                                        
+                return;
+            }
 
-        float flightTime = 2;
-        float distance = ufo.drive(flightTime);
-        ufo.setCurrentAltitude(ufo.getAltitude() + ufo.getAltitudeRate() * flightTime);
-        System.out.println("The UFO traveled " + distance + " units and climbed to " + ufo.getAltitude() + " units.");
+            float flightTime = 2;
+            float distance = ufo.drive(flightTime);
+            ufo.setCurrentAltitude(ufo.getAltitude() + ufo.getAltitudeRate() * flightTime);
+            System.out.println("The UFO traveled " + distance + " units and climbed to " + ufo.getAltitude() + " units.");
 
-        if (ufo.getAltitude() >= 2000) {
-            System.out.println("Mission complete: " + alien.getName() + " has escaped into orbit!");
-        } else {
-            System.out.println("Mission failed: the UFO did not reach orbit.");
+            if (ufo.getAltitude() >= 2000) {
+                System.out.println("Mission complete: " + alien.getName() + " has escaped into orbit!");
+            } else {
+                System.out.println("Mission failed: the UFO did not reach orbit.");
+            }
         }
+        
         //end of alien scenario
     }
 

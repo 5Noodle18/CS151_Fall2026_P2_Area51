@@ -27,19 +27,19 @@ public class Alien extends Personnel
 
     public void promote()
     {
-        if (this.rankNum > 0 && (this.rankNum < ranks.length - 1 ) )
+        if (getRankNum() > 0 && (getRankNum() < ranks.length - 1 ) )
         {
-            rankNum++;
-            this.salary += 15000;
+            incrementRankNum();
+            addSalary(15000);
         }
     }
 
     public void demote()
     {
-        if (this.rankNum > 0)
+        if (getRankNum() > 0)
         {
-            rankNum--;
-            this.salary -= 15000;
+            decrementRankNum();
+            addSalary(-15000);
         }
     }
     //setters
@@ -47,17 +47,11 @@ public class Alien extends Personnel
         this.homePlanet = p;
     }
 
-    public void setRankNum(int num){
-        if (this.rankNum > 0 && (this.rankNum < ranks.length - 1 ) ){
-            this.rankNum = num;
-        }
-    }
-
     //getter methods:
 
     public String getRank()
     {
-        return ranks[this.rankNum];
+        return ranks[getRankNum()];
     }
 
     public String getHomePlanet()

@@ -29,30 +29,19 @@ public class Soldier extends Personnel
 
     public void promote()
     {
-        if (this.rankNum < ranks.length - 1)
+        if (getRankNum() < ranks.length - 1)
         {
-            rankNum++;
-            this.salary += 15000;
+            incrementRankNum();
+            addSalary(15000);
         }
     }
 
     public void demote()
     {
-        if (this.rankNum > 0)
+        if (this.getRankNum() > 0)
         {
-            rankNum--;
-            this.salary -= 15000;
-        }
-    }
-
-    //setter methods:
-
-    public void setRankNum(int num){
-        if (this.rankNum > 0 && (this.rankNum < ranks.length - 1 ) ){
-            this.rankNum = num;
-        }
-        else{
-            this.rankNum = num%(ranks.length);
+            decrementRankNum();
+            addSalary(-15000);
         }
     }
     
@@ -64,7 +53,7 @@ public class Soldier extends Personnel
 
     public String getRank()
     {
-        return ranks[this.rankNum];
+        return ranks[getRankNum()];
     }
 
     public boolean getExpendable()

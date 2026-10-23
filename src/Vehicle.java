@@ -2,31 +2,53 @@ package src;
 //Vehicle is meant to be conceptual superclass of Tank, UFO, and Airplane.
 //Contains attributes meant for all Vehicle types, and generic methods.
 
-public abstract class Vehicle {
+import java.util.Set;
+import java.util.HashSet;
+
+public abstract class Vehicle implements Drivable {
     //attributes - members - fields - variables//
-    protected float topSpeed;
-    protected float acceleration;
-    protected float currentSpeed;
-    protected Personnel driver;
-    protected Personnel[] occupants;
+    private static Set<Vehicle> registry = new HashSet<>();
+    private float topSpeed;
+    private float acceleration;
+    private float currentSpeed;
+    private Personnel driver;
+    private Personnel[] occupants;
 
     //default constructor
-    public Vehicle() 
+    public Vehicle() throws ObjectLimitException
     {
+        if (registry.size() >= ObjectLimitException.MAX_INSTANCES) {
+            throw new ObjectLimitException("Maximum number of Vehicle instances reached: " + ObjectLimitException.MAX_INSTANCES);
+        }
         topSpeed = 100;
         acceleration = 10;
         currentSpeed = 0;
         driver = null;
         occupants = null;
+        if (registry.contains(this)) {
+            throw new IllegalArgumentException("Duplicate Personnel instance detected");
+        }
+        else {
+            registry.add(this);
+        }
     }
     //intended constructor
-    public Vehicle(float topSpeed, float acceleration) 
+    public Vehicle(float topSpeed, float acceleration) throws ObjectLimitException
     {
+        if (registry.size() >= ObjectLimitException.MAX_INSTANCES) {
+            throw new ObjectLimitException("Maximum number of Personnel instances reached: " + ObjectLimitException.MAX_INSTANCES);
+        }
         this.topSpeed = topSpeed;
         this.acceleration = acceleration;
         currentSpeed = 0;
         driver = null;
         occupants = null;
+        if (registry.contains(this)) {
+            throw new IllegalArgumentException("Duplicate Personnel instance detected");
+        }
+        else {
+            registry.add(this);
+        }
     }
     
     //Getters
@@ -42,13 +64,17 @@ public abstract class Vehicle {
     { 
         return currentSpeed; 
     }
-    protected Personnel getDriver() 
+    public Personnel getDriver() 
     { 
         return driver; 
     }
     protected Personnel[] getOccupants() 
     { 
         return occupants;
+    }
+    public int getVehicleCount()
+    {
+        return registry.size();
     }
     //Setters
     protected void setTopSpeed(float speed) 
@@ -63,7 +89,7 @@ public abstract class Vehicle {
     {
         currentSpeed = speed;
     }
-    protected void setDriver(Personnel driver) 
+    public void setDriver(Personnel driver) 
     {
         this.driver = driver;
     }

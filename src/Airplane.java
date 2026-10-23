@@ -13,7 +13,7 @@ public class Airplane extends Vehicle implements HumanDrivable{
     public final static int MAX_ALTITUDE = 15000; //max altitude the airplane can reach
 
     //constructors
-    public Airplane()
+    public Airplane() throws ObjectLimitException
     { //default
         super();
         takeOffSpeed = 150;
@@ -23,7 +23,7 @@ public class Airplane extends Vehicle implements HumanDrivable{
         fuelLevel = 20;
     }
 
-    public Airplane(float topSpeed, float acceleration, float takeOffSpeed, float landingSpeed, float altitudeRate) 
+    public Airplane(float topSpeed, float acceleration, float takeOffSpeed, float landingSpeed, float altitudeRate) throws ObjectLimitException
     { //intended default
         super(topSpeed, acceleration);
         this.takeOffSpeed = takeOffSpeed;
@@ -73,14 +73,6 @@ public class Airplane extends Vehicle implements HumanDrivable{
     }
 
     // interface methods
-    public void setDriver(Personnel driver)
-    {
-        this.driver = driver;
-    }
-    public Personnel getDriver()
-    {
-        return this.driver;
-    }
     public void drive()
     {
         System.out.println("The plane flew.");
@@ -101,7 +93,7 @@ public class Airplane extends Vehicle implements HumanDrivable{
     @Override 
     public boolean start() 
     {
-        if (driver != null) 
+        if (getDriver() != null) 
             return true;
         else
             return false;
@@ -111,11 +103,11 @@ public class Airplane extends Vehicle implements HumanDrivable{
     public float drive(float seconds) 
     {
         float distance = 0;
-        currentSpeed = currentSpeed + (acceleration * seconds);
-        if (currentSpeed > topSpeed)
-            currentSpeed = topSpeed;
-        distance = currentSpeed * seconds;
-        if (currentSpeed > takeOffSpeed) {
+        setCurrentSpeed(getCurrentSpeed() + (getAcceleration()*seconds));
+        if (getCurrentSpeed() > getTopSpeed())
+            setCurrentSpeed(getTopSpeed());
+        distance = getCurrentSpeed() * seconds;
+        if (getCurrentSpeed() > takeOffSpeed) {
             currentAltitude = Math.min(currentAltitude + (altitudeRate * seconds), MAX_ALTITUDE);
         }
         return distance;
@@ -124,7 +116,7 @@ public class Airplane extends Vehicle implements HumanDrivable{
     @Override
     public void stop() 
     {
-        currentSpeed = 0;
+        setCurrentSpeed(0);
         if (currentAltitude > 10) {//wasn't close enough to the ground!
             System.out.println("The airplane is still in the air! You stalled and crashed!");
             destroy();
@@ -135,16 +127,16 @@ public class Airplane extends Vehicle implements HumanDrivable{
     public void destroy()
     {
         System.out.println("The airplane has been destroyed.");
-        currentSpeed = 0;
-        driver = null;
-        occupants = null;
+        setCurrentSpeed(0);
+        setDriver(null);
+        setOccupants(null);
         currentAltitude = 0;
     }
 
     //TODO: specialized functions for Airplane
 
     public boolean takeOff() {
-        if (currentSpeed >= takeOffSpeed) {
+        if (getCurrentSpeed() >= takeOffSpeed) {
             currentAltitude = Math.min(currentAltitude + altitudeRate, MAX_ALTITUDE);
             System.out.println("The airplane has taken off and is now at an altitude of " + currentAltitude + " units.");
             return true;
@@ -155,11 +147,11 @@ public class Airplane extends Vehicle implements HumanDrivable{
     }
 
     public boolean land() {
-        if (currentAltitude > 0 && currentSpeed <= landingSpeed) {
+        if (currentAltitude > 0 && getCurrentSpeed() <= landingSpeed) {
             currentAltitude = 0;
             System.out.println("The airplane has landed safely.");
             return true;
-        } else if (currentAltitude > 0 && currentSpeed > landingSpeed) {
+        } else if (currentAltitude > 0 && getCurrentSpeed() > landingSpeed) {
             System.out.println("You need to be at or below the landing speed of " + landingSpeed + " units to land.");
             return false;
         } else if (currentAltitude == 0) {
@@ -172,13 +164,13 @@ public class Airplane extends Vehicle implements HumanDrivable{
     public float slowDown(float seconds) 
     {
         float distance = 0;
-        currentSpeed = currentSpeed - (acceleration * seconds);
-        if (currentSpeed < 0)
+        setCurrentSpeed(getCurrentSpeed() - (getAcceleration()*seconds));
+        if (getCurrentSpeed() < 0)
             stop();
-        else if (currentSpeed < landingSpeed && currentAltitude > 0) {
+        else if (getCurrentSpeed() < landingSpeed && currentAltitude > 0) {
             currentAltitude = currentAltitude - (altitudeRate * seconds); //you're falling!
         }
-        distance = currentSpeed * seconds;
+        distance = getCurrentSpeed() * seconds;
         return distance;
     }
 }

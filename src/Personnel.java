@@ -1,28 +1,33 @@
 package src;
 
 import java.util.Scanner;
+import java.util.Set;
+import java.util.HashSet;
 
 abstract class Personnel
 {
-    public static int peopleCount = 0;
-    public String name;
-    public int rankNum;
-    public String[] ranks;
-    public float HP = 100;
-    public double salary;
+    private static Set<Personnel> registry = new HashSet<>(); //used to prevent duplicates and enforce maximum number of instances
+    private String name;
+    private int rankNum;
+    private String[] ranks;
+    private double salary;
 
     public Personnel(String name, int rankNum, double salary) throws ObjectLimitException
     {
-        if (peopleCount >= ObjectLimitException.getMaxInstances()) {
-            throw new ObjectLimitException("Maximum number of Personnel instances reached.");
+        // object limit check
+        if (registry.size() >= ObjectLimitException.MAX_INSTANCES) {
+            throw new ObjectLimitException("Maximum number of Personnel instances reached: " + ObjectLimitException.MAX_INSTANCES);
         }
         this.name = name;
         this.rankNum = rankNum;
         this.salary = salary;
-        this.HP = 100;
-        //Badge number keeps track of people who have joined our base and gives us a way to pull up records of people based on a security badge code.
-        //It increments for every new Person or Alien who starts working for our base or eveyr new alien who is born.
-        peopleCount++;
+        // duplicate check, must happen after this... is set
+        if (registry.contains(this)) {
+            throw new IllegalArgumentException("Duplicate Personnel instance detected: " + name);
+        }
+        else {
+            registry.add(this);
+        }
     }
 
     public void promote(){ }
@@ -43,10 +48,19 @@ abstract class Personnel
         this.salary = s;
     }
     public void setRankNum(int n){
-        this.rankNum = n;
+        if (n >= ranks.length) {    // cap to max
+            this.rankNum = ranks.length - 1;
+        } else if (n < 0) {
+            this.rankNum = 0; // cap to min
+        } else {
+            this.rankNum = n;
+        }
     }
     public void setRanks(String[] r){
         this.ranks = r;
+    }
+    public void addSalary(double s){
+        this.salary += s;
     }
 
     //getter methods:
@@ -54,19 +68,32 @@ abstract class Personnel
     {
         return this.name;
     }
-
     public String[] getRanksArray(){
         return this.ranks;
     }
-
     public String getRank()
     {
         return "Some Rank";
     }
-
     public double getSalary()
     {
         return this.salary;
+    }
+    public static int getPeopleCount() 
+    {
+        return registry.size();
+    }
+    public int getRankNum()
+    {
+        return this.rankNum;
+    }
+    public int incrementRankNum()
+    {
+        return ++this.rankNum;
+    }
+    public int decrementRankNum()
+    {
+        return --this.rankNum;
     }
 
     //putting character creator into personnel helps keep it clean when running the scenarios in main.

@@ -190,7 +190,14 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println("ALIEN SCENARIO: Escape Area 51");
         System.out.println(alien.getName() + " must reach orbit in a UFO before security catches up.");
 
-        UFO ufo = new UFO(600, 150, 1000);
+        UFO ufo = null;
+        try {
+            ufo = new UFO(600, 150, 1000);            
+        } catch (ObjectLimitException e) {
+            System.out.println("Error:" + e.getMessage());
+            System.exit(1);
+        }
+
         ufo.setDriver(alien);
         ufo.startProtonDrive();
 
@@ -212,7 +219,7 @@ private final static Scanner scanner = new Scanner(System.in);
         //end of alien scenario
     }
 
-    private static void runScientistScenario(Scientist scientist) throws WrongOrderException {
+    private static void runScientistScenario(Scientist scientist) throws WrongOrderException, ObjectLimitException {
         /* TODO:
         Code below is template. Comment below should be final outline:
         1. THIS PART IS ALREADY DONE
@@ -234,14 +241,19 @@ private final static Scanner scanner = new Scanner(System.in);
             Personnel.generateStub(scientist);
         } catch (ObjectLimitException e) {
             System.out.println("Error: " + e.getMessage());
-            return;
+            System.exit(1);
         }
 
         System.out.println("SCIENTIST SCENARIO: Emergency Research Flight");
         System.out.println(scientist.getName() + " must fly the research airplane and land safely.");
 
-
-        Airplane airplane = new Airplane(300, 25, 150, 80, 30);
+        Airplane airplane = null;
+        try {
+            airplane = new Airplane(300, 25, 150, 80, 30);
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            System.exit(1);
+        }
         System.out.println("\n[Airplane Stats:]");
         System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
         System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
@@ -493,13 +505,20 @@ private final static Scanner scanner = new Scanner(System.in);
         System.out.println("Your new salary is: $" + scientist.getSalary() + "0");        
     }
 
-    private static void runSoldierScenario(Scanner scanner, Soldier soldier)
+    private static void runSoldierScenario(Scanner scanner, Soldier soldier) throws ObjectLimitException
     {
         // actors in this scenario
-        Alien alien;
-        Scientist scientist;
-        UFO ufo = new UFO(600, 150, 1000);
-        Tank tank = new Tank(80, 20, 3, 5);
+        Alien alien = null;
+        Scientist scientist = null;
+        UFO ufo = null;
+        Tank tank = null;
+        try {
+            ufo = new UFO(600, 150, 1000);
+            tank = new Tank(80, 20, 3, 5);
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            System.exit(1);
+        }
 
         try
         {
@@ -514,7 +533,7 @@ private final static Scanner scanner = new Scanner(System.in);
         catch (ObjectLimitException e)
         {
             System.out.println("Error: " + e.getMessage());
-            return;
+            System.exit(1);
         }
 
         // list of options to choose from
@@ -779,6 +798,8 @@ private final static Scanner scanner = new Scanner(System.in);
         } catch (ObjectLimitException e) {
             System.out.println("Error: " + e.getMessage());
             System.out.println("Maximum number of Personnel instances reached. Boarding stopped.");
+            Personnel[] trimPassengers = Arrays.copyOf(passengers, 100); //trim final allocated length to 100
+            passengers = trimPassengers;
         } finally {
             //ensure we set occupants to the successfully created passengers, even if we hit the limit
             airplane.setOccupants(passengers);

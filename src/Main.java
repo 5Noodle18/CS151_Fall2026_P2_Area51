@@ -54,6 +54,7 @@ private final static Scanner scanner = new Scanner(System.in);
             
             if (scanner.hasNextInt()) {
                 choice = scanner.nextInt();
+                scanner.nextLine();
                 
                 if (choice < 1 || choice > 3) {
                     System.out.println("IF THE CHOICE IS NOT FROM 1:3, YOU WILL BE NEUTRALIZED. TRY AGAIN!");
@@ -235,14 +236,7 @@ private final static Scanner scanner = new Scanner(System.in);
 
 
         Airplane airplane = new Airplane(300, 25, 150, 80, 30);
-        System.out.println("\n[Airplane Stats:]");
-        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
-        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
-        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
-        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
-        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
-        System.out.println("    Driver: n/a");
-        System.out.println("    Occupants: n/a");
+        Vehicle.generateStub(airplane);
 
         boolean isFueled = false;
         while (!isFueled) {
@@ -254,7 +248,24 @@ private final static Scanner scanner = new Scanner(System.in);
             System.out.println("5. Drive");
             System.out.println("6. Stop Engine");
 
-            int choice = readChoice(scanner, "Enter your choice (1-6): ", 1, 6);
+
+            
+        int choice = -6767;
+        while (choice < 1 || choice > 6){
+            System.out.print("Please enter an integer from 1 to 6: ");
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
+                scanner.nextLine();
+                
+                if (choice < 1 || choice > 3) {
+                    System.out.println("TRY AGAIN!");
+                } 
+            } else {
+                System.out.println("TRY AGAIN!");
+                System.out.println();
+                scanner.next();
+            }
+        }
 
             try {
                 switch (choice) {
@@ -274,14 +285,7 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
         
-        System.out.println("\n[Airplane Stats:]");
-        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
-        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
-        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
-        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
-        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
-        System.out.println("    Driver: n/a");
-        System.out.println("    Occupants: n/a");
+        Vehicle.generateStub(airplane);
 
         boolean boarded = false;
         while (!boarded) {
@@ -315,14 +319,7 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
 
-        System.out.println("\n[Airplane Stats:]");
-        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
-        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
-        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
-        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
-        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
-        System.out.println("    Driver: n/a");
-        System.out.println("    Occupants: " + airplane.getOccupants().length + " passengers");
+        Vehicle.generateStub(airplane);
         
         boolean pilotBoarded = false;
         while (!pilotBoarded) {
@@ -355,14 +352,7 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
 
-        System.out.println("\n[Airplane Stats:]");
-        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
-        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
-        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
-        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
-        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
-        System.out.println("    Driver: " + airplane.getDriver().getName());
-        System.out.println("    Occupants: " + airplane.getOccupants().length + " passengers");
+        Vehicle.generateStub(airplane);
 
         boolean engineStarted = false;
         while (!engineStarted) {
@@ -394,14 +384,7 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
 
-        System.out.println("\n[Airplane Stats:]");
-        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
-        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
-        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
-        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
-        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
-        System.out.println("    Driver: " + airplane.getDriver().getName());
-        System.out.println("    Occupants: " + airplane.getOccupants().length + " passengers");
+        Vehicle.generateStub(airplane);
 
         boolean driven = false;
         while (!driven) {
@@ -433,14 +416,7 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
         
-        System.out.println("\n[Airplane Stats:]");
-        System.out.println("    Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
-        System.out.println("    Altitude Rate: " + airplane.getAltitudeRate() + " units/sec, Current Altitude: " + airplane.getAltitude() + " units");
-        System.out.println("    Fuel Level: " + airplane.checkFuel() + "%");
-        System.out.println("    Top Speed: " + airplane.getTopSpeed() + " units, Acceleration: " + airplane.getAcceleration() + " units/sec^2");
-        System.out.println("    Current Speed: " + airplane.getCurrentSpeed() + " units");
-        System.out.println("    Driver: " + airplane.getDriver().getName());
-        System.out.println("    Occupants: " + airplane.getOccupants().length + " passengers");
+        Vehicle.generateStub(airplane);
 
         boolean stopped = false;
         while (!stopped) {

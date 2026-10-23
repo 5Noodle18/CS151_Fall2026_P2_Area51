@@ -82,13 +82,15 @@ abstract class Personnel
             
             if (scanner.hasNextInt()) {
                 choice2 = scanner.nextInt();
+                scanner.nextLine();
                 
                 if (choice2 < 1 || choice2 > 2) {
                     System.out.println("TRY AGAIN!");
                 } 
+
             } else {
                 System.out.println("TRY AGAIN!");
-                scanner.next();
+                scanner.nextLine();
             }
         }
 
@@ -101,7 +103,6 @@ abstract class Personnel
             return person;         
         } 
         else {
-        scanner.nextLine();
 
         System.out.print("Please enter the "+ role + "'s Name (Be Creative Please): ");
         while (theName.isEmpty()) {
@@ -125,16 +126,16 @@ abstract class Personnel
                 System.out.print("Please enter the " + role + "'s Rank Number (0-"+ maxNum +"):");
                 if (scanner.hasNextInt()) {
                     theRank = scanner.nextInt();
+                    scanner.nextLine();
 
                     if (theRank < 0 || theRank > maxNum) {
                         System.out.println("TRY AGAIN!");
                     } 
                 } else {
                     System.out.println("TRY AGAIN!");
-                    scanner.next();
+                    scanner.nextLine();
                 }
             }
-            scanner.nextLine();
             
             //pick extra field for person and alien because those extra fields are strings
             if(!(person instanceof Soldier)){
@@ -146,7 +147,7 @@ abstract class Personnel
                     } else{
                         System.out.println ("Degree:");
                     }
-                extraField = scanner.nextLine().trim();
+                    extraField = scanner.nextLine().trim();
     
                     if (extraField.isEmpty()) {
                         System.out.println("TRY AGAIN!");
@@ -162,17 +163,18 @@ abstract class Personnel
             
                     if (scanner.hasNextInt()) {
                     choosing = scanner.nextInt();
+                    scanner.nextLine();
                 
                         if (choosing < 1 || choosing > 2) {
                             System.out.println("TRY AGAIN!");
                         } 
                     } else {
                         System.out.println("TRY AGAIN!");
-                        scanner.next();
+                        scanner.nextLine();
                     }
                 }
 
-                if(choosing == 1){
+                if(expendable = choosing == 1){
                     expendable = false;
                 }
     

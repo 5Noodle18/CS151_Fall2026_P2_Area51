@@ -20,7 +20,7 @@ public class Soldier extends Personnel
         "General"                   //rankNum = 12
     };
 
-    public Soldier(String name, int rankNum, double salary, boolean expendable)
+    public Soldier(String name, int rankNum, double salary, boolean expendable) throws ObjectLimitException
     {
         super(name, rankNum, salary);
         this.expendable = expendable;

@@ -105,8 +105,19 @@ private final static Scanner scanner = new Scanner(System.in);
         */
 
         //refer to last method in personnel if you want to change character creator method:
+<<<<<<< Updated upstream
         alien = (Alien) Personnel.characterCreator(alien, scanner);
         Personnel.generateStub(alien);
+=======
+        try {
+            alien = (Alien) Personnel.characterCreator(alien, scanner);
+            Personnel.generateStub(alien);
+        } catch (ObjectLimitException e) {
+            System.out.println("Error: " + e.getMessage());
+            return;
+        }
+        
+>>>>>>> Stashed changes
         
         //Alien needs to Choose a vehicle:
         System.out.println("Choose a vehicle for " + alien.getName() + " to steal.");

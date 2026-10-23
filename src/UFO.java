@@ -96,7 +96,7 @@ public class UFO extends Vehicle implements AlienDrivable{
             return false;
     }
     @Override
-    public float drive(float seconds) 
+    public float drive(float seconds)
     {
         if (isStealthed)
             return 0; //can't drive if stealthed

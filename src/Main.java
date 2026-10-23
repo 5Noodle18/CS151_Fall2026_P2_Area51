@@ -120,45 +120,28 @@ private final static Scanner scanner = new Scanner(System.in);
         
         //Alien needs to Choose a vehicle:
         System.out.println("Choose a vehicle for " + alien.getName() + " to steal.");
-        System.out.println("Tank (Enter: 1), Airplane (Enter: 2), Unidentified Flying Object *UFO* (Enter: 3)");
 
-        int choice3 = 676767;
-        int counter = 0;
-            while (choice3 < 1 || choice3> 3){
-            System.out.println("Please enter an integer from 1 to 3: ");
-            
-            counter ++;
-            if (scanner.hasNextInt()) {
-                choice3 = scanner.nextInt();
-                
-                if (choice3 < 1 || choice3 > 3) {
-                    if(counter > 3){
-                        System.out.println("You must be a really stupid alien if you can't choose a vehicle correctly!");
-                    }
-                    else{
-                        System.out.println("TRY AGAIN!");
-                    }
-                } 
-                } else {
-                System.out.println("TRY AGAIN!");
-                scanner.next();
-                }
-            }
+        int choice3 = -6767;
+        choice3 = readChoice(scanner, "Tank (Enter: 1), Airplane (Enter: 2), Unidentified Flying Object *UFO* (Enter: 3)", 1, 3);
 
-            //TODO: this needs to be fixed with try catch blocks it needs to throw errors instead:
             switch(choice3){
                 case 1:
-                    System.out.println("ALIEN DETECTED IN TANK! SELF DESTRUCT INITIATED!");
-                    Thread.sleep(300);
-
-                    for(int i = 10; i>=0; i--){
+                    try{
+                        Tank tank = new Tank(67,67,67,67);
+                        tank.setDriver(alien);
+                    }
+                    catch(IllegalPilotException e){
+                        System.out.println(e.getMessage());
+                    }
+                    finally{
+                        for(int i = 10; i>=0; i--){
                         System.out.print(i + "...");
                         Thread.sleep(170);
                     }
-
                     System.out.println("BOOM!!!");
                     Thread.sleep(170);
                     System.out.println("\nThe Alien has perished. GAME OVER!");
+                    }
                     return;
                 case 2:
                     System.out.println("ALIEN DETECTED IN PLANE! SELF DESTRUCT INITIATED!");
@@ -236,7 +219,7 @@ private final static Scanner scanner = new Scanner(System.in);
 
 
         Airplane airplane = new Airplane(300, 25, 150, 80, 30);
-        Vehicle.generateStub(airplane);
+        generateStub(airplane);
 
         boolean isFueled = false;
         while (!isFueled) {
@@ -285,7 +268,7 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
         
-        Vehicle.generateStub(airplane);
+        generateStub(airplane);
 
         boolean boarded = false;
         while (!boarded) {
@@ -319,7 +302,7 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
 
-        Vehicle.generateStub(airplane);
+        generateStub(airplane);
         
         boolean pilotBoarded = false;
         while (!pilotBoarded) {
@@ -352,7 +335,7 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
 
-        Vehicle.generateStub(airplane);
+        generateStub(airplane);
 
         boolean engineStarted = false;
         while (!engineStarted) {
@@ -384,7 +367,7 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
 
-        Vehicle.generateStub(airplane);
+        generateStub(airplane);
 
         boolean driven = false;
         while (!driven) {
@@ -416,7 +399,7 @@ private final static Scanner scanner = new Scanner(System.in);
             }
         }
         
-        Vehicle.generateStub(airplane);
+        generateStub(airplane);
 
         boolean stopped = false;
         while (!stopped) {

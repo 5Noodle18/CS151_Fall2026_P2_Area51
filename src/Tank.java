@@ -96,6 +96,9 @@ public class Tank extends Vehicle implements HumanDrivable{
     }
     public void drive() throws IllegalPilotException
     {
+        if(this.getDriver() == null){
+            throw new IllegalPilotException("WARNING: UFO cannot fly without a pilot!");
+        }
         if(this.getDriver() instanceof Alien){
             throw new IllegalPilotException("ALIEN DETECTED IN VEHICLE! SELF DESTRUCT SEQUENCE INITIATED:");
         }

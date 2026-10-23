@@ -129,6 +129,7 @@ private final static Scanner scanner = new Scanner(System.in);
                     try{
                         Tank tank = new Tank(67,67,67,67);
                         tank.setDriver(alien);
+                        tank.drive();
                     }
                     catch(IllegalPilotException e){
                         System.out.println(e.getMessage());
@@ -144,18 +145,24 @@ private final static Scanner scanner = new Scanner(System.in);
                     }
                     return;
                 case 2:
-                    System.out.println("ALIEN DETECTED IN PLANE! SELF DESTRUCT INITIATED!");
-                    Thread.sleep(300);
-
-                    for(int i = 10; i>=0; i--){
-                        System.out.print(i + "...");
-                        Thread.sleep(170);                        
+                    try{
+                        Airplane plane = new Airplane();
+                        plane.setDriver(alien);
+                        plane.drive();
                     }
-
+                    catch(IllegalPilotException e){
+                        System.out.println(e.getMessage());
+                    }
+                    finally{
+                        for(int i = 10; i>=0; i--){
+                        System.out.print(i + "...");
+                        Thread.sleep(170);
+                    }
                     System.out.println("BOOM!!!");
                     Thread.sleep(170);
-                    System.out.println("\nThe Alien has perished. GAME OVER!");                    
-                    return;                    
+                    System.out.println("\nThe Alien has perished. GAME OVER!");
+                    }
+                    return;                   
                 case 3:
                     System.out.println();
                     break;

@@ -63,8 +63,11 @@ public class UFO extends Vehicle implements AlienDrivable{
     {
         return this.driver;
     }
-    public void drive()
+    public void drive() throws IllegalPilotException
     {
+        if(this.getDriver() == null){
+            throw new IllegalPilotException("WARNING: UFO cannot fly without a pilot!");
+        }
         System.out.print("UFO floating\n");
     }
     public void abduct(Personnel abductee)

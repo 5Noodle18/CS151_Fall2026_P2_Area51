@@ -7,6 +7,7 @@ abstract class Personnel
     public static long peopleCount = 0;
     public String name;
     public int rankNum;
+    public String[] ranks;
     public float HP = 100;
     public double salary;
     public long badgeNum;
@@ -46,6 +47,9 @@ abstract class Personnel
     public void setRankNum(int n){
         this.rankNum = n;
     }
+    public void setRanks(String[] r){
+        this.ranks = r;
+    }
 
     //getter methods:
     public String getName()
@@ -54,11 +58,7 @@ abstract class Personnel
     }
 
     public String[] getRanksArray(){
-        String[] stuff  = {
-            "rank1",
-            "rank2"
-        };
-        return stuff;
+        return this.ranks;
     }
 
     public String getRank()

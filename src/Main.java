@@ -791,6 +791,11 @@ private final static Scanner scanner = new Scanner(System.in);
         float distanceTraveled = 0;
 
         while (true) {
+            if (airplane.getDriver() == null) //plane was destroyed during loop)
+            {
+                System.out.println("GAME OVER: The airplane has been destroyed. You cannot continue.");
+                System.exit(0);
+            }
             System.out.println("\nCurrent Speed: " + airplane.getCurrentSpeed() + " units");
             System.out.println("Current Altitude: " + airplane.getAltitude() + " units");
             System.out.println("Takeoff Speed: " + airplane.getTakeOffSpeed() + " units, Landing Speed: " + airplane.getLandingSpeed() + " units");
@@ -801,7 +806,7 @@ private final static Scanner scanner = new Scanner(System.in);
             System.out.println("3. Take Off");
             System.out.println("4. Land");
 
-            int choice = readChoice(scanner, "Enter your choice (1-3): ", 1, 4);
+            int choice = readChoice(scanner, "Enter your choice (1-4): ", 1, 4);
 
             switch (choice) {
                 case 1:
@@ -831,7 +836,12 @@ private final static Scanner scanner = new Scanner(System.in);
                     airplane.takeOff();
                     break;
                 case 4:
-                    airplane.land();
+                    if (airplane.land()) {
+                        System.out.println("You have successfully landed at Area 51!");
+                        return;
+                    } else {
+                        System.out.println("You cannot land yet. Ensure your speed is below the landing speed and you are at a safe altitude.");
+                    }
                     break;
                 default:
                     throw new IllegalStateException("Unexpected choice: " + choice);

@@ -24,6 +24,7 @@ public class Soldier extends Personnel
     {
         super(name, rankNum, salary);
         this.expendable = expendable;
+        this.setRanks(ranks);
     }
 
     public void promote()
@@ -60,9 +61,6 @@ public class Soldier extends Personnel
     }
 
     //getter methods:
-    public String[] getRanksArray(){
-        return ranks;
-    }
 
     public String getRank()
     {

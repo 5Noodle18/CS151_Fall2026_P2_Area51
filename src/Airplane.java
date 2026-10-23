@@ -83,7 +83,7 @@ public class Airplane extends Vehicle implements HumanDrivable{
     }
     public void drive()
     {
-        System.out.println("flying");
+        System.out.println("The plane flew.");
     }
     public void fuelUp()
     {

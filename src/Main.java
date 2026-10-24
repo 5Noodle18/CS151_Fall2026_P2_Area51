@@ -552,7 +552,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                     statusMessage += alien.getName() + " is now getting ready to Jump away with " + ((Scientist)ufo.getHoldingBay()).getName() + " still inside.\n";
                     ufo.startProtonDrive();
                     break;
-                case 7: // UFO is jumped away
+                case 7: // UFO jumped away
                     statusMessage += ufo.getDriver().getName() + " got away. They are now probably on their way to " +  ((Alien)ufo.getDriver()).getHomePlanet() + ".\n";
                     endingState = 3;
                     break;
@@ -642,7 +642,6 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                                 {
                                     endingState = 6;
                                 }
-                                ufo.destroy();
                             }
                             else
                             {

@@ -1,7 +1,7 @@
 package src;
 public class Soldier extends Personnel
 {
-    private boolean expendable;
+    private boolean expendable; // a soldier
     //Array keeps track of all the ranks. RankNum stores the corresponding number 
     private static String[] ranks =
     {
@@ -27,6 +27,7 @@ public class Soldier extends Personnel
         this.setRanks(ranks);
     }
 
+    @Override
     public void promote()
     {
         if (getRankNum() < ranks.length - 1)
@@ -36,6 +37,7 @@ public class Soldier extends Personnel
         }
     }
 
+    @Override
     public void demote()
     {
         if (this.getRankNum() > 0)
@@ -44,18 +46,39 @@ public class Soldier extends Personnel
             addSalary(-15000);
         }
     }
-    
-    public void setExpendable(boolean val){
+
+    /**
+     * 
+     * @param threat // the thing that threatens the soldier.
+     * They perished because of... OR were triumpant despite...
+     * @return a string containing the fate of the soldier
+     */
+    public String momentOfTruth(String threat)
+    {
+        String message = this.getRank() + " " + this.getName();
+        if (expendable)
+        {
+            message += " perished heroicly because of ";
+        }
+        else
+        {
+            message += " survived despite "; 
+        }
+        message += threat + "\n";
+        return message;
+    }
+
+    // setter methods
+    public void setExpendable(boolean val)
+    {
         this.expendable = val;
     }
 
-    //getter methods:
-
+    // getter methods:
     public String getRank()
     {
         return ranks[getRankNum()];
     }
-
     public boolean getExpendable()
     {
         return this.expendable;

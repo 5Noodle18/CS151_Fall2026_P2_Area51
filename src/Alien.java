@@ -15,7 +15,7 @@ public class Alien extends Personnel
         "UFO division Captain",
         "UFO division Commander",
         "UFO division Colonel",
-        "UFO division General"          //rankNum 14
+        "UFO division General"          //rankNum 11
     };
 
     public Alien(String name, int rankNum, double salary, String homePlanet) throws ObjectLimitException

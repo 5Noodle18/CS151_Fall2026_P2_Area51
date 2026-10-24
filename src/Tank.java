@@ -140,6 +140,7 @@ public class Tank extends Vehicle implements HumanDrivable{
 
     public void loadShell()
     {
+        System.out.print("\nShell loaded");
         isLoaded = true;
     }
 
@@ -174,6 +175,7 @@ public class Tank extends Vehicle implements HumanDrivable{
     @Override
     public void destroy()
     {
+        
         setCurrentSpeed(0);
         setDriver(null);
         gunner = null;

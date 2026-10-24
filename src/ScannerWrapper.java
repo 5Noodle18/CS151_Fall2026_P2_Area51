@@ -31,33 +31,6 @@ public class ScannerWrapper {
     }
 
     /**
-     * @return the users input as an int
-     */
-    public int readInt()
-    {
-        int input;
-        try
-        {
-            input = Integer.parseInt(readInput());
-            hasInt = true;
-            return input;
-        }
-        catch (NumberFormatException e) {}
-
-        hasInt = false;
-        return -6767; // error code funy haha
-    }
-
-    /**
-     * must have called readInt() before this, or it will be stale
-     * @return if true if the last thing read was an int
-     */
-    public boolean hasInt()
-    {
-        return hasInt;
-    }
-
-    /**
      * @return the users input as a String
      */
     public String readString()

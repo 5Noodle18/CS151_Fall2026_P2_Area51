@@ -76,24 +76,6 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
 
 
     private static void runAlienScenario(Alien alien) throws InterruptedException, ObjectLimitException {
-        /* TODO:
-        Code below is template. Comment below should be final outline:
-        1. DONE
-        2. DONE
-        3. Construct some Vehicles and print their stats to the user. They choose which one.
-            --> if !UFO, throw custom exception IllegalPilotException
-        4. Set UFO's driver as {{Alien}}
-        5. Present list of options: stop(), start(), drive(), abduct(), etc....
-            --> each method throws custom exception WrongOrderException unless done in THIS order:
-            start() --> setIsStealthed(true) --> drive(t)
-        6. Every time drive(t) is used, the Alien enters a new area full of Personnel they can abduct
-            a) Instantiate new Personnels
-            b) abduct() takes Personnel if choice
-                --> if !Scientist, the user must unabduct().
-        7. Once Scientist abducted, the order for escape is: 
-            --> startProtonDrive() --> warpDrive(t) --> they win!
-            --> Alien gets promoted based on Scientist's rank
-        */
 
         //refer to last method in personnel if you want to change character creator method:
         try {
@@ -361,22 +343,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
 
 
     private static void runScientistScenario(Scientist scientist) throws WrongOrderException {
-        /* TODO:
-        Code below is template. Comment below should be final outline:
-        1. THIS PART IS ALREADY DONE
-        2. Print scenario -- {{Scientist.getName}} has to take a research plane from Area 50 to Area 51 (100,000m)! They must succesfully take off and then land.
-        3. Construct an Airplane and random assortment of human Personnel. 
-        4. Set Airplane's driver as {{Scientist}} and occupants as these random Personnel.
-            --> print every time someone boards (this is ideal time to check the MAXIMUM_OBJECTS=100 exception rule)
-        5. Present list of options: stop(), start(), drive(), fuelUp(), etc....
-            --> each method throws custom exception WrongOrderException unless done in THIS order:
-            fuelUp() --> start() --> drive(t)
-        6. Every time drive(t) is used, re-print the Airplane's speed, takeOffSpeed, and distance remaining landingSpeed so user knows when to takeOff and land.
-            a) speed > takeOffSpeed in order to takeOff
-            b) speed < landingSpeed in order to land 
-        7. Once user lands the Airplane AND remaining_distance < 0, they win!
-            --> Promote the scientist based on # of occupants!
-        */
+  
         try {
             scientist = (Scientist) Personnel.characterCreator(scientist, scannerWrapper);
             Personnel.generateStub(scientist);
@@ -880,7 +847,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                 break;
             
             case 6: // you shoot down the UFO with the scientist inside
-                endingMessage += "\nToo bad that " + ((Scientist)ufo.getHoldingBay()).getRank() + " " + ufo.getHoldingBay().getName() + " was  the UFO...";
+                endingMessage += "\nToo bad that " + ((Scientist)ufo.getHoldingBay()).getRank() + " " + ufo.getHoldingBay().getName() + " was in the UFO...";
             case 7: // you shoot down the UFO
                 endingMessage = "Congratulations! You stopped " + alien.getRank() + " " + alien.getName() + "! You deserve a promotion!" + endingMessage;
                 soldier.promote();

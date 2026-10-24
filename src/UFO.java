@@ -80,7 +80,6 @@ public class UFO extends Vehicle implements AlienDrivable{
         System.out.println("Proton drive spooled up");
     }
 
-    //TODO: true implementations
     //abstract extensions
     @Override
     public boolean start()
@@ -118,6 +117,4 @@ public class UFO extends Vehicle implements AlienDrivable{
         setOccupants(null);
         currentAltitude = 0;
     }
-
-    //TODO: specialized functions for UFO
 }

@@ -147,7 +147,6 @@ public class Tank extends Vehicle implements HumanDrivable{
         isLoaded = true;
     }
 
-    //TODO: true implementations
     //abstract extensions
     @Override 
     public boolean start() 

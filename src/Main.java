@@ -104,7 +104,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
             return;
         }
         
-        System.out.println("\n" + alien.getName() + ", while the guards were rotating shifts, escapes from his holding room.");
+        System.out.println("\n" + alien.getName() + ", while the guards were rotating shifts, escapes from his holding room.\n");
 
         //Alien needs to Choose a vehicle:
         System.out.println("Choose a vehicle for " + alien.getName() + " to steal.");
@@ -116,9 +116,13 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                 case 1:
                     Tank tank = new Tank(67,67,67,67);
                     int x = scannerWrapper.readChoice("Sabotage Tank (Enter: 1) or try to drive it? (Enter: 2)",1,2);
-                        if(x==1){
 
+                        if(x==1){
+                            Alien.sabotageAndDisplay(tank);
+                            System.out.println("\nHaving Sabotaged Now it is time to steal a UFO.");
+                            break;
                         }
+
                     try{
                         
                         tank.setDriver(alien);
@@ -136,10 +140,18 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                     Thread.sleep(170);
                     System.out.println("\nThe Alien has perished. GAME OVER!");
                     }
-                    return;
+                    break;
                 case 2:
+                    Airplane plane = new Airplane(300, 25, 150, 80, 30);
+                    int x2 = scannerWrapper.readChoice("Sabotage Tank (Enter: 1) or try to drive it? (Enter: 2)",1,2);
+
+                        if(x2==1){
+                            Alien.sabotageAndDisplay(plane);
+                            System.out.println("\nHaving Sabotaged Now it is time to steal a UFO.");
+                            break;
+                        }
+
                     try{
-                        Airplane plane = new Airplane(300, 25, 150, 80, 30);
                         plane.setDriver(alien);
                         plane.drive();
                     }
@@ -155,7 +167,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                     Thread.sleep(170);
                     System.out.println("\nThe Alien has perished. GAME OVER!");
                     }
-                    return;                   
+                    break;                   
                 case 3:
                     System.out.println();
                     break;
@@ -163,8 +175,8 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                     throw new IllegalStateException("How did this happen? Unexpected personnel selection: " + choice3);
             }
 
-        System.out.println("The UFO has a security system that only a Scientist can disable. What will " + alien.getName() + " do?");
-            Scientist bill = new Scientist("Dr. Bill", 7, 60000, "UFO electrical engineering");
+        System.out.println("\nThe UFO has a security system that only a Scientist can disable. What will " + alien.getName() + " do?");
+            Scientist bill = new Scientist("Dr. Bill", 7, 60000, "Alien ethnic studies");
 
         boolean skinsuited = false;
         while(!skinsuited){
@@ -180,11 +192,11 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
             d1 = scannerWrapper.readChoice( "Select a number (1-6)", 1, 6);
             switch (d1) {
                     case 1:
-                        System.out.println("Dr. Bill walks down the hallway as " + alien.getName() + " ambushes him.");
+                        System.out.println("\nDr. Bill walks down the hallway as " + alien.getName() + " ambushes him.");
                         skinsuited = true;
                         break;
                     case 2:
-                        System.out.println("\nDr. Kumar sees "+ alien.getName() +" in the hallway and alerts security!");
+                        System.out.println("\nDr. Bill sees "+ alien.getName() +" in the hallway and alerts security!");
                         System.out.println( alien.getName() + " is shot and killed while attempting to run away from them.");
                         System.out.println("GAME OVER");
                         System.exit (0);
@@ -199,12 +211,13 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
 
         Scientist disguise = (Scientist) Alien.wearSkinSuit(alien, bill);
         try{
-            Personnel.generateStub(alien);
+            Personnel.generateStub(disguise);
         } catch(Exception e){
             System.out.println("Oops");
         }
         
-        System.out.println(disguise.getName() + " approaches Dr. Kumar, who suspects nothing malicious at all.");
+        Scientist hundal = new Scientist("Dr. Hundal", 9, 90000, "UFO computer science");
+        System.out.println(disguise.getName() + ", approaches Dr. Hundal, who suspects nothing malicious at all.");
 
         boolean kidnap = false;
         while(!kidnap){
@@ -216,9 +229,9 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
             System.out.println("    5. Abduct Humans to serve your Alien overlords on " + alien.getHomePlanet());
             System.out.println("    6. Ascend towards the stars");
 
-            int d1 = -6767;
-            d1 = scannerWrapper.readChoice("Select a number (1-6)", 1, 6);
-            switch (d1) {
+            int d2 = -6767;
+            d2 = scannerWrapper.readChoice("Select a number (1-6)", 1, 6);
+            switch (d2) {
                     case 2:
                         System.out.println(disguise.getName() + " chokes out Dr. Hundal and takes out his key to unlock the UFO");
                         kidnap = true;
@@ -237,35 +250,110 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
             }
         }
 
-
-
-
-
         UFO ufo = new UFO(600, 150, 1000);
-        ufo.setDriver(alien);
-        ufo.startProtonDrive();
 
-        if (!ufo.start()) {
-            try{
-                ufo.drive();
-            } catch(IllegalPilotException e){
-                System.out.println(e.getMessage());
-            }                                                                    
+        boolean comandeer = false;
+        while(comandeer ==  false){
+            System.out.println("\nChoose an action:");
+            System.out.println("    1. ---");
+            System.out.println("    2. ---");
+            System.out.println("    3. Comandeer a UFO");
+            System.out.println("    4. Drive to new location");
+            System.out.println("    5. Abduct Humans to serve your Alien overlords on " + alien.getHomePlanet());
+            System.out.println("    6. Ascend towards the stars");
+
+            int d3 = -6767;
+            d3 = scannerWrapper.readChoice( "Select a number (1-6)", 1, 6);
+            switch (d3) {
+                    case 3:
+                        comandeer = true;
+                        ufo.setDriver(alien);
+                        Thread.sleep(150);
+                        ufo.startProtonDrive();
+
+                        try{
+                            ufo.drive();
+                        } catch(IllegalPilotException e){
+                            System.out.println(e.getMessage());
+                        }
+                        break;                                                                    
+                    case 4,5,6,1,2:
+                        System.out.println("Unable to do that right now.");
+                        break;
+                }
+            }
+
+        System.out.println("\n[UFO Stats]");
+        System.out.println("    Top Speed: " + ufo.getTopSpeed() + " units, Acceleration: " + ufo.getAcceleration() + " units/s^2");
+        System.out.println("    Altitude Rate: " + ufo.getAltitudeRate() + " units");
+
+        boolean newloc = false;
+        int count = 0;
+        while(!newloc){
+            System.out.println("\nChoose an action:");
+            System.out.println("    1. ---");
+            System.out.println("    2. ---");
+            System.out.println("    3. ---");
+            System.out.println("    4. Abduct Humans to serve your Alien overlords on " + alien.getHomePlanet());
+            System.out.println("    5. Ascend towards the stars");
+
+            int d4 = -6767;
+            d4 = scannerWrapper.readChoice( "Select a number (1-6)", 1, 6);
+            switch (d4) {
+                    case 4:
+                        if(count >= 1){
+                            System.out.println("Unable to do that right now.");
+                            break;
+                        }
+                        count++;
+                        System.out.println("The commotion has caused other people to wander into the hangar with the UFO. What will " + alien.getName() + " do?");
+                        int d5 = scannerWrapper.readChoice("Choose an abductee: Dr. Hundal (Enter: 1) or a Random Soldier (Enter: 2) ",1,3);
+                            if(d5 ==2){
+                                System.out.println("\nThe handsome and muscular soldier breaks free of his restraints and blasts " + alien.getName() + " with an AR-15!");
+                                System.out.println("He lands the UFO and flexes his ginormous muscles while holding up a dead alien.");
+                                System.out.println("GAME OVER!");
+                                System.exit(0);
+                            }
+                        System.out.println("A beam of light sucks the victim into the holding bay.");
+                        ufo.abduct(hundal);
+                        int eat = scannerWrapper.readChoice("Eat him? Yes (Enter 1), No (Enter 2).", 1,2);
+                            if(eat ==1){
+                                alien.comsumeUpgrade(hundal);
+                                System.out.println("\nAlien absorbs his DNA and levels up:");
+                                Personnel.generateStub(alien);
+                            }
+                        break;
+                    case 1,2,3:
+                        System.out.println("Unable to do that right now.");
+                        break;
+                    case 5:
+                        int flightTime = scannerWrapper.readChoice("\nEnter flight time: (0-1000). The choice is life or death.", 0, 1000);
+                        float distance = ufo.drive(flightTime);
+                        ufo.setCurrentAltitude(ufo.getAltitude() + ufo.getAltitudeRate() * flightTime);
+                        System.out.println("The UFO traveled " + distance + " units and climbed to " + ufo.getAltitude() + " units.");
+
+                        if (ufo.getAltitude() >= 2000) {
+                            System.out.println("\n\nMission complete: " + alien.getName() + " has escaped into orbit!");
+                            if(ufo.getHoldingBay() != null){
+                                System.out.println("Good job for kidnapping a human. Their dissection will greatly benefit " + alien.getHomePlanet() + "'s civilization.");
+                                System.out.println(alien.getName() + "has been promoted");
+                                alien.promote();
+                                Personnel.generateStub(alien);
+                                break;
+                            }
+                        } else {
+                            System.out.println("Mission failed: the UFO did not reach orbit.");
+                        }
+                        break;
+                    default:
+                        break;
+            }
         }
-
-        float flightTime = 2;
-        float distance = ufo.drive(flightTime);
-        ufo.setCurrentAltitude(ufo.getAltitude() + ufo.getAltitudeRate() * flightTime);
-        System.out.println("The UFO traveled " + distance + " units and climbed to " + ufo.getAltitude() + " units.");
-
-        if (ufo.getAltitude() >= 2000) {
-            System.out.println("Mission complete: " + alien.getName() + " has escaped into orbit!");
-        } else {
-            System.out.println("Mission failed: the UFO did not reach orbit.");
-        }
-        
-        //end of alien scenario
+         System.exit(0);   
     }
+
+    //end of alien scenario
+
 
     private static void runScientistScenario(Scientist scientist) throws WrongOrderException {
         /* TODO:

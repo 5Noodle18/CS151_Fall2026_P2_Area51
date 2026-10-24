@@ -100,7 +100,6 @@ public class Airplane extends Vehicle implements HumanDrivable{
     }
 
 
-    //TODO: true implementations
     //abstract extensions
     @Override 
     public boolean start() 
@@ -144,8 +143,6 @@ public class Airplane extends Vehicle implements HumanDrivable{
         setOccupants(null);
         currentAltitude = 0;
     }
-
-    //TODO: specialized functions for Airplane
 
     public boolean takeOff() {
         if (getCurrentSpeed() >= takeOffSpeed) {

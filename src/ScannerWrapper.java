@@ -5,7 +5,6 @@ import java.util.Scanner;
 public class ScannerWrapper {
     private static final ScannerWrapper instance = new ScannerWrapper();
     private final Scanner scanner = new Scanner(System.in);
-    private static boolean hasInt;
 
     public ScannerWrapper() {}
 

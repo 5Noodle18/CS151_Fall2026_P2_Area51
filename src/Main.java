@@ -891,6 +891,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
             System.out.println("Maximum number of Personnel instances reached. Boarding stopped.");
         } finally {
             //ensure we set occupants to the successfully created passengers, even if we hit the limit
+            passengers = Arrays.copyOf(passengers, 100);
             airplane.setOccupants(passengers);
         }
     }

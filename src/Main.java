@@ -219,6 +219,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
 
         System.out.println("SCIENTIST SCENARIO: Emergency Research Flight");
         System.out.println(scientist.getName() + " must fly the research airplane and land safely.");
+        System.out.println(scientist.getName() + " speaks: " + scientist.speakRandomly());
 
 
         Airplane airplane;
@@ -440,6 +441,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
 
         boolean stopped = false;
         while (!stopped) {
+            System.out.println(scientist.getName() + " speaks: " + scientist.speakRandomly());
             System.out.println("\nChoose an action:");
             System.out.println("1. ---");
             System.out.println("2. ---");
@@ -468,18 +470,9 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
             }
         }
 
-
         System.out.println("Congratulations! " + scientist.getName() + " has successfully completed the emergency research flight to Area 51.");
-        System.out.println("Giving promotion based on the number of passengers: " + airplane.getOccupants().length + " passengers.");
-        System.out.println("For every 25 passengers, you've earned a promotion!");
-        int promotions = airplane.getOccupants().length / 25;
-
-        System.out.println("\n Your original salary was: $" + scientist.getSalary() + "0");
-        for (int i = 0; i < promotions; i++) {
-            System.out.println("Promoting from rank " + scientist.getRank() + " to rank " + (scientist.getRank() + 1) + ".");
-            scientist.promote();
-        }
-        System.out.println("Your new salary is: $" + scientist.getSalary() + "0");        
+        scientist.calculateFlightPromotions(airplane);  
+        System.out.println("Game Over. YOU WIN!!!");
     }
 
     private static void runSoldierScenario(Soldier soldier)

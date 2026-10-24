@@ -100,7 +100,7 @@ abstract class Personnel
         String role = person.getClass().getSimpleName();
         System.out.println(role + " Scenario Selected");
         System.out.println();
-        System.out.println("Are you a default " + role + " (Enter: 1)... or a custom " + role + " (Enter: 2)?");
+        System.out.println("Are you a default " + role + " (Enter: 1)... or a custom " + role + " (Enter: 2)? ");
 
         int choice2 = scannerWrapper.readChoice("",1,2);
 

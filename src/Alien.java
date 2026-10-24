@@ -66,7 +66,7 @@ public class Alien extends Personnel
             return alien;
         }
         else if(person instanceof Scientist || person instanceof Soldier){
-            person.setName(alien.getName() + ", who is wearing " + person.getName() + ",");
+            person.setName(alien.getName() + ", who is wearing " + person.getName() );
             return person;
         }
         else{
@@ -98,7 +98,7 @@ public class Alien extends Personnel
             v.setAimSpeed(0);
             v.setIsLoaded(false);
 
-            System.out.println("    Shell Count: " + v.getShellCount() + "shells, Aim Speed: " + v.getAimSpeed());
+            System.out.println("    Shell Count: " + v.getShellCount() + " shells, Aim Speed: " + v.getAimSpeed());
             System.out.println("    Cannon Loaded: " + v.isLoaded());
 
         }else{
@@ -113,6 +113,7 @@ public class Alien extends Personnel
     public void comsumeUpgrade(Personnel person){
         if(person.getRankNum() > this.getRankNum()){
             this.promote();
+            System.out.println(this.getName() + " absorbs the person's DNA and levels up:");
         }
     }
     

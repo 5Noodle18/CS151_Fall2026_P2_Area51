@@ -60,4 +60,17 @@ public class Alien extends Personnel
         return this.homePlanet;
     }
     
+    public static Personnel wearSkinSuit(Alien alien, Personnel person){
+        if (person instanceof Alien){
+            System.out.println("No attacking your fellow Alien comrades. You must remain yourself");
+            return alien;
+        }
+        else if(person instanceof Scientist || person instanceof Soldier){
+            person.setName(alien.getName() + " is wearing " + person.getName());
+            return person;
+        }
+        else{
+            return alien;
+        }
+    }
 }

@@ -75,7 +75,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
     }
 
 
-    private static void runAlienScenario(Alien alien) throws InterruptedException {
+    private static void runAlienScenario(Alien alien) throws InterruptedException, ObjectLimitException {
         /* TODO:
         Code below is template. Comment below should be final outline:
         1. DONE

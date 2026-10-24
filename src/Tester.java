@@ -124,6 +124,28 @@ public class Tester {
     }
 
     @Test
+    public void illegalPilotTest()
+    {
+        Alien alien;
+        Tank tank;
+        try
+        {
+            alien = new Alien("Glippo Snarblebarp", 2, 60000, "Strongulon 6");
+            tank = new Tank(100,10,5,30);
+        }
+        catch (ObjectLimitException e)
+        {
+            return;
+        }
+
+        assertThrows(IllegalPilotException.class, () ->
+        {
+            tank.setDriver(alien);
+            tank.drive();
+        });
+    }
+
+    @Test
     public void polymorphismTest()
     {
         Personnel[] personnelArray = new Personnel[3];
@@ -148,7 +170,11 @@ public class Tester {
                 personnelArray[i].demote();
 
                 vehicleArray[i].setDriver(personnelArray[i]);
-                vehicleArray[i].drive();
+                try
+                {
+                    vehicleArray[i].drive();
+                }
+                catch (IllegalPilotException e) {}
                 vehicleArray[i].getDriver();
             }
         }

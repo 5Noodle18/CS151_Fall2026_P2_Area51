@@ -10,7 +10,7 @@ abstract class Personnel
     private int rankNum;
     private String[] ranks;
     private double salary;
-
+    
     public Personnel(String name, int rankNum, double salary) throws ObjectLimitException
     {
         // object limit check
@@ -35,7 +35,7 @@ abstract class Personnel
 
     public void fire()
     {
-        System.out.println ("This individual will be \"disposed of\" accordingly");
+        System.out.println ("The person: " + name + ", will be \"disposed of\" accordingly");
         //figure out a way to delete a person. Still increment badge numbers as needed.
     }
 

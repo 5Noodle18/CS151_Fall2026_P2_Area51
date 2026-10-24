@@ -117,7 +117,7 @@ abstract class Personnel
         } 
         else {
 
-        System.out.print("Please enter the "+ role + "'s Name (Be Creative Please): ");
+        System.out.print("Please enter the " + role + "'s Name (Be Creative Please): ");
         while (theName.isEmpty()) {
 
             //I changed this code block to use a try catch block

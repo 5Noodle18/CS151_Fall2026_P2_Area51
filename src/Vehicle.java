@@ -33,7 +33,7 @@ public abstract class Vehicle implements Drivable {
         }
     }
     //intended constructor
-    public Vehicle(float topSpeed, float acceleration) throws ObjectLimitException
+    public Vehicle(float topSpeed, float acceleration) throws ObjectLimitException, IllegalArgumentException
     {
         if (registry.size() >= ObjectLimitException.MAX_INSTANCES) {
             throw new ObjectLimitException("Maximum number of Personnel instances reached: " + ObjectLimitException.MAX_INSTANCES);
@@ -43,12 +43,14 @@ public abstract class Vehicle implements Drivable {
         currentSpeed = 0;
         driver = null;
         occupants = null;
-        if (registry.contains(this)) {
-            throw new IllegalArgumentException("Duplicate Personnel instance detected");
+        for (Vehicle v : registry) {
+            if (v.topSpeed == topSpeed && v.acceleration == acceleration) {
+                throw new IllegalArgumentException(
+                    "Duplicate Personnel detected: " 
+                );
+            }
         }
-        else {
-            registry.add(this);
-        }
+        registry.add(this);
     }
     
     //Getters

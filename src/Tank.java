@@ -88,7 +88,7 @@ public class Tank extends Vehicle implements HumanDrivable{
     // interface methods
     public void drive()
     {
-        System.out.println("Tank is rolling");
+        System.out.print("\nTank is rolling");
     }
     public double checkFuel()
     {
@@ -96,11 +96,11 @@ public class Tank extends Vehicle implements HumanDrivable{
     }
     public void fuelUp()
     {
-        System.out.println("The tank is now fully fueled");
+        System.out.print("\nThe tank is now fully fueled");
     }
     public void startEngine()
     {
-        System.out.println("Starting engine, tank is powered on");
+        System.out.print("\nStarting engine, tank is powered on.");
     }
 
     public boolean fireAtTarget()

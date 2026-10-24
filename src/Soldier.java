@@ -48,8 +48,8 @@ public class Soldier extends Personnel
     }
 
     /**
-     * 
-     * @param threat // the thing that threatens the soldier.
+     * The moment that determines if this soldier dies gloriosly or survives
+     * @param threat String. The thing that threatens the soldier.
      * They perished because of... OR were triumpant despite...
      * @return a string containing the fate of the soldier
      */
@@ -65,6 +65,47 @@ public class Soldier extends Personnel
             message += " survived despite "; 
         }
         message += threat + "\n";
+        return message;
+    }
+
+    /**
+     * the soldier remembers their training and operates the tank
+     * @param tank Tank. The tank that the soldier should occupy
+     * @return a string showing what the soldier did
+     */
+    public String rememberTraining(Tank tank)
+    {
+        String message = this.getRank() + " " + this.getName();
+        if (tank.getDriver() == null) // if no one is in the tank, get in and start it
+        {
+            message += " runs to the tank, gets in, and starts it.\n";
+            tank.setDriver(this);
+            tank.startEngine();
+            tank.setShellCount(3);
+        }
+        else if (tank.getDriver().equals(this)) // if this soldier is in the tank, operate it
+        {
+            message += " goes to load a shell into the tank.\n";
+            tank.setIsLocked(true);
+            tank.loadShell();
+            tank.setShellCount(tank.getShellCount() - 1);
+        }
+
+        return message;
+        
+    }
+
+    /**
+     * @param other Personnel. The victim of the violence
+     * @param action String. The violence being done as a verb. ex: punches
+     * @return a string depicting the violence this soldier does. ex: bob punches greg
+     */
+    public String doViolence(Personnel other, String action)
+    {
+        String message = "";
+        message += "\n" + this.getRank() + " " + this.getName();
+        message += " " +action + " ";
+        message += other.getRank() + " " + other.getName();
         return message;
     }
 

@@ -486,7 +486,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
         {
             ufo = new UFO(600, 150, 1000);
             tank = new Tank(80, 20, 3, 5);
-            alien = new Alien("Zeeblezorp Glurgnop", 3, 50000, "Zeta Reticuli");
+            alien = new Alien("Zeeblezorp Glurgnop", 6, 50000, "Zeta Reticuli");
             scientist = new Scientist("Horacio Smartinov", 7, 50000, "Xenogastronomy");
             soldier = (Soldier) Personnel.characterCreator(soldier, scannerWrapper);
             Personnel.generateStub(soldier);
@@ -509,7 +509,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
         String actionMessage = "";
 
         // as long as an ending state hasn't been reached or the game is over
-        while(endingState <= 0 || alienState > 7)
+        while(endingState <= 0 && alienState < 9)
         {
             // what the alien is doing, it progresses once per turn
             switch (alienState)
@@ -521,19 +521,22 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                     statusMessage += alien.getName() + " is now at the UFO's door and is about to get in.\n";
                     ufo.setDriver(alien);
                     break;
-                case 3: // alien is starting UFO, it is still on the ground
+                case 3: // alien is starting UFO
                     ufo.drive();
                     statusMessage += alien.getName() + " is starting the UFO...\n";
                     break;
-                case 4: // the UFO is now in the air
+                case 4: // UFO is in the air and looking for an abductee
                     statusMessage += alien.getName() + " is flying around in the UFO looking for someone to abduct before getting away!\n";
+                    break;
+                case 5: // the UFO is about to abduct someone
+                    statusMessage += "It looks like " + alien.getName() + " getting ready to fire the abduction beam.\n";
                     if (tank.getDriver() == null)
                     {
                         statusMessage += "It is worth noting: you are in abducting range and are not in a safe tank right now!\n";
                     }
                     ufo.start();
                     break;
-                case 5: // alien is now flying around, out of range of the tank, and is looking for someone to abduct
+                case 6: // alien is now flying around, and is looking for someone to abduct
                     if (tank.getDriver() == null) // if the the player is not in a tank, they get abducted
                     {
                         statusMessage += alien.getName() + " is activating the abduction beam... ";
@@ -543,16 +546,20 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                     }
                     else // otherwise, some scientist gets abducted
                     {
-                        statusMessage += alien.getName() + " is now abducting someone...\n";
+                        statusMessage += alien.getName() + " is now abducting someone... ";
                         statusMessage += "it looks like " + scientist.getName() + " from the science team.\n";
                         ufo.abduct(scientist);
                     }
                     break;
-                case 6: // UFO is preparing to leave
+                case 7: // UFO is preparing to leave
                     statusMessage += alien.getName() + " is now getting ready to Jump away with " + ((Scientist)ufo.getHoldingBay()).getName() + " still inside.\n";
                     ufo.startProtonDrive();
                     break;
-                case 7: // UFO jumped away
+                case 8: // UFO is almost gone
+                    statusMessage += "The UFO is really speeding up now, if you don't do something now they'll get away!\n";
+                    ufo.setAcceleration(1000);
+                    break;
+                case 9: // UFO jumped away
                     statusMessage += ufo.getDriver().getName() + " got away. They are now probably on their way to " +  ((Alien)ufo.getDriver()).getHomePlanet() + ".\n";
                     endingState = 3;
                     break;
@@ -573,7 +580,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                 System.out.print("1. Do nothing\n");
                 System.out.print("2. Chase\n");
                 System.out.print("3. Shoot\n");
-                System.out.print("4. Run to tank\n");
+                System.out.print("4. Run to nearest tank\n");
                 choice = scannerWrapper.readChoice("Choose between 1 and 4: ", 1, 4);
                 switch (choice)
                 {
@@ -584,32 +591,29 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                         actionMessage += "You sprint after the alien...";
                         if (alienState < 2)
                         {
-                            actionMessage += " And tackle them!\n";
+                            actionMessage += soldier.doViolence(alien, "tackles") + ".\n";
                             endingState = 1;
                         }
                         else
                         {
-                            actionMessage += " And quickly realise that they are already in a UFO\n";
+                            actionMessage += " And quickly realise that they are already in a UFO.\n";
                         }
                         break;
                     case 3: // shoot
-                        actionMessage += "You pull out your firearm and shoot at the alien... ";
+                        actionMessage += "You pull out your tazer and shoot at the alien... ";
                         if (alienState < 3)
                         {
-                            actionMessage += "And hit them in the leg.\n";
+                            actionMessage += soldier.doViolence(alien, "tazes") + " in the leg.\n";
                             endingState = 1;
                         }
                         else // alien already in a UFO
                         {
-                            actionMessage += "But the bullet bounces off the UFO. If only you were in a tank.\n";
+                            actionMessage += "But the projectile bounces off the UFO's shield. If only you were in a tank.\n";
                         }
                         break;
                     case 4: // Run to tank
-                        actionMessage += "You sprint towards the nearest tank and hop in it\n";
-                        tank.setDriver(soldier);
-                        tank.startEngine();
-                        tank.setShellCount(2);
-                        soldierState = 2;
+                        actionMessage += soldier.rememberTraining(tank);
+                        soldierState = 2; 
                         break;
                 }
             }
@@ -634,7 +638,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                             if(tank.fireAtTarget())
                             {
                                 actionMessage += "A direct hit on the UFO!\n";
-                                if(alienState < 5)
+                                if(alienState < 6)
                                 {
                                     endingState = 7;
                                 }
@@ -655,14 +659,11 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                         }
                         break;
                     case 3: // load shell
-                        actionMessage += "You load a shell into the tank\n";
-                        tank.setIsLocked(true);
-                        tank.loadShell();
+                        actionMessage += soldier.rememberTraining(tank);
                         break;
                     case 4: // aim tank
                         actionMessage += "You aim the tank at the UFO\n";
                         tank.setTarget(ufo);
-
                 }
             }
 
@@ -678,22 +679,23 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
         String endingMessage = "";
         switch (endingState)
         {
-            case 1:
+            case 1: // you didn't damage the ufo
                 endingMessage += "\nAnd you didn't damage the UFO! You deserve two promotions!";
                 soldier.promote();
-            case 2:
+            case 2: // you stop the alien
                 endingMessage = "Congratulations! You stopped " + alien.getRank() + " " + alien.getName() + "! You deserve a promotion!" + endingMessage;
                 soldier.promote();
                 break;
 
-            case 3:
+            case 3: // the alien got away with the scientist
                 endingMessage += "\nAnd they abducted " + ((Scientist)ufo.getHoldingBay()).getRank() + " " + ufo.getHoldingBay().getName() + "!";
-            case 4:
+            case 4: // the alien got away
                 endingMessage = "Oh no! " + alien.getRank() + " " + alien.getName() + " got away!" + endingMessage;
                 break;
 
-            case 5:
-                endingMessage = soldier.momentOfTruth("being sucked up by a flying saucer.");
+            case 5: // you get abducted
+                endingMessage = "Oh no! " + alien.getRank() + " " + alien.getName() + " got away!\n";
+                endingMessage += soldier.momentOfTruth("being sucked up by a flying saucer.");
                 if (soldier.getExpendable())
                 {
                     endingMessage += "Good thing " + soldier.getName() + " was expendible...\n";
@@ -705,9 +707,9 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                 }
                 break;
             
-            case 6:
-                endingMessage += "\nToo bad that " + ((Scientist)ufo.getHoldingBay()).getRank() + " " + ufo.getHoldingBay().getName() + " was aboard...";
-            case 7:
+            case 6: // you shoot down the UFO with the scientist inside
+                endingMessage += "\nToo bad that " + ((Scientist)ufo.getHoldingBay()).getRank() + " " + ufo.getHoldingBay().getName() + " was  the UFO...";
+            case 7: // you shoot down the UFO
                 endingMessage = "Congratulations! You stopped " + alien.getRank() + " " + alien.getName() + "! You deserve a promotion!" + endingMessage;
                 soldier.promote();
                 break;

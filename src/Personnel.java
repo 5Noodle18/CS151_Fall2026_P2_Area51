@@ -11,7 +11,7 @@ abstract class Personnel
     private String[] ranks;
     private double salary;
     
-    public Personnel(String name, int rankNum, double salary) throws ObjectLimitException
+    public Personnel(String name, int rankNum, double salary) throws ObjectLimitException, IllegalArgumentException
     {
         // object limit check
         if (registry.size() > ObjectLimitException.MAX_INSTANCES) {
@@ -21,12 +21,15 @@ abstract class Personnel
         this.rankNum = rankNum;
         this.salary = salary;
         // duplicate check, must happen after this... is set
-        if (registry.contains(this)) {
-            throw new IllegalArgumentException("Duplicate Personnel instance detected: " + name);
+
+        for (Personnel p : registry) {
+            if (p.name.equalsIgnoreCase(name) && p.rankNum == rankNum) {
+                throw new IllegalArgumentException(
+                    "Duplicate Personnel detected: " + name
+                );
+            }
         }
-        else {
-            registry.add(this);
-        }
+        registry.add(this);
     }
 
     public void promote(){ }

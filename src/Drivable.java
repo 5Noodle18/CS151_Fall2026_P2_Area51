@@ -7,6 +7,6 @@ public interface Drivable
     /* returns the driver of the vehicle, null if none */
     Personnel getDriver();
 
-    void drive();
+    void drive() throws IllegalPilotException;
 
 }

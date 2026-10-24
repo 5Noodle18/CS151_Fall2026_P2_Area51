@@ -73,4 +73,11 @@ public class Alien extends Personnel
             return alien;
         }
     }
+
+    public static void sabotage(Vehicle v){
+        if(v instanceof Tank || v instanceof Airplane){
+            v.destroy();
+        }
+    }
+
 }

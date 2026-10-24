@@ -114,8 +114,13 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
 
             switch(choice3){
                 case 1:
+                    Tank tank = new Tank(67,67,67,67);
+                    int x = scannerWrapper.readChoice("Sabotage Tank (Enter: 1) or try to drive it? (Enter: 2)",1,2);
+                        if(x==1){
+
+                        }
                     try{
-                        Tank tank = new Tank(67,67,67,67);
+                        
                         tank.setDriver(alien);
                         tank.drive();
                     }
@@ -592,7 +597,11 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                     ufo.setDriver(alien);
                     break;
                 case 3: // alien is starting UFO, it is still on the ground
-                    ufo.drive();
+                    try{
+                        ufo.drive();
+                    } catch(IllegalPilotException e){
+                        System.out.println(e.getMessage());
+                    }
                     statusMessage += alien.getName() + " is starting the UFO...\n";
                     break;
                 case 4: // the UFO is now in the air

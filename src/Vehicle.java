@@ -77,11 +77,11 @@ public abstract class Vehicle implements Drivable {
         return registry.size();
     }
     //Setters
-    protected void setTopSpeed(float speed) 
+    public void setTopSpeed(float speed) 
     {
         topSpeed = speed;
     }
-    protected void setAcceleration(float acceleration) 
+    public void setAcceleration(float acceleration) 
     {
         this.acceleration = acceleration;
     }

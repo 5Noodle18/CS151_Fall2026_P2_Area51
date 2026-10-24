@@ -104,13 +104,6 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
             return;
         }
         
-        //TODO: add something like this after each character creator section for each scenario.
-        System.out.println("\n==========================================================");
-        System.out.println("[ALIEN STATS:]");
-        System.out.println("    NAME: " + alien.getName() + ", RANK: " + alien.getRank());
-        System.out.println("    SALARY: $" + alien.getSalary() + "0, PLANET OF ORIGIN: " + alien.getHomePlanet());
-        System.out.println("==========================================================\n\n");
-        
         //Alien needs to Choose a vehicle:
         System.out.println("Choose a vehicle for " + alien.getName() + " to steal.");
         System.out.println("Tank (Enter: 1), Airplane (Enter: 2), Unidentified Flying Object *UFO* (Enter: 3)");
@@ -120,7 +113,6 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
             
             choice3 = scannerWrapper.readChoice("Please enter an integer from 1 to 3: ", 1, 3);
 
-            //TODO: this needs to be fixed with try catch blocks it needs to throw errors instead:
             switch(choice3){
                 case 1:
                     System.out.println("ALIEN DETECTED IN TANK! SELF DESTRUCT INITIATED!");

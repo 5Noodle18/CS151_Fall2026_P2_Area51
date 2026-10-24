@@ -82,8 +82,11 @@ public class Airplane extends Vehicle implements HumanDrivable{
     }
 
     // interface methods
-    public void drive()
+    public void drive() throws IllegalPilotException
     {
+        if(this.getDriver() instanceof Alien){
+            throw new IllegalPilotException("ALIEN DETECTED IN PLANE! Self Destruct Sequence Initiated");
+        }
         System.out.println("The plane flew.");
     }
     public void fuelUp()

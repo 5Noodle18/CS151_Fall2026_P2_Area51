@@ -86,9 +86,12 @@ public class Tank extends Vehicle implements HumanDrivable{
     }
 
     // interface methods
-    public void drive()
+    public void drive() throws IllegalPilotException
     {
-        System.out.print("\nTank is rolling");
+        if(this.getDriver() instanceof Alien){
+            throw new IllegalPilotException("ALIEN DETECTED! Initiating Self Destruct Sequence:");
+        }
+        System.out.println("Tank is rolling");
     }
     public double checkFuel()
     {

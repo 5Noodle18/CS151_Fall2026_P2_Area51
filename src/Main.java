@@ -847,7 +847,7 @@ private final static ScannerWrapper scannerWrapper = ScannerWrapper.getInstance(
                 break;
             
             case 6: // you shoot down the UFO with the scientist inside
-                endingMessage += "\nToo bad that " + ((Scientist)ufo.getHoldingBay()).getRank() + " " + ufo.getHoldingBay().getName() + " was  the UFO...";
+                endingMessage += "\nToo bad that " + ((Scientist)ufo.getHoldingBay()).getRank() + " " + ufo.getHoldingBay().getName() + " was in the UFO...";
             case 7: // you shoot down the UFO
                 endingMessage = "Congratulations! You stopped " + alien.getRank() + " " + alien.getName() + "! You deserve a promotion!" + endingMessage;
                 soldier.promote();

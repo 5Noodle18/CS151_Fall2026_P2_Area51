@@ -88,7 +88,7 @@ public class Tank extends Vehicle implements HumanDrivable{
     // interface methods
     public void setDriver(Personnel driver)
     {
-        this.driver = driver;
+        this.driver = getDriver();
     }
     public Personnel getDriver()
     {
